@@ -1,0 +1,64 @@
+// mat-toolbar {
+//     background: #004a9f;
+//     color: white;
+// }
+
+.spacer {
+    flex: 1 1 auto;
+}
+
+mat-drawer {
+    // margin: 16px;
+    width: 200px;
+    border-right: none;
+    // background: #002b5c;
+    // color: white;
+    border-radius: 10px;
+    // padding: 16px;
+    text-align: center;
+}
+
+.content {
+    // height: calc(100vh - 33px);
+    height: calc(100vh - 146px);
+    border-radius: 10px;
+    margin: 16px;
+    margin-left: 32px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-size: 2rem;
+    color: lightgray;
+}
+
+mat-drawer-container {
+    // height: 100%;
+    height: calc(100vh - 65px);
+}
+
+// .menu-button {
+//     // font-size: 1rem;
+//     background: #4070a7;
+// }
+
+.exp-title{
+    justify-content: flex-end;
+}
+
+.title {
+    margin-top: 8px;
+    font-weight: normal;
+}
+
+
+mat-divider {
+    margin-top: 16px;
+    margin-bottom: 16px;
+    background-color: rgba(255, 255, 255, 0.5);
+}
+
+.mngr-details{
+    text-align: right;
+}
