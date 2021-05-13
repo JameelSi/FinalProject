@@ -1,0 +1,46 @@
+<mat-toolbar>
+    <h1>ברוך הבא</h1>
+    </mat-toolbar>
+    
+    <mat-drawer-container>
+  
+        <mat-drawer   mode="side" class=mat-elevation-z8 position="end" >        
+            <h2 class="title">תוכן צרכים</h2>
+          <ol class="listOfContents">
+             <li *ngFor="let item of items  | async let i=index"><a href="{{'#item'+i}}" >{{item.title}}</a></li>
+          </ol>
+          <button class="add" (click)="addService()" >+</button>
+          
+      </mat-drawer>
+  
+        <mat-drawer-content id="mainContent">
+          <div *ngFor="let item of items | async let i=index" id="{{'item'+i}}"  >
+          <mat-expansion-panel  class="cards" (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+            <mat-expansion-panel-header class="panelHeader">
+              <mat-panel-title>
+                  <p>{{item.title}}</p>
+              </mat-panel-title>
+                   
+                <mat-panel-description>
+                 לחץ עליי להצגת מענים!
+                </mat-panel-description>
+                
+            </mat-expansion-panel-header>
+            <div class="answers">
+              <div  *ngFor="let content of item.content" class="answersBox">{{content}}</div>
+            </div>
+            <button class="serviceContent" height="50px" width="50px" (click)="addContent(item.id,item.content)" >+</button>
+            
+    
+          </mat-expansion-panel>
+        </div>
+  
+        <div class="bot"> רוצה להנות מהבוט שלנו בווטאפ ? :) שלח הודעה עכשיו למספר :054-9927275!</div>
+      </mat-drawer-content>
+        
+      </mat-drawer-container>
+      
+        <!-- <div [ngClass]="isSpecial ? 'special' : ''">This div is special</div> -->
+    <!-- <div [ngStyle]="currentStyles">
+      This div is initially italic, normal weight, and extra large (24px).
+    </div> -->

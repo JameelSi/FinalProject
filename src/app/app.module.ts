@@ -25,6 +25,9 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { DialogBoxComponent } from './dialog-box/dialog-box.component';
 import { FormsModule } from '@angular/forms';
+import { NeedsComponent } from './needs/needs.component';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
+
 // import { MatCardModule } from '@angular/material/card';
 // import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
@@ -33,7 +36,8 @@ import { FormsModule } from '@angular/forms';
   declarations: [
     AppComponent,
     ProjectsTrackingComponent,
-    DialogBoxComponent
+    DialogBoxComponent,
+    NeedsComponent
   ],
   imports: [
     BrowserModule,
@@ -55,6 +59,7 @@ import { FormsModule } from '@angular/forms';
     MatDialogModule,
     MatFormFieldModule,
     FormsModule,
+    MatSnackBarModule
     // MatProgressSpinnerModule,
   ],
   providers: [],
