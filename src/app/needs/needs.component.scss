@@ -68,20 +68,24 @@ a {
         font-weight: bolder;
         flex: 1;
     }
-    .serviceContent{
+    .serviceContentAdd{
     height: 50px;
     width: 50px;
     background-color: lavender;
-    border:none;
-    border-radius: 100%;
+    // border:none;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     background: linear-gradient(
-        142.53deg
-        ,#00a295,#26e8f4 98.75%),#3dcda7;
-    font-size: 40px;
-    float:left;
+      142.53deg
+      ,#00a295,#26e8f4 98.75%),#3dcda7;
+      font-size: 40px;
+      float:left;
+      border-radius: 5px;
+      border-style: solid;
+      border-color: white;
+      border-radius: 100%;
     }
-    .serviceContent:hover{cursor: pointer;}
+    .serviceContentAdd:hover{cursor: pointer;}
+
     .add{
     height: 100px;
     width: 100px;
@@ -97,35 +101,23 @@ a {
     cursor: pointer;
     }
     .cards{
-    // background: linear-gradient(142.53deg,#00a295,#26e8f4 98.75%),#3dcda7;
-    margin-top: 3%;
     width: 90%;
-    margin-right: 5%;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     }
 
     .panelHeader{
     height: 120px;
+    background-color: #00a295;
+    }
+    
+    mat-panel-description{
+    flex:1;
     }
 
     .answers{
-    border-radius: 5px;
-    border-style: solid;
-    border-color: white;
-    width: 80%;
-    margin: 10px 0 20px 0;
-    padding: 10px;
-    margin-right: 8%;
-    // margin: 0;
-    // width: 100%;
-    // display: flex;
-    // justify-content: space-around;
-    // flex-wrap: wrap;
-    }
-
-    mat-panel-description{
-    justify-content: flex-end;
-    margin: 1%;
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
     }
 
     .answersBox{
@@ -157,4 +149,22 @@ a {
       text-align: center;
       word-wrap: break-word;
 
+    }
+    .icons{
+      display: flex;
+      flex-direction: column;
+      // margin-top: 10%;
+      // display: inline;
+      justify-content: center;
+    }
+    mat-icon{
+      margin:10px;
+    }
+    mat-icon:hover{cursor: pointer;}
+    .delete{
+      color: red;
+    }
+    .panelBox{
+      display: flex;
+      margin: 20px;
     }

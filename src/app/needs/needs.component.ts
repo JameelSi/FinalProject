@@ -1,12 +1,12 @@
-import { Component, Inject,OnInit,ViewChild } from '@angular/core';
+import { Component, Inject,OnInit,ViewChild,OnDestroy } from '@angular/core';
 import { MatDrawer } from '@angular/material/sidenav';
 import { BreakpointObserver } from '@angular/cdk/layout';
-import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
+import {MatDialog} from '@angular/material/dialog';
+import { DialogBoxComponent } from '../dialog-box/dialog-box.component';
 import {MatSnackBar, MatSnackBarConfig} from '@angular/material/snack-bar';
 import {AngularFirestore,AngularFirestoreCollection} from '@angular/fire/firestore'
-import { Observable } from 'rxjs';
+import { Observable,Subscription } from 'rxjs';
 
-export interface DialogData { name: string; arr: Array<string>;}
 export interface Item { title: string; content: Array<string>; id:string; }
 
 @Component({
@@ -14,20 +14,21 @@ export interface Item { title: string; content: Array<string>; id:string; }
   templateUrl: './needs.component.html',
   styleUrls: ['./needs.component.scss']
 })
-export class NeedsComponent implements OnInit {
+export class NeedsComponent implements OnInit,OnDestroy {
 
   @ViewChild(MatDrawer)
   sidenav!: MatDrawer;
   direction =["to top","to top right","to right","to bottom right","to bottom","to bottom left","to left","to top left"];
   arr: Array<String>=[];
-  name: string|undefined;
+  name: string="";
   config!: MatSnackBarConfig
   panelOpenState:boolean=false;
   currentStyles?: {};
   backgroundCol?: string;
-
+  private subs = new Subscription();
   private itemsCollection: AngularFirestoreCollection<Item>;
   items!: Observable<Item[]>;
+
     setCurrentStyles() {
       // CSS styles: set per current state of component properties
       this.currentStyles = {
@@ -55,43 +56,70 @@ export class NeedsComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-    this.observer.observe(['(max-width: 800px)']).subscribe((res) => {
-      if (res.matches) {
-        this.sidenav.mode = 'over';
-        this.sidenav.close();
-      } else {
-        this.sidenav.mode = 'side';
-        this.sidenav.open();
-      }
-    });
+    setTimeout(() => {
+      this.subs.add(
+      this.observer.observe(['(max-width: 800px)']).subscribe((res) => {
+        if (res.matches) {
+          this.sidenav.mode = 'over';
+          this.sidenav.close();
+        } else {
+          this.sidenav.mode = 'side';
+          this.sidenav.open();
+        }
+      }))
+  });
   }
 
-  addService(): void {
-    // const dialogRef = this.dialog.open(DialogOverviewExampleDialog, {
-    //   // width: '25%',
-    //   // height:'30%',
-    //   direction:'rtl',
-    //   data: {name: this.name},
-    // });
-
-    
-
-    // dialogRef.afterClosed().subscribe(result => {
-    //   // console.log(typeof(result));
-
-    //     if(this.arr.indexOf(result)>-1)
-    //       this.snackBar.open("הצורך כבר נמצא !",'',{duration:1500,direction:'rtl',panelClass:['snacks']});
-    //     else{
-          
-    //   }
-
+  addDialog(action: 'Update' | 'Delete' | 'Add', element: any,type:'doc'|'collection'): void {
+      if(action==='Add' &&type=='collection')
+        element.dialogTitle='שם של הצורך שברצונך להוסיף?'
+      else if(action==='Delete' &&type=='collection')
+        element.dialogTitle='בטוח למחוק את הצורך וכל מעניו?'
+      else if(action==='Add' &&type=='doc')
+        element.dialogTitle='נא להקליד את תוכן המענה'
+      else if(action==='Update' &&type=='doc')
+        element.dialogTitle='בטוח למחוק ?'
+      else if(action==='Update')
+        element.dialogTitle='מה הערך החדש?'
       
-    // });
+      element.action = action;
+      const dialogRef = this.dialog.open(DialogBoxComponent, {
+        width: '25%',
+        direction:'rtl',
+        data:element,
+      });
+  
+      dialogRef.afterClosed().subscribe(result => {
+        if(result){
+          if(result.event == 'Add' && type=='collection'){
+            this.afs.collection('Services').add({title:result.data.name,content:[]})
+          }else if(result.event == 'Delete' && type=='collection'){
+            this.afs.collection('Services').doc(result.data.id).delete()
+          }else if(result.event =='Update' && type=='collection'){
+            this.afs.doc(`Services/${result.data.id}`).update({title:result.data.name})
+          }
+          
+          else if(result.event =='Add' && type=='doc'){
+            result.data.content.push(result.data.name)
+            this.afs.doc(`Services/${result.data.id}`).update({content:result.data.content})
+          }else if(result.event =='Delete' && type=='doc'){
+            console.log(result.data.name)
+          }else if(result.event =='Update' && type=='doc'){
+            console.log(result.data.id)
+          }
+        }
+          
+    });
+  
+    
   }
+
   addContent( id:string, content:Array<string>): void {
     content.push('hellos')
       this.afs.doc(`Services/${id}`).update({content:content})
     }
 
-
+    ngOnDestroy(): void {
+      this.subs.unsubscribe();
+    }
 }

@@ -182,6 +182,7 @@ export class ProjectsTrackingComponent implements OnInit, OnDestroy {
   }
 
   openDialog(action: 'Update' | 'Delete' | 'Add', element: any) {
+    element.title=action
     element.action = action;
     const dialogRef = this.dialog.open(DialogBoxComponent, {
       width: '250px',

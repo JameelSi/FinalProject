@@ -16,16 +16,16 @@ interface project {
 
 
 export class DialogBoxComponent implements OnInit {
-
+  dialogTitle:string;
   action:string;
   local_data:any;
 
   constructor( public dialogRef: MatDialogRef<DialogBoxComponent>,
     //@Optional() is used to prevent error if no data is passed
     @Optional() @Inject(MAT_DIALOG_DATA) public data: project) {
-    console.log(data);
     this.local_data = {...data};
     this.action = this.local_data.action;
+    this.dialogTitle=this.local_data.dialogTitle;
   }
 
   doAction(){
