@@ -1,5 +1,6 @@
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { Component, ComponentFactoryResolver, OnDestroy, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from '@angular/fire/firestore';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatDrawer } from '@angular/material/sidenav';
@@ -31,7 +32,7 @@ interface project {
   comments: string,
   date: Date,
   clubCoordinatorId: string,
-  clubInfo? : object,
+  clubInfo?: object,
 }
 
 interface manager {
@@ -72,6 +73,7 @@ export class ProjectsTrackingComponent implements OnInit, OnDestroy {
   displayedColumns: string[] = ['date', 'clubCoordinatorId', 'projectType', 'comments', 'action']
   projectsToDisplay!: MatTableDataSource<project>
   defaultSelectedTab: number = -1
+  currAreaCoord?: areaCoord
 
   private paginator!: MatPaginator;
   private sort!: MatSort;
@@ -79,7 +81,7 @@ export class ProjectsTrackingComponent implements OnInit, OnDestroy {
   private subs = new Subscription();
 
   constructor(private observer: BreakpointObserver, public dialog: MatDialog,
-    private dataProvider: GetDataService) { }
+    private dataProvider: GetDataService, private afs: AngularFirestore) { }
 
   ngOnDestroy(): void {
     this.subs.unsubscribe();
@@ -106,7 +108,7 @@ export class ProjectsTrackingComponent implements OnInit, OnDestroy {
       ]).pipe(
         filter(([p, s]) => p.length === 1 && s.length === 1)
       ).subscribe(([p, s]) => {
-        console.log('updating')
+        // console.log('updating')
         this.paginator = p.first;
         this.sort = s.first;
         this.updateDatasourceProperties();
@@ -129,19 +131,19 @@ export class ProjectsTrackingComponent implements OnInit, OnDestroy {
       this.managers = managers;
       this.clubCoords = clubCoords;
       this.allNeighborhoods.forEach(neighb => {
-        neighb.projects.forEach(proj=>{
+        neighb.projects.forEach(proj => {
           proj.clubInfo = this.clubCoords.find(i => i.id.trim() == proj.clubCoordinatorId.trim())
         })
       })
-      if(!this.currNeighborhoods){
+      if (!this.currNeighborhoods) {
         this.currNeighborhoods = this.allNeighborhoods
         this.currNeighborhoods.sort()
-        
+
       }
-      if(!this.projectsToDisplay){
+      if (!this.projectsToDisplay) {
         this.projectsToDisplay = new MatTableDataSource(this.currNeighborhoods?.[0]?.projects);
       }
-      if(this.defaultSelectedTab == -1){
+      if (this.defaultSelectedTab == -1) {
         this.defaultSelectedTab = this.currNeighborhoods.length - 1;
       }
       this.updateDatasourceProperties();
@@ -164,8 +166,10 @@ export class ProjectsTrackingComponent implements OnInit, OnDestroy {
 
   getData(areaCoord: areaCoord | 'all') {
     if (areaCoord === "all") {
+      this.currAreaCoord = undefined
       this.currNeighborhoods = this.allNeighborhoods
     } else {
+      this.currAreaCoord = areaCoord
       let neighbs = areaCoord.neighborhoods
       // filter neighborhoods to show according to area coordinator
       this.currNeighborhoods = this.allNeighborhoods.filter(i => neighbs.includes(i.id))
@@ -181,47 +185,62 @@ export class ProjectsTrackingComponent implements OnInit, OnDestroy {
     this.updateDatasourceProperties();
   }
 
-  openDialog(action: 'Update' | 'Delete' | 'Add', element: any) {
-    element.title=action
+  openDialog(action: 'Update' | 'Delete' | 'Add', element: any = {}, collec: string = 'ירושלים', doc: any = undefined) {
+    if (action === 'Delete' && collec)
+      element.dialogTitle = 'בטוח למחוק את השכונה וכל נתוניה?'
+    else if (action === 'Add' && collec && doc)
+      element.dialogTitle = 'נא להכניס את הנתונים החדשים'
+    // when neighborhod is not specified, the button is add new neighborhood 
+    else if (action === 'Add')
+      element.dialogTitle = 'הוספת שכונה חדשה לרכז/ת'
+    else if (action === 'Delete' && collec && doc)
+      element.dialogTitle = 'בטוח למחוק את השורה ?'
+    else if (action === 'Update')
+      element.dialogTitle = 'מה הערכים החדשים?'
+
+    console.log(element, collec, doc, this.currAreaCoord)
+
     element.action = action;
     const dialogRef = this.dialog.open(DialogBoxComponent, {
-      width: '250px',
-      data:element
+      width: '25%',
+      direction: 'rtl',
+      data: element,
+    });
+    // if(collec){let neighbsCollecRef: AngularFirestoreCollection = this.afs.collection(`${collec}`)}
+    // if(collec && doc){let neighbDocRef: AngularFirestoreDocument<neighborhood> = this.afs.collection(`${collec}`).doc(`${doc}`)}
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        console.log('result:', result)
+        if (result.event == 'Add' && collec) {
+          // this.afs.collection('Services').add({ title: result.data.name, content: [] })
+        } else if (result.event == 'Delete' && collec) {
+          // this.afs.collection('Services').doc(result.data.id).delete()
+        } else if (result.event == 'Update' && collec) {
+          // this.afs.doc(`Services/${result.data.id}`).update({ title: result.data.name })
+        }
+
+        else if (result.event == 'Add' && doc) {
+          result.data.content.push(result.data.name)
+          this.afs.doc(`Services/${result.data.id}`).update({ content: result.data.content })
+        } else if (result.event == 'Delete' && doc) {
+          console.log(result.data.name)
+        } else if (result.event == 'Update' && doc) {
+          console.log(result.data.id)
+        }
+      }
     });
 
-    dialogRef.afterClosed().subscribe((result:any) => {
-    if(result.event == 'Add'){
-      this.addRowData(result.data);
-    }else if(result.event == 'Update'){
-      this.updateRowData(result.data);
-    }else if(result.event == 'Delete'){
-      this.deleteRowData(result.data);
-    }
-  });
-
   }
 
-  addRowData(row_obj:project){
-    // var d = new Date();
-    // this.dataSource.push({
-    //   id:d.getTime(),
-    //   name:row_obj.name
-    // });
-    // this.table.renderRows();
-    
+  addRowData(row_obj: project) {
+
+
   }
-  updateRowData(row_obj:project){
-    // this.dataSource = this.dataSource.filter((value,key)=>{
-    //   if(value.id == row_obj.id){
-    //     value.name = row_obj.name;
-    //   }
-    //   return true;
-    // });
+  updateRowData(row_obj: project) {
+
   }
-  deleteRowData(row_obj:project){
-    // this.dataSource = this.dataSource.filter((value,key)=>{
-    //   return value.id != row_obj.id;
-    // });
+  deleteRowData(row_obj: project) {
+
   }
 
 }

@@ -32,17 +32,17 @@
             <!-- <ng-container *ngFor='let item of areaCoords | keyvalue'> -->
             <!-- <button mat-button class="menu-button" (click)="getData(item.key)"> -->
             <!-- <mat-icon>home</mat-icon> -->
-            <mat-expansion-panel class="menu-button" hideToggle (click)="getData(item)"
-                *ngFor='let item of areaCoords'>
+            <mat-expansion-panel class="menu-button" hideToggle (click)="getData(areaCoord)"
+                *ngFor='let areaCoord of areaCoords'>
                 <mat-expansion-panel-header>
                     <mat-panel-title class="exp-title">
-                        <span>{{item.name}}</span>
+                        <span>{{areaCoord.name}}</span>
                     </mat-panel-title>
                 </mat-expansion-panel-header>
                 <!-- <div class="details"> -->
                 <ng-template matExpansionPanelContent class="details">
-                    {{item.phone}}:פלאפון
-                    {{item.email}}:מייל
+                    {{areaCoord.phone}}:פלאפון
+                    {{areaCoord.email}}:מייל
                 </ng-template>
                 <!-- </div> -->
             </mat-expansion-panel>
@@ -54,16 +54,16 @@
     <mat-drawer-content>
         <mat-tab-group mat-align-tabs="end" [selectedIndex]="defaultSelectedTab"
             (selectedTabChange)="setProjects($event)">
-            <ng-container *ngFor='let item of currNeighborhoods'>
-                <mat-tab label="{{item.id}}">
+            <ng-container *ngFor='let neighb of currNeighborhoods'>
+                <mat-tab label="{{neighb.id}}">
                     <ng-template matTabContent>
 
                         <!-- <div class="mngr-details">
-                            {{managers[item.value.managerId].name}}
+                            {{managers[neighb.value.managerId].name}}
                             <mat-divider></mat-divider>
-                            {{managers[item.value.managerId].email}}
+                            {{managers[neighb.value.managerId].email}}
                             <mat-divider></mat-divider>
-                            {{managers[item.value.managerId].phone}}
+                            {{managers[neighb.value.managerId].phone}}
                         </div> -->
                         
                         <!-- <mat-form-field>
@@ -71,8 +71,8 @@
                             <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Mia" #input>
                         </mat-form-field> -->
                         
-                        <button mat-button (click)="openDialog('Add',{})" mat-flat-button color="primary">Add
-                            Row</button>
+                        <button mat-button (click)="openDialog('Add', undefined, undefined, neighb)" mat-flat-button color="primary">
+                            Add Row</button>
 
                         <mat-table class="lessons-table mat-elevation-z8" [dataSource]="projectsToDisplay" matSort>
 
@@ -105,8 +105,8 @@
                             <ng-container matColumnDef="action">
                                 <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
                                 <mat-cell *matCellDef="let element" class="action-link">
-                                    <a (click)="openDialog('Update',element)">Edit</a> &nbsp;|&nbsp;
-                                    <a (click)="openDialog('Delete',element)">Delete</a>
+                                    <!-- <a (click)="openDialog('Update',element)">Edit</a> &nbsp;|&nbsp;
+                                    <a (click)="openDialog('Delete',element)">Delete</a> -->
                                 </mat-cell>
                             </ng-container>
 

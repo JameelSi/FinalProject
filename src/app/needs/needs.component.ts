@@ -71,13 +71,13 @@ export class NeedsComponent implements OnInit,OnDestroy {
   }
 
   addDialog(action: 'Update' | 'Delete' | 'Add', element: any,type:'doc'|'collection'): void {
-      if(action==='Add' &&type=='collection')
+      if(action==='Add' && type=='collection')
         element.dialogTitle='שם של הצורך שברצונך להוסיף?'
-      else if(action==='Delete' &&type=='collection')
+      else if(action==='Delete' && type=='collection')
         element.dialogTitle='בטוח למחוק את הצורך וכל מעניו?'
-      else if(action==='Add' &&type=='doc')
+      else if(action==='Add' && type=='doc')
         element.dialogTitle='נא להקליד את תוכן המענה'
-      else if(action==='Update' &&type=='doc')
+      else if(action==='Delete' && type=='doc')
         element.dialogTitle='בטוח למחוק ?'
       else if(action==='Update')
         element.dialogTitle='מה הערך החדש?'
