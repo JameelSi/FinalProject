@@ -9,15 +9,14 @@ mat-toolbar {
   background: #4082D4;
   justify-content: center;
 }
-
+// side drawer
 mat-drawer {
   width: 30%;
   padding: 16px;
   height: 100%;
 }
 
-
-
+/*--------------------Content link style */
 a {
   text-decoration: none;
   font-size: 20px;
@@ -44,49 +43,17 @@ a {
     margin-bottom: 35%;
   }
 
-    .title{
-      padding-right: 30%;
-      font-weight: bold;
-      font-size: x-large;
-      margin: 10px;
-      margin-bottom: 30px;
-    }
-
-    h1{
-      font-weight: bold;
-      font-size: xx-large;
-    }
-    li{
-      margin-top: 10px;
-    }
-    h3{
-      font-weight: bold;
-    }
-    
-    p{
-        font-size: 30px;
-        font-weight: bolder;
-        flex: 1;
-    }
-    .serviceContentAdd{
-    height: 50px;
-    width: 50px;
-    background-color: lavender;
-    // border:none;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    background: linear-gradient(
-      142.53deg
-      ,#00a295,#26e8f4 98.75%),#3dcda7;
-      font-size: 40px;
-      float:left;
-      border-radius: 5px;
-      border-style: solid;
-      border-color: white;
-      border-radius: 100%;
-    }
-    .serviceContentAdd:hover{cursor: pointer;}
-
-    .add{
+  .contentTitle{
+    padding-right: 30%;
+    font-weight: bold;
+    font-size: x-large;
+    margin: 10px;
+    margin-bottom: 30px;
+  }
+  li{
+    margin-top: 10px;
+  }
+  .add{
     height: 100px;
     width: 100px;
     background-color: lavender;
@@ -97,74 +64,110 @@ a {
     margin:10px;
     font-size: 40px;
     }
-    .add:hover{
-    cursor: pointer;
-    }
-    .cards{
-    width: 90%;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    }
+    .add:hover{cursor: pointer;}
+  /*----------------------------- */
+  /*--------------Page content--------------- */
+    /*-------------- Service box --------------- */
+  .answersAdd{
+  height: 50px;
+  width: 50px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  background: linear-gradient(
+    142.53deg
+    ,#00a295,#26e8f4 98.75%),#3dcda7;
+    font-size: 40px;
+    float:left;
+    border-radius: 5px;
+    border-style: solid;
+    border-color: white;
+    border-radius: 100%;
+  }
+  .answersAdd:hover{cursor: pointer;}
 
-    .panelHeader{
-    height: 120px;
-    background-color: #00a295;
-    }
+  .serviceTitle{
+      font-size: 30px;
+      font-weight: bolder;
+      flex: 1;
+  }
+
+  .cards{
+  width: 90%;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  }
+
+  .panelHeader{
+  height: 120px;
+  background-color: #00a295;
+  }
+  .panelBox{
+    display: flex;
+    margin: 20px;
+  }
     
     mat-panel-description{
     flex:1;
     }
 
-    .answers{
+    .answersContentBox{
     display: flex;
     justify-content: space-around;
     flex-wrap: wrap;
     }
 
     .answersBox{
-      overflow-wrap: break-word;
-      // word-break: break-all;
       margin: 10px;
-      width: 25%;
-      padding: 10px;
+      // width: 25%;
+      display: flex;
+      flex-wrap: nowrap;
+    }
+    .answersContent{
+      overflow-wrap: break-word;
+      word-break: break-all;
       background: linear-gradient(
         142.53deg
         ,#00a295,#26e8f4 98.75%),#3dcda7;
-        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-        border-radius: 20px;
-        border-width: 1px;
+      padding: 10px;
+      box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+      border-radius: 20px;
+      border-width: 1px;
     }
+    
+    .icons{
+      display: flex;
+      flex-direction: column;      
+      justify-content: center;
+    }
+    .answersDelete{
+      margin-top:10%;
+      color: red;
+    }
+    mat-icon{margin:10px;}
+    mat-icon:hover{cursor: pointer;}
+    .delete{color: red;}
 
     .bot{
       width: 20%;
       height: 15%;
       background-color:#00a295 ;
-      // float: left;
       position: fixed;
       bottom: 0;
       left: 0;
       font-weight: bold;
       font-size: 20px;
       padding-top: 20px;
-      // margin: 20px;
       text-align: center;
       word-wrap: break-word;
+    }
 
+    .first{
+      background: linear-gradient(to right,142.53deg,#1D2B64,#F8CDDA 98.75%),#3dcda7;
     }
-    .icons{
-      display: flex;
-      flex-direction: column;
-      // margin-top: 10%;
-      // display: inline;
-      justify-content: center;
+    .second{
+      background: linear-gradient(142.53deg,#c471ed,#f64f59 98.75%),#3dcda7;
     }
-    mat-icon{
-      margin:10px;
+    .third{
+      background: linear-gradient(142.53deg,#b92b27,#f64f59 98.75%),#3dcda7;
     }
-    mat-icon:hover{cursor: pointer;}
-    .delete{
-      color: red;
-    }
-    .panelBox{
-      display: flex;
-      margin: 20px;
+    .fourth{
+      background: linear-gradient(142.53deg,#c31432,#240b36 98.75%),#3dcda7;
     }

@@ -5,7 +5,7 @@
     <mat-drawer-container>
   
         <mat-drawer   mode="side" class=mat-elevation-z8 position="end" >        
-            <h2 class="title">תוכן צרכים</h2>
+            <h2 class="contentTitle">תוכן צרכים</h2>
           <ol class="listOfContents">
              <li *ngFor="let item of items  | async let i=index"><a href="{{'#item'+i}}" >{{item.title}}</a></li>
           </ol>
@@ -22,17 +22,23 @@
           <mat-expansion-panel  class="cards" (opened)="panelOpenState = true" (closed)="panelOpenState = false">
             <mat-expansion-panel-header class="panelHeader">
               <mat-panel-title>
-                <p>{{item.title}}</p>
+                <p class="serviceTitle">{{item.title}}</p>
               </mat-panel-title>
                 <mat-panel-description>
                  לחץ עליי להצגת מענים!
                 </mat-panel-description>
                 
             </mat-expansion-panel-header>
-            <div class="answers">
-              <div *ngFor="let content of item.content" class="answersBox">{{content}}</div>
+            <div class="answersContentBox">
+              <div *ngFor="let content of item.content; index as i" class="answersBox" >
+                <mat-icon class="answersDelete" (click)="addDialog('Delete',item,'doc',content)">do_not_disturb_on</mat-icon>
+                <div class="answersContent" [ngClass]="{ 'first': i%4===0,'second' : i%4===1,'third':i%4===2,'fourth':i%4==3}">
+                  {{content}}
+                  <mat-icon class="sss" (click)="addDialog('Update',item,'doc',content)">edit</mat-icon>
+                </div>
+              </div>
             </div>
-            <button class="serviceContentAdd" height="50px" width="50px" (click)="addDialog('Add',item,'doc')" >+</button>
+            <button class="answersAdd" height="50px" width="50px" (click)="addDialog('Add',item,'doc')" >+</button>
             
     
           </mat-expansion-panel>
