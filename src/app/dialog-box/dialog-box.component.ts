@@ -1,11 +1,16 @@
 import { Component, Inject, OnInit, Optional } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from '@angular/fire/firestore';
+import { MatChipSelectionChange } from '@angular/material/chips';
+import { FormControl } from '@angular/forms';
+import * as moment from 'moment';
+// import { firestore } from 'firebase/app';
 
 interface project {
-  projectType: string,
+  projectType: any,
   comments: string,
-  date: Date,
-  clubCoordinatorId: string
+  date: any,
+  clubCoordinatorId: any
 }
 
 @Component({
@@ -16,27 +21,53 @@ interface project {
 
 
 export class DialogBoxComponent implements OnInit {
-  dialogTitle:string;
-  action:string;
-  local_data:any;
 
-  constructor( public dialogRef: MatDialogRef<DialogBoxComponent>,
+  // date?: Date;
+
+  dialogTitle: string;
+  action: string;
+  local_data: any;
+  newProj?: project
+  type: 'project' | 'needs'
+  actionHebrew: { [key: string]: string } = { "Add": 'הוסף', "Update": 'עדכן', "Delete": 'מחק' }
+
+  constructor(public dialogRef: MatDialogRef<DialogBoxComponent>, private afs: AngularFirestore,
     //@Optional() is used to prevent error if no data is passed
-    @Optional() @Inject(MAT_DIALOG_DATA) public data: project) {
-    this.local_data = {...data};
+    @Optional() @Inject(MAT_DIALOG_DATA) public data: any) {
+    this.local_data = { ...data };
+    this.type = data.type
     this.action = this.local_data.action;
-    this.dialogTitle=this.local_data.dialogTitle;
-    console.log(this.local_data)
+    if (this.action === 'Update' && this.type == "project") {
+      this.newProj = {
+        date:  moment(this.local_data.date.toDate()),
+        projectType: this.local_data.projectType,
+        comments: this.local_data.comments,
+        clubCoordinatorId: this.local_data.clubCoordinatorId
+      }
+    } else if (this.type == "project") {
+      this.newProj = { projectType: '', comments: '', date: moment(), clubCoordinatorId: '' }
+    }
+    this.dialogTitle = this.local_data.dialogTitle;
+    // console.log(this.local_data)
   }
 
-  doAction(){
-    this.dialogRef.close({event:this.action,data:this.local_data});
+  doAction() {
+    this.dialogRef.close({
+      event: this.action, data: this.local_data,
+      newProj: { ...this.newProj, 
+        comments: this.newProj?.comments.length == 0 ? "אין" : this.newProj?.comments, 
+        date: this.newProj?.date.toDate() }
+    });
   }
 
-  closeDialog(){
-    this.dialogRef.close({event:'Cancel'});
+  closeDialog() {
+    this.dialogRef.close({ event: 'Cancel' });
   }
-  
+
+  chipSelectionChanged(clubCoordId: string) {
+    if (this.newProj)
+      this.newProj.clubCoordinatorId = clubCoordId.trim()
+  }
 
   ngOnInit(): void {
   }

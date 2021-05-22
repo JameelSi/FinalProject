@@ -54,27 +54,16 @@ export class NeedsComponent implements OnInit,OnDestroy {
   });
   }
 
-<<<<<<< HEAD
-  addDialog(action: 'Update' | 'Delete' | 'Add', element: any,type:'doc'|'collection'): void {
-      if(action==='Add' && type=='collection')
-=======
   addDialog(action: 'Update' | 'Delete' | 'Add', element: any,type:'doc'|'collection',answerContent?:string): void {
       
       if(action==='Add' &&type=='collection')
->>>>>>> 7e14cb7446d68370ce334accf5edf62e82b90cb1
         element.dialogTitle='שם של הצורך שברצונך להוסיף?'
       else if(action==='Delete' && type=='collection')
         element.dialogTitle='בטוח למחוק את הצורך וכל מעניו?'
-<<<<<<< HEAD
-      else if(action==='Add' && type=='doc')
-        element.dialogTitle='נא להקליד את תוכן המענה'
-      else if(action==='Delete' && type=='doc')
-=======
 
       else if(action==='Add' &&type=='doc')
         element.dialogTitle='נא להקליד את תוכן המענה'
       else if(action==='Delete' &&type=='doc')
->>>>>>> 7e14cb7446d68370ce334accf5edf62e82b90cb1
         element.dialogTitle='בטוח למחוק ?'
       else if(action==='Update')
         element.dialogTitle='מה הערך החדש?'

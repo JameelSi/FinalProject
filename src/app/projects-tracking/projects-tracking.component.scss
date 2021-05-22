@@ -1,47 +1,32 @@
-// mat-toolbar {
-//     background: #004a9f;
-//     color: white;
-// }
+mat-toolbar {
+    background: #3F51B5;
+    color: white;
+}
+
+// $drawer-bkg-color: #F4F7FA;
+$drawer-bkg-color: #FAFAFA; //default
+$mngr-dtls-bkg-color: #a3a5a7;
 
 .spacer {
     flex: 1 1 auto;
+}
+
+mat-divider {
+    margin-top: 16px;
+    margin-bottom: 16px;
+    background-color: rgba(255, 255, 255, 0.5);
 }
 
 mat-drawer {
     // margin: 16px;
     width: 200px;
     border-right: none;
-    // background: #002b5c;
+    background: $drawer-bkg-color;
     // color: white;
     border-radius: 10px;
     // padding: 16px;
     text-align: center;
 }
-
-.content {
-    // height: calc(100vh - 33px);
-    height: calc(100vh - 146px);
-    border-radius: 10px;
-    margin: 16px;
-    margin-left: 32px;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    font-size: 2rem;
-    color: lightgray;
-}
-
-mat-drawer-container {
-    // height: 100%;
-    height: calc(100vh - 65px);
-}
-
-// .menu-button {
-//     // font-size: 1rem;
-//     background: #4070a7;
-// }
 
 .exp-title{
     justify-content: flex-end;
@@ -53,12 +38,58 @@ mat-drawer-container {
 }
 
 
-mat-divider {
-    margin-top: 16px;
-    margin-bottom: 16px;
-    background-color: rgba(255, 255, 255, 0.5);
+.mat-expansion-panel{
+    background: $drawer-bkg-color;
+}
+.mat-expansion-panel.mat-expanded,
+.mat-expansion-panel.mat-expanded:focus,
+.mat-expansion-panel.mat-expanded:hover {
+    background: white;
+}
+
+
+mat-drawer-container {
+    // height: 100%;
+    height: calc(100vh - 65px);
+}
+
+.menu-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.neighbs-menu-btn {
+    width: 20%;
+    height: 70px;
+    margin: 20px;
+    // display: flex;
+    // flex-direction: row-reverse;
+    // justify-content: space-evenly;
+    // align-items: center;
+}
+
+.neighb-name {
+    font-size: x-large;
+    font-weight: bolder;
+    margin-right: 10px;
+}
+
+.mngr-details-container{
+    text-align: right;
+    background-color: $mngr-dtls-bkg-color;
+    margin: 10px;
 }
 
 .mngr-details{
-    text-align: right;
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-around;
 }
+
+.mat-form-field {
+    font-size: 14px;
+    margin: 10px;
+    width: calc(100% - 128px);
+}
+

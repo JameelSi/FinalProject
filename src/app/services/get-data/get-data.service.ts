@@ -66,7 +66,7 @@ export class GetDataService {
     allNeighborhoods = neighbsRef.valueChanges({idField: 'id'})
     managers = managersRef.valueChanges({idField: 'id'})
     clubCoords = clubCoordsRef.valueChanges({idField: 'id'})
-    console.log(areaCoords, allNeighborhoods, managers, clubCoords)
+    // console.log(areaCoords, allNeighborhoods, managers, clubCoords)
     return [areaCoords, allNeighborhoods, managers, clubCoords]
 
   }

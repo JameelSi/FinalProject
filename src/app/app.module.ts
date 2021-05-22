@@ -26,11 +26,15 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { DialogBoxComponent } from './dialog-box/dialog-box.component';
 import { FormsModule } from '@angular/forms';
 import { NeedsComponent } from './needs/needs.component';
-import {MatSnackBarModule} from '@angular/material/snack-bar';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatMomentDateModule } from '@angular/material-moment-adapter';
 
-// import { MatCardModule } from '@angular/material/card';
-// import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-
+import { MatCardModule } from '@angular/material/card';
+import { MatSpinner, MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { OverlayModule } from '@angular/cdk/overlay'
 
 @NgModule({
   declarations: [
@@ -59,10 +63,17 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
     MatDialogModule,
     MatFormFieldModule,
     FormsModule,
-    MatSnackBarModule
-    // MatProgressSpinnerModule,
+    MatSnackBarModule,
+    MatDatepickerModule,
+    MatMomentDateModule,
+    MatCardModule,
+    MatProgressSpinnerModule,
+    OverlayModule,
+    MatChipsModule,
+    MatMenuModule,
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [ MatSpinner ]
 })
 export class AppModule { }

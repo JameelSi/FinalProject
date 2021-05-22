@@ -1,5 +1,5 @@
 import { BreakpointObserver } from '@angular/cdk/layout';
-import { Component, ComponentFactoryResolver, OnDestroy, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { ChangeDetectorRef, Component, ComponentFactoryResolver, NgZone, OnDestroy, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from '@angular/fire/firestore';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
@@ -7,10 +7,15 @@ import { MatDrawer } from '@angular/material/sidenav';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatTabChangeEvent } from '@angular/material/tabs';
-import { combineLatest, Subscription } from 'rxjs';
+import { BehaviorSubject, combineLatest, Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { DialogBoxComponent } from '../dialog-box/dialog-box.component';
 import { GetDataService } from '../services/get-data/get-data.service';
+import { ProgressSpinnerOverlayService } from '../services/progressSpinerOverlay/progress-spinner-overlay.service';
+
+import firebase from 'firebase/app';
+import { element } from 'protractor';
+import { Console } from 'node:console';
 
 interface areaCoord {
   id: string,
@@ -25,6 +30,7 @@ interface neighborhood {
   currentValue: boolean,
   managerId: string,
   projects: project[],
+  managerInfo?: manager
 }
 
 interface project {
@@ -32,7 +38,7 @@ interface project {
   comments: string,
   date: Date,
   clubCoordinatorId: string,
-  clubInfo?: object,
+  clubInfo?: clubCoord,
 }
 
 interface manager {
@@ -68,20 +74,23 @@ export class ProjectsTrackingComponent implements OnInit, OnDestroy {
   areaCoords: areaCoord[] = []
   clubCoords: clubCoord[] = []
   allNeighborhoods: neighborhood[] = []
+  testEmitter$ = new BehaviorSubject<neighborhood[]>(this.allNeighborhoods);
   currNeighborhoods!: neighborhood[]
   managers: manager[] = []
   displayedColumns: string[] = ['date', 'clubCoordinatorId', 'projectType', 'comments', 'action']
   projectsToDisplay!: MatTableDataSource<project>
   defaultSelectedTab: number = -1
   currAreaCoord?: areaCoord
+  currNeighborhood?: neighborhood //without tabs
+  spin: boolean = false;
 
   private paginator!: MatPaginator;
   private sort!: MatSort;
 
   private subs = new Subscription();
 
-  constructor(private observer: BreakpointObserver, public dialog: MatDialog,
-    private dataProvider: GetDataService, private afs: AngularFirestore) { }
+  constructor(private crf: ChangeDetectorRef, private observer: BreakpointObserver, public dialog: MatDialog,
+    private dataProvider: GetDataService, private afs: AngularFirestore, private progressSpinner: ProgressSpinnerOverlayService) { }
 
   ngOnDestroy(): void {
     this.subs.unsubscribe();
@@ -131,6 +140,7 @@ export class ProjectsTrackingComponent implements OnInit, OnDestroy {
       this.managers = managers;
       this.clubCoords = clubCoords;
       this.allNeighborhoods.forEach(neighb => {
+        neighb.managerInfo = this.managers.find(i => i.id.trim() == neighb.managerId.trim())
         neighb.projects.forEach(proj => {
           proj.clubInfo = this.clubCoords.find(i => i.id.trim() == proj.clubCoordinatorId.trim())
         })
@@ -138,14 +148,17 @@ export class ProjectsTrackingComponent implements OnInit, OnDestroy {
       if (!this.currNeighborhoods) {
         this.currNeighborhoods = this.allNeighborhoods
         this.currNeighborhoods.sort()
-
       }
-      if (!this.projectsToDisplay) {
+      if(this.projectsToDisplay && this.currNeighborhood){
+        this.currNeighborhood = this.allNeighborhoods.find(element=> element.id == this.currNeighborhood?.id)
+        this.projectsToDisplay.data = this.currNeighborhood?.projects ?? []
+      } else {
+        this.currNeighborhood = this.currNeighborhoods[0]
         this.projectsToDisplay = new MatTableDataSource(this.currNeighborhoods?.[0]?.projects);
       }
-      if (this.defaultSelectedTab == -1) {
-        this.defaultSelectedTab = this.currNeighborhoods.length - 1;
-      }
+      // if (this.defaultSelectedTab == -1) {
+      //   this.defaultSelectedTab = this.currNeighborhoods.length - 1;
+      // }
       this.updateDatasourceProperties();
     }));
   }
@@ -176,234 +189,111 @@ export class ProjectsTrackingComponent implements OnInit, OnDestroy {
     }
     this.currNeighborhoods.sort()
     this.defaultSelectedTab = this.currNeighborhoods.length - 1
+    this.setProjects(this.currNeighborhoods[0].id)
   }
 
-  setProjects($event: MatTabChangeEvent) {
+  setProjects(id: string) {
+    // console.log('event', $event)
     // this.defaultSelectedTab = $event.index;
-    let tmp = this.currNeighborhoods.find(i => i.id === $event.tab.textLabel)
-    this.projectsToDisplay = new MatTableDataSource(tmp?.projects ?? []);
+    // let tmp = this.currNeighborhoods.find(i => i.id === id)
+    // this.projectsToDisplay = new MatTableDataSource(tmp?.projects ?? []);
+    this.currNeighborhood = this.currNeighborhoods.find(i => i.id === id)
+    this.projectsToDisplay = new MatTableDataSource(this.currNeighborhood?.projects ?? []);
     this.updateDatasourceProperties();
   }
 
-  openDialog(action: 'Update' | 'Delete' | 'Add', element: any = {}, collec: string = 'ירושלים', doc: any = undefined) {
-    if (action === 'Delete' && collec)
-      element.dialogTitle = 'בטוח למחוק את השכונה וכל נתוניה?'
-    else if (action === 'Add' && collec && doc)
+  openDialog(action: 'Update' | 'Delete' | 'Add', element: any, collec: string = 'ירושלים', doc: string | undefined,
+    type: 'neighb' | 'project') {
+    // if (action === 'Delete' && type == 'neighb') {
+    //   element.dialogTitle = 'בטוח למחוק את השכונה וכל נתוניה?'
+    // }
+    // // when neighborhod is not specified, the button is add new neighborhood 
+    // else if (action === 'Add' && type == 'neighb') {
+    //   element.dialogTitle = 'הוספת שכונה חדשה לרכז/ת'
+    // }
+    // else 
+    if (action === 'Add' && type == 'project') {
       element.dialogTitle = 'נא להכניס את הנתונים החדשים'
-    // when neighborhod is not specified, the button is add new neighborhood 
-    else if (action === 'Add')
-      element.dialogTitle = 'הוספת שכונה חדשה לרכז/ת'
-    else if (action === 'Delete' && collec && doc)
-      element.dialogTitle = 'בטוח למחוק את השורה ?'
-    else if (action === 'Update')
+      element.type = 'project'
+    }
+    else if (action === 'Delete' && type == 'project') {
+      element.dialogTitle = 'בטוח למחוק את השורה?'
+    }
+    else if (action === 'Update' && type == 'project') {
       element.dialogTitle = 'מה הערכים החדשים?'
-
-    console.log(element, collec, doc, this.currAreaCoord)
-
+      element.type = 'project'
+    }
+    element.clubs = this.clubCoords
+    // console.log(element, collec, this.currAreaCoord)
     element.action = action;
     const dialogRef = this.dialog.open(DialogBoxComponent, {
-      width: '25%',
+      width: '35%',
+      // height: '70%',
       direction: 'rtl',
       data: element,
     });
-    // if(collec){let neighbsCollecRef: AngularFirestoreCollection = this.afs.collection(`${collec}`)}
-    // if(collec && doc){let neighbDocRef: AngularFirestoreDocument<neighborhood> = this.afs.collection(`${collec}`).doc(`${doc}`)}
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        console.log('result:', result)
-        if (result.event == 'Add' && collec) {
-          // this.afs.collection('Services').add({ title: result.data.name, content: [] })
-        } else if (result.event == 'Delete' && collec) {
-          // this.afs.collection('Services').doc(result.data.id).delete()
-        } else if (result.event == 'Update' && collec) {
-          // this.afs.doc(`Services/${result.data.id}`).update({ title: result.data.name })
-        }
 
-        else if (result.event == 'Add' && doc) {
-          result.data.content.push(result.data.name)
-          this.afs.doc(`Services/${result.data.id}`).update({ content: result.data.content })
-        } else if (result.event == 'Delete' && doc) {
-          console.log(result.data.name)
-        } else if (result.event == 'Update' && doc) {
-          console.log(result.data.id)
+    dialogRef.afterClosed().subscribe(result => {
+      if (result && result.event != 'Cancel') {
+        this.progressSpinner.show()
+        let updateDocRef = doc ? this.afs.collection(collec).doc(doc) : undefined
+        // if (result.event == 'Add' && type == 'neighb') {
+        //   // this.afs.collection('Services').doc(result.data.id).add({...})
+        // } else if (result.event == 'Delete' && type == 'neighb') {
+        //   // this.afs.collection('Services').doc(result.data.id).delete()
+        // } else if (result.event == 'Update' && type == 'neighb') {
+        //   // this.afs.doc(`Services/${result.data.id}`).update({ title: result.data.name })
+        // }
+        // else
+        if (result.event == 'Add' && type == 'project') {
+          if (updateDocRef)
+            this.addProject(updateDocRef, result.newProj).then(() => this.progressSpinner.hide())
+        } else if (result.event == 'Delete' && type == 'project') {
+          if (updateDocRef)
+            this.deleteProject(updateDocRef, {
+              date: result.data.date, projectType: result.data.projectType,
+              comments: result.data.comments,
+              clubCoordinatorId: result.data.clubCoordinatorId
+            }).then(() => this.progressSpinner.hide())
+        } else if (result.event == 'Update' && type == 'project') {
+          if (updateDocRef)
+            this.editProject(updateDocRef, {
+              date: result.data.date, projectType: result.data.projectType,
+              comments: result.data.comments,
+              clubCoordinatorId: result.data.clubCoordinatorId
+            }, result.newProj).then(() => this.progressSpinner.hide())
         }
       }
+      // this.progressSpinner.reset()
     });
-
   }
 
-  addRowData(row_obj: project) {
-
-
+  async addProject(updateDocRef: AngularFirestoreDocument<any>, obj: project) {
+    await updateDocRef.update({
+      projects: firebase.firestore.FieldValue.arrayUnion(obj)
+    });
   }
-  updateRowData(row_obj: project) {
 
+  async editProject(updateDocRef: AngularFirestoreDocument<any>, prevObj: project, newObj: project) {
+    // this.deleteProject(updateDocRef, prevObj)
+    // this.addProject(updateDocRef, newObj)
+    await updateDocRef.update({
+      projects: firebase.firestore.FieldValue.arrayRemove(prevObj)
+    })
+    await updateDocRef.update({
+      projects: firebase.firestore.FieldValue.arrayUnion(newObj)
+    });
   }
-  deleteRowData(row_obj: project) {
 
+  async deleteProject(updateDocRef: AngularFirestoreDocument<any>, obj: project) {
+    await updateDocRef.update({
+      projects: firebase.firestore.FieldValue.arrayRemove(obj)
+    });
+  }
+
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.projectsToDisplay.filter = filterValue.trim().toLowerCase();
   }
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    // this.areaCoords = {
-    //   'גיתית': { name: 'גיתית', id:'', email: 'a@b.c', phone: '0905463894', neighborhoods: ['bet hanina', 'place2'] },
-    //   'אתי': { name: 'אתי', id:'', email: 'm@e.h', phone: '0905463894', neighborhoods: ['hell', 'pisgat zeev', 'place100'] },
-    //   'מישהו': { name: 'מישהו', id:'', email: 'g@t.p', phone: '0905463894', neighborhoods: ['neve yaakov'] }
-    // }
-
-    // this.areaCoords = {
-    //   'H9hECpjRtCxE7AlXovnH': {
-    //     email: "r@w.p",
-    //     id: "H9hECpjRtCxE7AlXovnH",
-    //     name: "גיתית",
-    //     neighborhoods: ["נווה יעקב", "בית חנינה"],
-    //     phone: "0607512387"
-    //   },
-    //   'vQI1t5Fz6E8YrYuECWHt': {
-    //     email: "v@t.l",
-    //     id: "vQI1t5Fz6E8YrYuECWHt",
-    //     name: "אתי",
-    //     neighborhoods: ["פסגת זאב"],
-    //     phone: "0908764356"
-    //   }
-    // }
-
-    // const project1: project = { clubCoordinatorId: '0', comments: 'jhgd', date: new Date, projectType: 'type 1' }
-    // const project2: project = { clubCoordinatorId: '1', comments: 'gfhdrrag', date: new Date, projectType: 'type 2' }
-    // const project3: project = { clubCoordinatorId: '2', comments: 'wetf', date: new Date, projectType: 'type 1' }
-    // const project4: project = { clubCoordinatorId: '3', comments: 'u7776789', date: new Date, projectType: 'type 2' }
-
-    // this.allNeighborhoods = {
-    //   'bet hanina': { id: 'bet hanina', managerId: '0', currentValue: false, projects: [project1, project2] },
-    //   'place2': { id: 'place2', managerId: '1', currentValue: false, projects: [project1] },
-    //   'hell': { id: 'hell', managerId: '2', currentValue: false, projects: [project3] },
-    //   'pisgat zeev': { id: 'pisgat zeev', managerId: '0', currentValue: false, projects: [project3, project4] },
-    //   'place100': { id: 'place100', managerId: '1', currentValue: false, projects: [project4, project2] },
-    //   'neve yaakov': { id: 'neve yaakov', managerId: '2', currentValue: false, projects: [project1, project4] },
-    // }
-    // this.allNeighborhoods = {
-    //   'בית חנינה': {
-    //     currentValue: false,
-    //     id: "בית חנינה",
-    //     managerId: "gA6zdmUMlN51NpfyOdhN",
-    //     projects: [{
-    //       clubCoordinatorId: "0",
-    //       comments: "fgbdr",
-    //       date: new Date,
-    //       projectType: ""
-    //     }]
-    //   },
-    //   'נווה יעקב': {
-    //     currentValue: false,
-    //     id: "נווה יעקב",
-    //     managerId: "Pt8euDiFKZEMBMbAt9uU",
-    //     projects: [{
-    //       clubCoordinatorId: "dsivTEXYmjbfmeEznSjc",
-    //       comments: "papapa parapa papa",
-    //       date: new Date,
-    //       projectType: "type 1"
-    //     },
-    //     {
-    //       clubCoordinatorId: "onx9hE1J2p1aRsBssV5c",
-    //       comments: "k",
-    //       date: new Date,
-    //       projectType: ""
-    //     }]
-    //   },
-    //   'פסגת זאב': {
-    //     currentValue: false,
-    //     id: "פסגת זאב",
-    //     managerId: "Pt8euDiFKZEMBMbAt9uU",
-    //     projects: [{
-    //       clubCoordinatorId: "onx9hE1J2p1aRsBssV5c",
-    //       comments: "gdsygsd",
-    //       date: new Date,
-    //       projectType: "some type"
-    //     }],
-    //   }
-    // }
-
-
-    // this.managers = {
-    //   '0': { name: 'aa', id:'', email: 'a@a.c', phone: '1234', neighborhoods: [] },
-    //   '1': { name: 'bb', id:'', email: 'b@b.b', phone: '5678', neighborhoods: [] },
-    //   '2': { name: 'cc', id:'', email: 'c@c.c', phone: '9101', neighborhoods: [] },
-    // }
-    // this.managers = {
-    //   'Pt8euDiFKZEMBMbAt9uU': {
-    //     email: "a@b.c",
-    //     id: "Pt8euDiFKZEMBMbAt9uU",
-    //     name: "אטיאס שרה",
-    //     neighborhoods: ["נווה יעקב"],
-    //     phone: "0505356476"
-    //   },
-    //   'gA6zdmUMlN51NpfyOdhN': {
-    //     email: "d@r.b",
-    //     id: "gA6zdmUMlN51NpfyOdhN",
-    //     name: "manager",
-    //     neighborhoods: ["בית חנינה"],
-    //     phone: "0243876453"
-    //   }
-    // }
-
-    // this.clubCoords = {
-    //   "dsivTEXYmjbfmeEznSjc": {
-    //     address: "שדרות נווה יעקב 38",
-    //     club: "וותיקים",
-    //     id: "dsivTEXYmjbfmeEznSjc",
-    //     name: "אילנה נבון",
-    //     // neighborhood: 1,
-    //     phone: "057826854"
-    //   },
-    //   "onx9hE1J2p1aRsBssV5c": {
-    //     address: "vatican 1",
-    //     club: "a club",
-    //     id: "onx9hE1J2p1aRsBssV5c",
-    //     name: "amani",
-    //     // neighborhood: 2,
-    //     phone: "5609823546"
-    //   }
-    // }
