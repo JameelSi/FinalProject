@@ -46,30 +46,33 @@ export interface clubCoord {
 })
 export class GetDataService {
 
-  constructor(private store: AngularFirestore) { 
+  areaCoordsRef: AngularFirestoreCollection<areaCoord>
+  neighbsRef: AngularFirestoreCollection<neighborhood>
+  managersRef: AngularFirestoreCollection<manager>
+  clubCoordsRef: AngularFirestoreCollection<clubCoord>
 
+  constructor(private store: AngularFirestore) {
+    this.areaCoordsRef = this.store.collection("AreaCoordinators")
+    this.neighbsRef = this.store.collection("ירושלים")
+    this.managersRef = this.store.collection("Managers")
+    this.clubCoordsRef = this.store.collection("ClubCoordinators")
   }
 
-  getData(): [Observable<areaCoord[]>, Observable<neighborhood[]>, Observable<manager[]>, Observable<clubCoord[]>] {
-    
-    const areaCoordsRef: AngularFirestoreCollection<areaCoord> = this.store.collection("AreaCoordinators")
-    const neighbsRef: AngularFirestoreCollection<neighborhood> = this.store.collection("ירושלים")
-    const managersRef: AngularFirestoreCollection<manager> = this.store.collection("Managers")
-    const clubCoordsRef: AngularFirestoreCollection<clubCoord> = this.store.collection("ClubCoordinators") 
+  // get data for projects tracking page
+  getProjectTrackingData(): [Observable<areaCoord[]>, Observable<neighborhood[]>, Observable<manager[]>, Observable<clubCoord[]>] {
 
     let areaCoords: Observable<areaCoord[]>
     let allNeighborhoods: Observable<neighborhood[]>
     let managers: Observable<manager[]>
     let clubCoords: Observable<clubCoord[]>
 
-    areaCoords = areaCoordsRef.valueChanges({idField: 'id'})
-    allNeighborhoods = neighbsRef.valueChanges({idField: 'id'})
-    managers = managersRef.valueChanges({idField: 'id'})
-    clubCoords = clubCoordsRef.valueChanges({idField: 'id'})
-    // console.log(areaCoords, allNeighborhoods, managers, clubCoords)
+    areaCoords = this.areaCoordsRef.valueChanges({ idField: 'id' })
+    allNeighborhoods = this.neighbsRef.valueChanges({ idField: 'id' })
+    managers = this.managersRef.valueChanges({ idField: 'id' })
+    clubCoords = this.clubCoordsRef.valueChanges({ idField: 'id' })
     return [areaCoords, allNeighborhoods, managers, clubCoords]
 
   }
 
-  
+
 }

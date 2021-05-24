@@ -3,10 +3,13 @@ mat-toolbar {
     color: white;
 }
 
-// $drawer-bkg-color: #F4F7FA;
-$drawer-bkg-color: #FAFAFA; //default
+// $drawer-bkg-color: #F4F7FA; #FAFAFA
+$drawer-bkg-color: #f3f7fA; //default
 $mngr-dtls-bkg-color: #a3a5a7;
 
+.menu-header{
+    display: flex;
+}
 .spacer {
     flex: 1 1 auto;
 }
@@ -60,7 +63,7 @@ mat-drawer-container {
 }
 
 .neighbs-menu-btn {
-    width: 20%;
+    min-width: 20%;
     height: 70px;
     margin: 20px;
     // display: flex;
@@ -70,9 +73,9 @@ mat-drawer-container {
 }
 
 .neighb-name {
-    font-size: x-large;
+    font-size: xx-large;
     font-weight: bolder;
-    margin-right: 10px;
+    margin: 30px;
 }
 
 .mngr-details-container{
@@ -92,4 +95,10 @@ mat-drawer-container {
     margin: 10px;
     width: calc(100% - 128px);
 }
+.menu-button{
+    border-left-color: white;
+}
 
+.tableBtn{
+    margin: 5px 0 5px 5px;
+}

@@ -1,0 +1,38 @@
+import { CdkScrollable, ScrollDispatcher } from '@angular/cdk/scrolling';
+import { Component, NgZone, OnInit } from '@angular/core';
+
+@Component({
+  selector: 'app-toolbar',
+  templateUrl: './toolbar.component.html',
+  styleUrls: ['./toolbar.component.scss']
+})
+export class ToolbarComponent implements OnInit {
+
+  isOnTop = true;
+  
+  constructor(
+    private scrollDispatcher: ScrollDispatcher,
+    private zone: NgZone
+  ) {}
+
+  ngOnInit(): void {
+    // this.scrollDispatcher.scrolled().subscribe((event: any) => {
+    //   const scroll = event.measureScrollOffset("top");
+    //   let newIsOnTop = this.isOnTop;
+
+    //   if (scroll > 0) {
+    //     newIsOnTop = false
+    //   } else {
+    //     newIsOnTop = true;
+    //   }
+
+    //   if (newIsOnTop !== this.isOnTop) {
+    //     this.zone.run(() => {
+    //       this.isOnTop = newIsOnTop;
+    //     });
+    //   }
+    // });
+  }
+
+
+}

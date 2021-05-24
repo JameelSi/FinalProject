@@ -1,0 +1,20 @@
+.spacer {
+    flex: 1 1 auto;
+}
+// mat-toolbar {
+//     background-color: transparent;
+// }
+.scroll-wrapper {
+    overflow: auto;
+    max-height: 500px;
+}
+  
+.sticky-toolbar {
+    position: sticky;
+    top: 0px;
+}
+  
+.opaque {
+    background-color: transparent;
+    color: black;
+}

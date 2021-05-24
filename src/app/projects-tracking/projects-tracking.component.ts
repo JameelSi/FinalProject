@@ -14,8 +14,8 @@ import { GetDataService } from '../services/get-data/get-data.service';
 import { ProgressSpinnerOverlayService } from '../services/progressSpinerOverlay/progress-spinner-overlay.service';
 
 import firebase from 'firebase/app';
-import { element } from 'protractor';
-import { Console } from 'node:console';
+import {MenuItem} from 'primeng/api';
+
 
 interface areaCoord {
   id: string,
@@ -117,7 +117,6 @@ export class ProjectsTrackingComponent implements OnInit, OnDestroy {
       ]).pipe(
         filter(([p, s]) => p.length === 1 && s.length === 1)
       ).subscribe(([p, s]) => {
-        // console.log('updating')
         this.paginator = p.first;
         this.sort = s.first;
         this.updateDatasourceProperties();
@@ -134,7 +133,7 @@ export class ProjectsTrackingComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.subs.add(combineLatest(this.dataProvider.getData()).subscribe(([areaCoords, allNeighborhoods, managers, clubCoords]) => {
+    this.subs.add(combineLatest(this.dataProvider.getProjectTrackingData()).subscribe(([areaCoords, allNeighborhoods, managers, clubCoords]) => {
       this.areaCoords = areaCoords;
       this.allNeighborhoods = allNeighborhoods;
       this.managers = managers;
@@ -156,9 +155,10 @@ export class ProjectsTrackingComponent implements OnInit, OnDestroy {
         this.currNeighborhood = this.currNeighborhoods[0]
         this.projectsToDisplay = new MatTableDataSource(this.currNeighborhoods?.[0]?.projects);
       }
-      // if (this.defaultSelectedTab == -1) {
-      //   this.defaultSelectedTab = this.currNeighborhoods.length - 1;
-      // }
+      if (this.defaultSelectedTab == -1) {
+        // this.defaultSelectedTab = this.currNeighborhoods.length - 1;
+        this.defaultSelectedTab = 0
+      }
       this.updateDatasourceProperties();
     }));
   }
@@ -177,7 +177,7 @@ export class ProjectsTrackingComponent implements OnInit, OnDestroy {
   // filter data when getting from firestore according to user time, 
   // for admins get all, for area coords get their 8, so on... 
 
-  getData(areaCoord: areaCoord | 'all') {
+  getAreaCoordsData(areaCoord: areaCoord | 'all') {
     if (areaCoord === "all") {
       this.currAreaCoord = undefined
       this.currNeighborhoods = this.allNeighborhoods
@@ -188,12 +188,12 @@ export class ProjectsTrackingComponent implements OnInit, OnDestroy {
       this.currNeighborhoods = this.allNeighborhoods.filter(i => neighbs.includes(i.id))
     }
     this.currNeighborhoods.sort()
-    this.defaultSelectedTab = this.currNeighborhoods.length - 1
+    this.defaultSelectedTab = 0
+    // this.defaultSelectedTab = this.currNeighborhoods.length - 1
     this.setProjects(this.currNeighborhoods[0].id)
   }
 
   setProjects(id: string) {
-    // console.log('event', $event)
     // this.defaultSelectedTab = $event.index;
     // let tmp = this.currNeighborhoods.find(i => i.id === id)
     // this.projectsToDisplay = new MatTableDataSource(tmp?.projects ?? []);
@@ -224,7 +224,6 @@ export class ProjectsTrackingComponent implements OnInit, OnDestroy {
       element.type = 'project'
     }
     element.clubs = this.clubCoords
-    // console.log(element, collec, this.currAreaCoord)
     element.action = action;
     const dialogRef = this.dialog.open(DialogBoxComponent, {
       width: '35%',

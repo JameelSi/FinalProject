@@ -31,17 +31,23 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
-
 import { MatCardModule } from '@angular/material/card';
 import { MatSpinner, MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { OverlayModule } from '@angular/cdk/overlay'
+import { OverlayModule } from '@angular/cdk/overlay';
+
+import {TabMenuModule} from 'primeng/tabmenu';
+import { HomepageComponent } from './homepage/homepage.component';
+import { ToolbarComponent } from './toolbar/toolbar.component';
+import { ScrollDispatcher } from '@angular/cdk/scrolling';
 
 @NgModule({
   declarations: [
     AppComponent,
     ProjectsTrackingComponent,
     DialogBoxComponent,
-    NeedsComponent
+    NeedsComponent,
+    HomepageComponent,
+    ToolbarComponent
   ],
   imports: [
     BrowserModule,
@@ -71,8 +77,10 @@ import { OverlayModule } from '@angular/cdk/overlay'
     OverlayModule,
     MatChipsModule,
     MatMenuModule,
+    TabMenuModule,
+    // ScrollDispatchModule,
   ],
-  providers: [],
+  providers: [ScrollDispatcher],
   bootstrap: [AppComponent],
   entryComponents: [ MatSpinner ]
 })

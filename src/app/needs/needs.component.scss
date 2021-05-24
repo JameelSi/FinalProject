@@ -1,14 +1,18 @@
 // Because hebrew is right to left 
-*{ direction: rtl; color: black;}
+*{ 
+  // direction: rtl; 
+  color: black;
+}
   /* 1. Enable smooth scrolling */
 html {scroll-behavior: smooth;}
 
 mat-drawer-container {height: calc(100vh - 65px);}
 
-mat-toolbar {
-  background: #4082D4;
-  justify-content: center;
-}
+// mat-toolbar {
+//   background: #4082D4;
+//   justify-content: center;
+// }
+
 // side drawer
 mat-drawer {
   width: 30%;
@@ -171,3 +175,5 @@ a {
     .fourth{
       background: linear-gradient(142.53deg,#c31432,#240b36 98.75%),#3dcda7;
     }
+
+    
