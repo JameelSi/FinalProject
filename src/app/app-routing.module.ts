@@ -3,11 +3,13 @@ import { ExtraOptions, RouterModule, Routes } from '@angular/router';
 import { HomepageComponent } from './homepage/homepage.component';
 import { NeedsComponent } from './needs/needs.component';
 import { ProjectsTrackingComponent } from './projects-tracking/projects-tracking.component';
+import { SignupComponent } from './signup/signup.component';
 
 const routes: Routes = [
   { path: 'projectsTracking', component: ProjectsTrackingComponent },
   { path: 'needs', component: NeedsComponent },
   { path: 'home', component: HomepageComponent },
+  { path: 'signup', component:SignupComponent},
   { path: '', redirectTo: '/home', pathMatch: 'full' },
 ];
 

@@ -14,8 +14,6 @@ import { GetDataService } from '../services/get-data/get-data.service';
 import { ProgressSpinnerOverlayService } from '../services/progressSpinerOverlay/progress-spinner-overlay.service';
 
 import firebase from 'firebase/app';
-import {MenuItem} from 'primeng/api';
-
 
 interface areaCoord {
   id: string,

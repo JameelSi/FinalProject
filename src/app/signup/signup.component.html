@@ -1,0 +1,170 @@
+<h1 class="title">
+ הפרטים ישארו חסויים במיזם
+</h1>
+ <section>
+  <mat-horizontal-stepper #stepper dir="rtl">
+
+      <mat-step [stepControl]="firstFormGroup" errorMessage="Name is required.">
+
+        <form [formGroup]="firstFormGroup">
+          <ng-template matStepLabel>יצירת חשבון</ng-template>
+
+
+          <mat-form-field appearance="outline" >
+            <mat-label>כתובת דוא"ל</mat-label>
+            <input matInput placeholder="Last name, First name" formControlName="firstCtrl" required>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>סיסמא</mat-label>
+            <input matInput placeholder="Last name, First name" formControlName="firstCtrl" required>
+          </mat-form-field>
+
+          <div>
+            <p>Go to a different step to see the error state</p>
+            <button mat-button matStepperNext>הבא</button>
+          </div>
+        </form>
+        
+
+      </mat-step>
+
+      <mat-step [stepControl]="secondFormGroup" errorMessage="Address is required.">
+
+        <form [formGroup]="secondFormGroup">
+          <ng-template matStepLabel>פרטים אישיים</ng-template>
+
+          <mat-form-field appearance="fill">
+            <mat-label>שם פרטי</mat-label>
+            <input matInput placeholder="Ex. 1 Main St, New York, NY" formControlName="secondCtrl"
+                  required>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill">
+            <mat-label>שם משפחה</mat-label>
+            <input matInput placeholder="Ex. 1 Main St, New York, NY" formControlName="secondCtrl"
+                  required>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill">
+            <mat-label>מספר פלאפון</mat-label>
+            <input matInput placeholder="Ex. 1 Main St, New York, NY" formControlName="secondCtrl"
+                  required>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill">
+            <mat-label>עיר מגורים</mat-label>
+            <input matInput placeholder="Ex. 1 Main St, New York, NY" formControlName="secondCtrl"
+                  required>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill">
+            <mat-label>שכונה</mat-label>
+            <input matInput placeholder="Ex. 1 Main St, New York, NY" formControlName="secondCtrl"
+                  required>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill">
+            <mat-label>רחוב</mat-label>
+            <input matInput placeholder="Ex. 1 Main St, New York, NY" formControlName="secondCtrl"
+                  required>
+          </mat-form-field>
+          
+          <mat-form-field appearance="fill">
+            <mat-label>גיל</mat-label>
+            <input matInput placeholder="Ex. 1 Main St, New York, NY" formControlName="secondCtrl"
+                  required>
+          </mat-form-field>
+
+          
+          <mat-form-field appearance="fill">
+            <mat-label>מגדר</mat-label>
+            <input matInput placeholder="Ex. 1 Main St, New York, NY" formControlName="secondCtrl"
+                  required>
+          </mat-form-field>
+
+          <div>
+            <p>Go to a different step to see the error state</p>
+            <button mat-button matStepperPrevious>אחורה</button>
+            <button mat-button matStepperNext>הבא</button>
+          </div>
+        </form>
+
+      </mat-step>
+
+      <mat-step [stepControl]="secondFormGroup" errorMessage="Address is required.">
+
+        <form [formGroup]="secondFormGroup">
+          <ng-template matStepLabel>תחומי עיניין</ng-template>
+
+          <mat-form-field appearance="fill">
+            <mat-label>תחומי עיניין</mat-label>
+            <input matInput placeholder="Ex. 1 Main St, New York, NY" formControlName="secondCtrl"
+                  required>
+          </mat-form-field>
+          <div>
+            <p style="width: 200px; height: 300px; background-color: gray;">Go to a different step to see the error state</p>
+
+          </div>
+
+          <mat-form-field appearance="fill">
+            <mat-label>שליטה בשפות</mat-label>
+            <input matInput placeholder="Ex. 1 Main St, New York, NY" formControlName="secondCtrl"
+                  required>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill">
+            <mat-label>מעוניין להיפגש עם</mat-label>
+            <input matInput placeholder="Ex. 1 Main St, New York, NY" formControlName="secondCtrl"
+                  required>
+          </mat-form-field>
+
+        
+          <div>
+            <p>Go to a different step to see the error state</p>
+            <button mat-button matStepperPrevious>אחורה</button>
+            <button mat-button matStepperNext>הבא</button>
+          </div>
+        </form>
+
+      </mat-step>
+
+      <mat-step [stepControl]="secondFormGroup" errorMessage="Address is required.">
+
+        <form [formGroup]="secondFormGroup">
+          <ng-template matStepLabel>תחומי עיניין</ng-template>
+
+          <mat-form-field appearance="fill">
+            <mat-label>>:) ספר לנו קצת על עצמך</mat-label>
+            <input matInput placeholder="Ex. 1 Main St, New York, NY" formControlName="secondCtrl"
+                  required>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill">
+            <mat-label>  מעוניין להיפגש עם</mat-label>
+            <input matInput placeholder="Ex. 1 Main St, New York, NY" formControlName="secondCtrl"
+                  required>
+          </mat-form-field>
+
+        
+
+          <div>
+            <p>Go to a different step to see the error state</p>
+            <button mat-button matStepperPrevious>אחורה</button>
+            <button mat-button matStepperNext>הבא</button>
+          </div>
+        </form>
+
+      </mat-step>
+      
+      <mat-step>
+        <ng-template matStepLabel>Done</ng-template>
+        <p>You are now done.</p>
+        <div>
+          <button mat-button matStepperPrevious>אחורה</button>
+          <button mat-button (click)="stepper.reset()">Reset</button>
+        </div>
+      </mat-step>
+
+    </mat-horizontal-stepper>
+</section>
