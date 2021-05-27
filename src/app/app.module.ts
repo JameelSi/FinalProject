@@ -34,12 +34,14 @@ import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { MatCardModule } from '@angular/material/card';
 import { MatSpinner, MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { OverlayModule } from '@angular/cdk/overlay';
-
+import {MatSelectModule} from '@angular/material/select';
 import {TabMenuModule} from 'primeng/tabmenu';
 import { HomepageComponent } from './homepage/homepage.component';
 import { ToolbarComponent } from './toolbar/toolbar.component';
 import { ScrollDispatcher } from '@angular/cdk/scrolling';
 import { SignupComponent } from './signup/signup.component';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import {MatCheckboxModule} from '@angular/material/checkbox';
 
 @NgModule({
   declarations: [
@@ -81,7 +83,10 @@ import { SignupComponent } from './signup/signup.component';
     MatMenuModule,
     TabMenuModule,
     MatStepperModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatSelectModule,
+    MatAutocompleteModule,
+    MatCheckboxModule
     // ScrollDispatchModule,
   ],
   providers: [ScrollDispatcher],

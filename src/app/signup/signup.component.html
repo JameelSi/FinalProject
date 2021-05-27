@@ -2,7 +2,7 @@
  הפרטים ישארו חסויים במיזם
 </h1>
  <section>
-  <mat-horizontal-stepper #stepper dir="rtl">
+  <mat-horizontal-stepper  #stepper dir="rtl">
 
       <mat-step [stepControl]="firstFormGroup" errorMessage="Name is required.">
 
@@ -10,21 +10,27 @@
           <ng-template matStepLabel>יצירת חשבון</ng-template>
 
 
-          <mat-form-field appearance="outline" >
-            <mat-label>כתובת דוא"ל</mat-label>
-            <input matInput placeholder="Last name, First name" formControlName="firstCtrl" required>
-          </mat-form-field>
 
+
+          <div class="label">
+            <p class="labelP">כתובת דוא"ל</p>
+          <mat-form-field appearance="outline" floatLabel='never' >
+            <input matInput placeholder="הקלד כאן.." formControlName="firstCtrl" required>
+          </mat-form-field>
+        </div>
+
+        <div class="label">
+        <p class="labelP">סיסמא</p>
           <mat-form-field appearance="outline">
-            <mat-label>סיסמא</mat-label>
-            <input matInput placeholder="Last name, First name" formControlName="firstCtrl" required>
+            <input matInput placeholder="הקלד כאן.." formControlName="firstCtrl" required [type]="hide ? 'password' : 'text'">
+            <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+              <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+            </button>
           </mat-form-field>
+        </div>
 
-          <div>
-            <p>Go to a different step to see the error state</p>
-            <button mat-button matStepperNext>הבא</button>
-          </div>
-        </form>
+      </form>
+      <button class="next" mat-button matStepperNext>הבא -></button>
         
 
       </mat-step>
@@ -33,127 +39,125 @@
 
         <form [formGroup]="secondFormGroup">
           <ng-template matStepLabel>פרטים אישיים</ng-template>
+                      
+          <div class="label">
+            <mat-form-field appearance="outline">
+              <mat-label>שם פרטי</mat-label>
+              <input matInput placeholder="הקלד כאן.." formControlName="secondCtrl" required>
+            </mat-form-field>
+          </div>
 
-          <mat-form-field appearance="fill">
-            <mat-label>שם פרטי</mat-label>
-            <input matInput placeholder="Ex. 1 Main St, New York, NY" formControlName="secondCtrl"
-                  required>
-          </mat-form-field>
-
-          <mat-form-field appearance="fill">
+        <div class="label">
+          <mat-form-field appearance="outline">
             <mat-label>שם משפחה</mat-label>
-            <input matInput placeholder="Ex. 1 Main St, New York, NY" formControlName="secondCtrl"
-                  required>
+            <input matInput placeholder="הקלד כאן.." formControlName="secondCtrl" required>
           </mat-form-field>
+        </div>
 
-          <mat-form-field appearance="fill">
+        <div class="label">
+          <mat-form-field appearance="outline">
             <mat-label>מספר פלאפון</mat-label>
-            <input matInput placeholder="Ex. 1 Main St, New York, NY" formControlName="secondCtrl"
-                  required>
-          </mat-form-field>
+            <input matInput placeholder="הקלד כאן.." formControlName="secondCtrl" required>
+        </mat-form-field>
+      </div>
 
-          <mat-form-field appearance="fill">
-            <mat-label>עיר מגורים</mat-label>
-            <input matInput placeholder="Ex. 1 Main St, New York, NY" formControlName="secondCtrl"
-                  required>
-          </mat-form-field>
+      <div class="label">
+        <mat-form-field appearance="outline" >
+          <mat-label>עיר מגורים</mat-label>
+          <input matInput disabled  value="ירושלים"  >
+        </mat-form-field>
+      </div>
 
-          <mat-form-field appearance="fill">
-            <mat-label>שכונה</mat-label>
-            <input matInput placeholder="Ex. 1 Main St, New York, NY" formControlName="secondCtrl"
-                  required>
-          </mat-form-field>
+      <div class="label">
+        <mat-form-field appearance="outline">
+          <mat-label>שכונה</mat-label>
+          <input matInput placeholder="הקלד כאן.." [matAutocomplete]="auto" [formControl]="exists"  required>
 
-          <mat-form-field appearance="fill">
-            <mat-label>רחוב</mat-label>
-            <input matInput placeholder="Ex. 1 Main St, New York, NY" formControlName="secondCtrl"
-                  required>
-          </mat-form-field>
+          <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+            <mat-option *ngFor="let option of states " [value]="option">
+              {{option}}
+            </mat-option>
+          </mat-autocomplete>
+
+          <mat-error *ngIf="exists.invalid">{{getErrorMessage()}}</mat-error>
           
-          <mat-form-field appearance="fill">
-            <mat-label>גיל</mat-label>
-            <input matInput placeholder="Ex. 1 Main St, New York, NY" formControlName="secondCtrl"
-                  required>
-          </mat-form-field>
+        </mat-form-field>
+      </div>
 
-          
-          <mat-form-field appearance="fill">
-            <mat-label>מגדר</mat-label>
-            <input matInput placeholder="Ex. 1 Main St, New York, NY" formControlName="secondCtrl"
-                  required>
-          </mat-form-field>
+      
 
-          <div>
-            <p>Go to a different step to see the error state</p>
-            <button mat-button matStepperPrevious>אחורה</button>
-            <button mat-button matStepperNext>הבא</button>
-          </div>
-        </form>
+
+      <div class="label">
+        <mat-form-field appearance="outline">
+          <mat-label>רחוב</mat-label>
+          <input matInput placeholder="הקלד כאן.." formControlName="secondCtrl" required>
+        </mat-form-field>
+      </div>
+
+      <div class="label">
+        <mat-form-field appearance="outline">
+          <mat-label>גיל</mat-label>
+          <input matInput placeholder="הקלד כאן.." formControlName="secondCtrl" type="number"  required>
+        </mat-form-field>
+      </div>
+      
+      <div class="label">
+      <mat-form-field appearance="outline">
+          <mat-label>מגדר</mat-label>
+
+          <mat-select >
+            <mat-option value="male">זכר</mat-option>
+            <mat-option value="female">נקבה</mat-option>
+            <mat-option value="none">לא רלוונטי</mat-option>
+          </mat-select>
+          </mat-form-field>
+      </div>
+      </form>
+
+      <div>
+        <button class="next" mat-button matStepperNext>הבא -></button>
+        <button class="back" mat-button matStepperPrevious>אחורה</button>
+      </div>
 
       </mat-step>
 
-      <mat-step [stepControl]="secondFormGroup" errorMessage="Address is required.">
+      <mat-step [stepControl]="thirdFormGroup" errorMessage="Address is required.">
 
-        <form [formGroup]="secondFormGroup">
+        <form [formGroup]="thirdFormGroup">
           <ng-template matStepLabel>תחומי עיניין</ng-template>
 
-          <mat-form-field appearance="fill">
-            <mat-label>תחומי עיניין</mat-label>
-            <input matInput placeholder="Ex. 1 Main St, New York, NY" formControlName="secondCtrl"
-                  required>
-          </mat-form-field>
-          <div>
-            <p style="width: 200px; height: 300px; background-color: gray;">Go to a different step to see the error state</p>
-
+          <div class="label">
+              <h3>תחומי עיניין</h3>
+              <p><mat-checkbox >שליטה</mat-checkbox></p>
+              <p><mat-checkbox  > בשפות</mat-checkbox></p>
+              <p><mat-checkbox  >בשפות</mat-checkbox></p>
+            
           </div>
 
-          <mat-form-field appearance="fill">
-            <mat-label>שליטה בשפות</mat-label>
-            <input matInput placeholder="Ex. 1 Main St, New York, NY" formControlName="secondCtrl"
-                  required>
-          </mat-form-field>
+          <div class="label">
+            <h3>שליטה בשפות</h3>
+            <p><mat-checkbox >שליטה</mat-checkbox></p>
+            <p><mat-checkbox  > בשפות</mat-checkbox></p>
+            <p><mat-checkbox  >בשפות</mat-checkbox></p>
+        </div>
 
-          <mat-form-field appearance="fill">
-            <mat-label>מעוניין להיפגש עם</mat-label>
-            <input matInput placeholder="Ex. 1 Main St, New York, NY" formControlName="secondCtrl"
-                  required>
-          </mat-form-field>
+        <div class="label">
+            <h3>מעוניין להיפגש עם</h3>
+            <p><mat-checkbox >נשים בלבד</mat-checkbox></p>
+            <p><mat-checkbox  > גברים בלבד</mat-checkbox></p>
+            <p><mat-checkbox  >אין העדפה</mat-checkbox></p>
+        </div>
 
-        
-          <div>
-            <p>Go to a different step to see the error state</p>
-            <button mat-button matStepperPrevious>אחורה</button>
-            <button mat-button matStepperNext>הבא</button>
-          </div>
+        <div class="label">
+          <h3> ספר לנו קצת על עצמך <mat-icon >sentiment_very_satisfied</mat-icon> </h3>
+          <textarea id="" cols="30" rows="10"></textarea>
+        </div>
+
         </form>
-
-      </mat-step>
-
-      <mat-step [stepControl]="secondFormGroup" errorMessage="Address is required.">
-
-        <form [formGroup]="secondFormGroup">
-          <ng-template matStepLabel>תחומי עיניין</ng-template>
-
-          <mat-form-field appearance="fill">
-            <mat-label>>:) ספר לנו קצת על עצמך</mat-label>
-            <input matInput placeholder="Ex. 1 Main St, New York, NY" formControlName="secondCtrl"
-                  required>
-          </mat-form-field>
-
-          <mat-form-field appearance="fill">
-            <mat-label>  מעוניין להיפגש עם</mat-label>
-            <input matInput placeholder="Ex. 1 Main St, New York, NY" formControlName="secondCtrl"
-                  required>
-          </mat-form-field>
-
-        
-
-          <div>
-            <p>Go to a different step to see the error state</p>
-            <button mat-button matStepperPrevious>אחורה</button>
-            <button mat-button matStepperNext>הבא</button>
-          </div>
-        </form>
+        <div>
+          <button class="next" mat-button matStepperNext>הבא -></button>
+          <button class="back" mat-button matStepperPrevious>אחורה</button>
+        </div>
 
       </mat-step>
       

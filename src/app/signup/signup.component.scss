@@ -1,10 +1,14 @@
 section{
     margin: 50px;
-    
 }
-
+.stepper{
+    display: flex;
+    direction: row;
+}
 form{
-    background-color: #e9eaf2
+    background-color: #FDFDFD;
+    display: flex;
+    flex-wrap: wrap;
 }
 .title{
     text-align: center;
@@ -12,6 +16,34 @@ form{
     text-decoration: underline;
 }
 
-mat-form-field{
-    margin: 15px;
+.label{
+    display: flex;
+    flex-direction: column;
+    margin: 10px;
+    padding: 10px;
+    width: 30%;
+    
 }
+.labelP{
+    font-weight: bold;
+    font-size: 17px;
+    color:#454545;
+    margin: 0;
+}
+
+.next{
+    background-color:#48BF92 ;
+    width: 15%;
+    font-weight: bolder;
+    // margin-right: 17%;
+    float: left;
+}
+
+.back{
+    background-color:#FF442F ;
+    width: 15%;
+    font-weight: bolder;
+    // margin-right: 17%;
+    float: right;
+}
+
