@@ -9,7 +9,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { AngularFireModule } from '@angular/fire'
 import { AngularFirestoreModule } from '@angular/fire/firestore'
 import { environment } from 'src/environments/environment';
-import {MatStepperModule} from '@angular/material/stepper';
+import { MatStepperModule} from '@angular/material/stepper';
 import { MatTableModule } from "@angular/material/table";
 import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -42,6 +42,7 @@ import { ScrollDispatcher } from '@angular/cdk/scrolling';
 import { SignupComponent } from './signup/signup.component';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatCheckboxModule} from '@angular/material/checkbox';
+import { SigninComponent } from './signin/signin.component';
 
 @NgModule({
   declarations: [
@@ -51,8 +52,9 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
     NeedsComponent,
     HomepageComponent,
     ToolbarComponent,
-    SignupComponent
-  ],
+    SignupComponent,
+    SigninComponent
+    ],
   imports: [
     BrowserModule,
     AppRoutingModule,

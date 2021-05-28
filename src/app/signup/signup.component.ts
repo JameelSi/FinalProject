@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {Observable} from 'rxjs';
+import {map, startWith} from 'rxjs/operators';
 
 @Component({
   selector: 'app-signup',
@@ -7,45 +9,95 @@ import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
   styleUrls: ['./signup.component.scss']
 })
 export class SignupComponent implements OnInit {
+  myControl = new FormControl();
+  filteredOptions!: Observable<string[]>;
 
-  firstFormGroup!: FormGroup;
-  secondFormGroup!: FormGroup;
-  thirdFormGroup!: FormGroup;
+  emailAndPassword!: FormGroup;
+  details!: FormGroup;
+  hobbies!: FormGroup;
+
+
   fourthFormGroup!: FormGroup;
-  hide:boolean=false;
+  hidePassword:boolean=false;
   states: string[] = [
     'Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California', 'Colorado', 'Connecticut', 'Delaware',
-    'Florida', 'Georgia', 'Hawaii', 'Idaho', 'Illinois', 'Indiana', 'Iowa', 'Kansas', 'Kentucky',
-    'Louisiana', 'Maine', 'Maryland', 'Massachusetts', 'Michigan', 'Minnesota', 'Mississippi',
-    'Missouri', 'Montana', 'Nebraska', 'Nevada', 'New Hampshire', 'New Jersey', 'New Mexico',
-    'New York', 'North Carolina', 'North Dakota', 'Ohio', 'Oklahoma', 'Oregon', 'Pennsylvania',
-    'Rhode Island', 'South Carolina', 'South Dakota', 'Tennessee', 'Texas', 'Utah', 'Vermont',
-    'Virginia', 'Washington', 'West Virginia', 'Wisconsin', 'Wyoming'
-  ];
-  hobbies: string[]=["שיחת זום/ ווטסאפ ","משחקי קופסה", "סיוע תכנולוגי", "קריאה", "מוסיקה"]
-  constructor(private _formBuilder: FormBuilder) {}
-  exists = new FormControl('', [Validators.required, Validators.email]);
+    'Florida', 'Georgia', 'Hawaii', 'Idaho', 'Illinois', 'Indiana', 'Iowa', 'Kansas', 'Kentucky'];
 
+  constructor(private fb: FormBuilder) {}  
+
+  ngOnInit() {
+    this.emailAndPassword = this.fb.group({
+      email:['',Validators.email],
+      password:['']
+    });
+
+    this.details = this.fb.group({
+      fName: [''],
+      lName: [''],
+      phone: [''],
+      neighborhood: [''],
+      street: [''],
+      age: [''],
+      gender: [''],
+    });
+
+    this.hobbies = this.fb.group({
+      thirdCtrl: ['', Validators.required],
+      hobbs: this.fb.group({
+        first:[''],
+        second:[''],
+        third:[''],
+        fourth:[''],
+        fifth:['']
+      }),
+      langs:this.fb.group({
+        first:[''],
+        second:[''],
+        third:[''],
+        fourth:[''],
+        fifth:[''],
+        sixth:['']
+      }),
+      type: this.fb.group({
+        first:[''],
+        second:[''],
+        third:[''],
+        fourth:[''],
+        fifth:['']
+      })
+      ,social: this.fb.group({
+        first:[''],
+        second:[''],
+        third:['']
+      }),
+      bio:['']
+
+    });
+
+    this.fourthFormGroup = this.fb.group({
+      fourthCtrl: ['', Validators.required]
+    });
+   
+    this.filteredOptions = this.myControl.valueChanges.pipe(
+      startWith(''),
+      map(value => this._filter(value))
+    );
+  }
+
+
+  private _filter(value: string): string[] {
+    const filterValue = value.toLowerCase();
+
+    return this.states.filter(option => option.toLowerCase().indexOf(filterValue) === 0);
+  }
+
+  
   getErrorMessage() {
-    if (this.exists.hasError('required')) {
+    if (this.myControl.hasError('required')) {
       return 'You must enter a value';
     }
 
-    return this.exists.hasError('email') ? 'Not a valid email' : '';
+    return this.myControl.hasError('email') ? 'Not a valid email' : '';
   }
 
-  ngOnInit() {
-    this.firstFormGroup = this._formBuilder.group({
-      firstCtrl: ['', Validators.required]
-    });
-    this.secondFormGroup = this._formBuilder.group({
-      secondCtrl: ['', Validators.required]
-    });
-    this.thirdFormGroup = this._formBuilder.group({
-      thirdCtrl: ['', Validators.required]
-    });
-    this.fourthFormGroup = this._formBuilder.group({
-      fourthCtrl: ['', Validators.required]
-    });
-  }
 }
