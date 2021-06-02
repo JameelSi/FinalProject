@@ -47,7 +47,7 @@ import { ScrollDispatcher } from '@angular/cdk/scrolling';
     DialogBoxComponent,
     NeedsComponent,
     HomepageComponent,
-    ToolbarComponent
+    ToolbarComponent,
   ],
   imports: [
     BrowserModule,
