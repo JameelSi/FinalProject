@@ -6,8 +6,6 @@ import { DialogBoxComponent } from '../dialog-box/dialog-box.component';
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore'
 import { Observable, Subscription } from 'rxjs';
-import { Router } from '@angular/router';
-import { ViewportScroller } from '@angular/common';
 
 export interface Item { title: string; content: Array<string>; id: string; }
 
@@ -30,7 +28,12 @@ export class NeedsComponent implements OnInit, OnDestroy {
   private itemsCollection: AngularFirestoreCollection<Item>;
   items!: Observable<Item[]>;
 
-  constructor(private viewportScroller: ViewportScroller, private router: Router, private observer: BreakpointObserver, public dialog: MatDialog, readonly snackBar: MatSnackBar, private afs: AngularFirestore) {
+  constructor(
+    private observer: BreakpointObserver,
+    public dialog: MatDialog, 
+    readonly snackBar: MatSnackBar,
+    private afs: AngularFirestore
+     ) {
     this.itemsCollection = afs.collection<Item>('items');
   }
 
@@ -71,6 +74,7 @@ export class NeedsComponent implements OnInit, OnDestroy {
       element.dialogTitle = 'מה הערך החדש?'
 
     element.action = action;
+    element.dialogType = 'needs';
     const dialogRef = this.dialog.open(DialogBoxComponent, {
       width: '25%',
       direction: 'rtl',

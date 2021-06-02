@@ -1,21 +1,27 @@
+import { BreakpointObserver } from '@angular/cdk/layout';
 import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {Observable} from 'rxjs';
+import {Observable, Subscription} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
+import {STEPPER_GLOBAL_OPTIONS} from '@angular/cdk/stepper';
+import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore'
 
 @Component({
   selector: 'app-signup',
   templateUrl: './signup.component.html',
-  styleUrls: ['./signup.component.scss']
+  styleUrls: ['./signup.component.scss'],
+  providers: [{ provide: STEPPER_GLOBAL_OPTIONS, useValue: {showError: true} }]
 })
+
 export class SignupComponent implements OnInit {
-  myControl = new FormControl();
+  private subs = new Subscription();
+  
+  neighborhood = new FormControl();
   filteredOptions!: Observable<string[]>;
 
   emailAndPassword!: FormGroup;
   details!: FormGroup;
   hobbies!: FormGroup;
-
 
   fourthFormGroup!: FormGroup;
   hidePassword:boolean=false;
@@ -23,7 +29,25 @@ export class SignupComponent implements OnInit {
     'Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California', 'Colorado', 'Connecticut', 'Delaware',
     'Florida', 'Georgia', 'Hawaii', 'Idaho', 'Illinois', 'Indiana', 'Iowa', 'Kansas', 'Kentucky'];
 
-  constructor(private fb: FormBuilder) {}  
+  isBigScreen:boolean=true;
+  
+
+  constructor(private fb: FormBuilder, private observer: BreakpointObserver) {}  
+
+  ngAfterViewInit() {
+
+    setTimeout(() => {
+      this.subs.add(
+        this.observer.observe(['(max-width: 800px)']).subscribe((res) => {
+          if (res.matches)
+            this.isBigScreen=false;
+          else
+            this.isBigScreen=true;     
+          
+        }))
+    });
+
+  }
 
   ngOnInit() {
     this.emailAndPassword = this.fb.group({
@@ -35,9 +59,8 @@ export class SignupComponent implements OnInit {
       fName: [''],
       lName: [''],
       phone: [''],
-      neighborhood: [''],
       street: [''],
-      age: [''],
+      age: ['',Validators.min(0)],
       gender: [''],
     });
 
@@ -78,7 +101,7 @@ export class SignupComponent implements OnInit {
       fourthCtrl: ['', Validators.required]
     });
    
-    this.filteredOptions = this.myControl.valueChanges.pipe(
+    this.filteredOptions = this.neighborhood.valueChanges.pipe(
       startWith(''),
       map(value => this._filter(value))
     );
@@ -93,11 +116,17 @@ export class SignupComponent implements OnInit {
 
   
   getErrorMessage() {
-    if (this.myControl.hasError('required')) {
-      return 'You must enter a value';
+    if (this.neighborhood.hasError('required')) {
+      return 'נא לבחור מהרשימה';
     }
 
-    return this.myControl.hasError('email') ? 'Not a valid email' : '';
+    return this.neighborhood.hasError('email') ? 'Not a valid email' : '';
+
+  }
+  print(){
+    console.log(this.emailAndPassword.value)
+    console.log(this.details.value)
+    console.log(this.hobbies.value)
   }
 
 }

@@ -28,23 +28,23 @@ export class DialogBoxComponent implements OnInit {
   action: string;
   local_data: any;
   newProj?: project
-  type: 'project' | 'needs'
+  dialogType: 'project' | 'needs'
   actionHebrew: { [key: string]: string } = { "Add": 'הוסף', "Update": 'עדכן', "Delete": 'מחק' }
 
   constructor(public dialogRef: MatDialogRef<DialogBoxComponent>, private afs: AngularFirestore,
     //@Optional() is used to prevent error if no data is passed
     @Optional() @Inject(MAT_DIALOG_DATA) public data: any) {
     this.local_data = { ...data };
-    this.type = data.type
+    this.dialogType = this.local_data.dialogType
     this.action = this.local_data.action;
-    if (this.action === 'Update' && this.type == "project") {
+    if (this.action === 'Update' && this.dialogType == "project") {
       this.newProj = {
         date:  moment(this.local_data.date.toDate()),
         projectType: this.local_data.projectType,
         comments: this.local_data.comments,
         clubCoordinatorId: this.local_data.clubCoordinatorId
       }
-    } else if (this.type == "project") {
+    } else if (this.dialogType == "project") {
       this.newProj = { projectType: '', comments: '', date: moment(), clubCoordinatorId: '' }
     }
     this.dialogTitle = this.local_data.dialogTitle;

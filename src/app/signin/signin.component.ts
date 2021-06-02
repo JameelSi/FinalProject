@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AuthService } from '../services/auth/auth.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-signin',
@@ -13,7 +15,14 @@ export class SigninComponent implements OnInit {
   private formSubmitAttempt = false;
   private returnUrl: string;
 
-  constructor(    private fb: FormBuilder,private route: ActivatedRoute,private router: Router,) {
+  constructor(    
+    private fb: FormBuilder,
+    private route: ActivatedRoute,
+    private router: Router,
+    private authService:AuthService,
+    readonly snackBar: MatSnackBar,
+    ) {
+
     this.returnUrl = this.route.snapshot.queryParams.returnUrl || '/game';
 
     this.form = this.fb.group({
@@ -38,6 +47,24 @@ export class SigninComponent implements OnInit {
       }
     } else {
       this.formSubmitAttempt = true;
+    }
+  }
+
+  fun(){
+    if(this.form.valid){
+      this.authService.login( this.form.get('username')?.value,this.form.get('password')?.value)
+      .then(result =>{
+        if(result)
+          this.router.navigate([""]);
+        else 
+          this.snackBar.open("שם משתמש או סיסמה לא נכונים ", '', { duration: 3000, direction: 'rtl', panelClass: ['snacks'] });
+
+      }).catch(err=>{
+        this.snackBar.open("נא לנסות בזמן מאוחר יותר", '', { duration: 3000, direction: 'rtl', panelClass: ['snacks'] });
+
+      })
+
+  
     }
   }
 

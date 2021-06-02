@@ -1,187 +1,237 @@
 <h1 class="title">
  הפרטים ישארו חסויים במיזם
 </h1>
- <section>
-  <mat-horizontal-stepper  #stepper dir="rtl">
 
-      <mat-step [stepControl]="emailAndPassword" errorMessage="Name is required.">
 
-        <form [formGroup]="emailAndPassword">
-          <ng-template matStepLabel>יצירת חשבון</ng-template>
-
-          <div class="label">
-            <p class="labelP">כתובת דוא"ל</p>
-          <mat-form-field appearance="outline" floatLabel='never' >
-            <input matInput placeholder="הקלד כאן.." formControlName="email" required>
-          </mat-form-field>
-        </div>
-
-        <div class="label">
-        <p class="labelP">סיסמא</p>
-          <mat-form-field appearance="outline">
-            <input matInput placeholder="הקלד כאן.." formControlName="password" required [type]="hidePassword ? 'password' : 'text'">
-            <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePassword">
-              <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
-            </button>
-          </mat-form-field>
-        </div>
-
-      </form>
-      <button class="next" mat-button matStepperNext>הבא -></button>
-        
-
-      </mat-step>
-
-      <mat-step [stepControl]="details" errorMessage="Address is required.">
-
-        <form [formGroup]="details">
-          <ng-template matStepLabel>פרטים אישיים</ng-template>
-                      
-          <div class="label">
-            <mat-form-field appearance="outline">
-              <mat-label>שם פרטי</mat-label>
-              <input matInput placeholder="הקלד כאן.." formControlName="fName" required>
-            </mat-form-field>
-          </div>
-
-        <div class="label">
-          <mat-form-field appearance="outline">
-            <mat-label>שם משפחה</mat-label>
-            <input matInput placeholder="הקלד כאן.." formControlName="lName" required>
-          </mat-form-field>
-        </div>
-
-        <div class="label">
-          <mat-form-field appearance="outline">
-            <mat-label>מספר פלאפון</mat-label>
-            <input matInput placeholder="הקלד כאן.." formControlName="phone" required>
-        </mat-form-field>
-      </div>
-
+<ng-template #stepOne>
+    <form [formGroup]="emailAndPassword">
       <div class="label">
-        <mat-form-field appearance="outline" >
-          <mat-label>עיר מגורים</mat-label>
-          <input matInput disabled  value="ירושלים"  >
-        </mat-form-field>
-      </div>
+        <p class="labelP">כתובת דוא"ל</p>
+      <mat-form-field appearance="outline" floatLabel='never' >
+        <input matInput placeholder="הקלד כאן.." formControlName="email" required>
+      </mat-form-field>
+    </div>
 
-      <div class="label">
-        <mat-form-field appearance="outline">
-          <mat-label>שכונה</mat-label>
-          <input type="text" matInput placeholder="הקלד כאן.." formControlName="neighborhood" [matAutocomplete]="auto" [formControl]="myControl"  required>
-
-          <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
-            <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
-              {{option}}
-            </mat-option>
-          </mat-autocomplete>
-
-          <mat-error *ngIf="myControl.invalid">{{getErrorMessage()}}</mat-error>
-          
-        </mat-form-field>
-      </div>
-
-      
-
-
-      <div class="label">
-        <mat-form-field appearance="outline">
-          <mat-label>רחוב</mat-label>
-          <input matInput placeholder="הקלד כאן.." formControlName="street" >
-        </mat-form-field>
-      </div>
-
-      <div class="label">
-        <mat-form-field appearance="outline">
-          <mat-label>גיל</mat-label>
-          <input matInput placeholder="הקלד כאן.." formControlName="age" type="number"  required>
-        </mat-form-field>
-      </div>
-      
-      <div class="label">
+    <div class="label">
+    <p class="labelP">סיסמא</p>
       <mat-form-field appearance="outline">
-          <mat-label>מגדר</mat-label>
+        <input matInput placeholder="הקלד כאן.." formControlName="password" required [type]="hidePassword ? 'password' : 'text'">
+        <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePassword">
+          <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+        </button>
+      </mat-form-field>
+    </div>
 
-          <mat-select formControlName="gender">
-            <mat-option value="male">זכר</mat-option>
-            <mat-option value="female">נקבה</mat-option>
-            <mat-option value="none">לא רלוונטי</mat-option>
-          </mat-select>
-          </mat-form-field>
+  </form>
+</ng-template>
+
+<ng-template #stepTwo>
+
+    <form [formGroup]="details">                  
+      <div class="label">
+        
+        <mat-form-field appearance="outline" dir="rtl">
+          <mat-label>שם פרטי</mat-label>
+          <input matInput placeholder="הקלד כאן.." formControlName="fName" required>
+        </mat-form-field>
       </div>
+
+    <div class="label">
+      <mat-form-field appearance="outline" dir="rtl">
+        <mat-label>שם משפחה</mat-label>
+        <input matInput placeholder="הקלד כאן.." formControlName="lName" required>
+      </mat-form-field>
+    </div>
+
+    <div class="label">
+      <mat-form-field appearance="outline" dir="rtl">
+        <mat-label>מספר פלאפון</mat-label>
+        <input matInput placeholder="הקלד כאן.." formControlName="phone" required>
+    </mat-form-field>
+  </div>
+
+  <div class="label">
+    <mat-form-field appearance="outline" dir="rtl">
+      <mat-label>עיר מגורים</mat-label>
+      <input matInput disabled  value="ירושלים"  >
+    </mat-form-field>
+  </div>
+
+  <div class="label">
+    <mat-form-field appearance="outline" dir="rtl">
+      <mat-label>שכונה</mat-label>
+      <input type="text" matInput placeholder="הקלד כאן.."  [matAutocomplete]="auto" [formControl]="neighborhood"  required>
+
+      <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+        <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+          {{option}}
+        </mat-option>
+      </mat-autocomplete>
+
+      <mat-error *ngIf="neighborhood.invalid">{{getErrorMessage()}}</mat-error>
+      
+    </mat-form-field>
+  </div>
+
+  <div class="label">
+    <mat-form-field appearance="outline" dir="rtl">
+      <mat-label>רחוב</mat-label>
+      <input matInput placeholder="הקלד כאן.." formControlName="street" >
+    </mat-form-field>
+  </div>
+
+  <div class="label">
+    <mat-form-field appearance="outline" dir="rtl">
+      <mat-label>גיל</mat-label>
+      <input matInput placeholder="הקלד כאן.." formControlName="age" type="number"  required>
+    </mat-form-field>
+  </div>
+  
+  <div class="label">
+    <mat-form-field appearance="outline" dir="rtl">
+        <mat-label>מגדר</mat-label>
+
+        <mat-select formControlName="gender">
+          <mat-option value="male">זכר</mat-option>
+          <mat-option value="female">נקבה</mat-option>
+          <mat-option value="none">לא רלוונטי</mat-option>
+        </mat-select>
+      </mat-form-field>
+  </div>
+  </form>
+</ng-template>
+
+<ng-template #stepThree>
+    <form [formGroup]="hobbies">
+      <form formGroupName="hobbs" class="label">
+        <h3>תחומי עיניין \ צרכים</h3>
+        <p> <mat-checkbox color="primary" formControlName="first">מועדון גברים</mat-checkbox></p>
+        <p> <mat-checkbox  color="primary" formControlName="second"> סיוע טכנולגי</mat-checkbox></p>
+        <p> <mat-checkbox color="primary" formControlName="third" >עזרה בקניות</mat-checkbox></p>
+        <p> <mat-checkbox color="primary" formControlName="fourth" >רכישת תרופות</mat-checkbox></p>
+        <p> <mat-checkbox color="primary" formControlName="fifth" > ליווי לבתי חולים</mat-checkbox></p>
+      </form>       
+
+      <form formGroupName="langs" class="label">
+        <h3>שליטה בשפות</h3>
+        <p><mat-checkbox color="primary" formControlName="first">עברית</mat-checkbox></p>
+        <p><mat-checkbox  color="primary" formControlName="second"> אנגלית</mat-checkbox></p>
+        <p><mat-checkbox  color="primary" formControlName="third">ערבית</mat-checkbox></p>
+        <p><mat-checkbox  color="primary" formControlName="fourth">רוסית</mat-checkbox></p>
+        <p><mat-checkbox  color="primary" formControlName="fifth">אמהרית</mat-checkbox></p>
+        <p><mat-checkbox  color="primary" formControlName="sixth">צרפתית</mat-checkbox></p>
       </form>
 
+    <form formGroupName="type" class="label">
+        <h3>סוג</h3>
+        <p><mat-checkbox color="primary" formControlName="first" >כללי</mat-checkbox></p>
+        <p><mat-checkbox  color="primary" formControlName="second">סטודנט</mat-checkbox></p>
+        <p><mat-checkbox  color="primary" formControlName="third"> חייל</mat-checkbox></p>
+        <p><mat-checkbox  color="primary" formControlName="fourth"> תלמיד תיכון</mat-checkbox></p>
+        <p><mat-checkbox  color="primary" formControlName="fifth">תנועות נוער </mat-checkbox></p>
+    </form>
+
+    <form formGroupName="social" class="label">
+      <h3>מצב משפחתי</h3>
+      <p><mat-checkbox color="primary" formControlName="first">נשוי</mat-checkbox></p>
+      <p><mat-checkbox  color="primary" formControlName="second">אלמן</mat-checkbox></p>
+      <p><mat-checkbox color="primary" formControlName="third" > רווק</mat-checkbox></p>
+    </form>
+
+    <div class="label">
+      <h3> ספר לנו קצת על עצמך <mat-icon >sentiment_very_satisfied</mat-icon> </h3>
+      <textarea formControlName="bio" id="" cols="30" rows="10"></textarea>
+    </div>
+
+    </form>
+</ng-template>
+
+<ng-template #stepFour>
+    <p>הגעת לסוף הטופס אם ניתן או לחזור ולערוך פרטים או ללחוץ על שלח</p>
+</ng-template>
+
+
+
+
+<ng-template [ngIf]="isBigScreen" [ngIfElse]="smallScreen">
+  <section>
+    <mat-horizontal-stepper  #stepper  dir="rtl">
+
+
+      <mat-step [stepControl]="emailAndPassword" errorMessage="נא להשלים את כל השדות" >
+        <ng-template matStepLabel>יצירת חשבון</ng-template>
+        <ng-container *ngTemplateOutlet="stepOne"></ng-container>
+        <button class="next" mat-button matStepperNext>הבא -></button>
+      </mat-step>
+    
+      <mat-step [stepControl]="details" errorMessage="נא להשלים את כל השדות">
+        <ng-template matStepLabel>פרטים אישיים</ng-template>
+          <ng-container *ngTemplateOutlet="stepTwo"></ng-container>
+          <div>
+            <button class="next" mat-button matStepperNext>הבא -></button>
+            <button class="back" mat-button matStepperPrevious>אחורה</button>
+          </div>
+      </mat-step>
+    
+      <mat-step [stepControl]="hobbies" errorMessage="נא להשלים את כל השדות">
+        <ng-template matStepLabel>תחומי עיניין</ng-template>
+          <ng-container *ngTemplateOutlet="stepThree"></ng-container>
+          <div>
+            <button class="next" mat-button matStepperNext>הבא -></button>
+            <button class="back" mat-button matStepperPrevious>אחורה</button>
+          </div>
+      </mat-step>
+      
+      <mat-step errorMessage="נא להשלים את כל השדות">
+        <ng-template matStepLabel>סיום</ng-template>
+          <ng-container *ngTemplateOutlet="stepFour"></ng-container>
+          <div>
+            <button class="next" mat-button (click)="print()">שלח</button>
+            <button class="back" mat-button matStepperPrevious>אחורה</button>
+          </div>
+      </mat-step>
+      
+    </mat-horizontal-stepper>
+  </section>
+</ng-template>
+
+<ng-template #smallScreen>
+<section>
+  <mat-vertical-stepper  #stepper dir="rtl">
+
+  <mat-step [stepControl]="emailAndPassword" errorMessage="Name is required.">
+    <ng-template matStepLabel>יצירת חשבון</ng-template>
+    <ng-container *ngTemplateOutlet="stepOne"></ng-container>
+    <button class="next" mat-button matStepperNext>הבא -></button>
+  </mat-step>
+
+  <mat-step [stepControl]="details" errorMessage="Address is required.">
+    <ng-template matStepLabel>פרטים אישיים</ng-template>
+      <ng-container *ngTemplateOutlet="stepTwo"></ng-container>
       <div>
         <button class="next" mat-button matStepperNext>הבא -></button>
         <button class="back" mat-button matStepperPrevious>אחורה</button>
       </div>
+  </mat-step>
 
-      </mat-step>
+  <mat-step [stepControl]="hobbies" errorMessage="Address is required.">
+    <ng-template matStepLabel>תחומי עיניין</ng-template>
+      <ng-container *ngTemplateOutlet="stepThree"></ng-container>
+      <div>
+        <button class="next" mat-button matStepperNext>הבא -></button>
+        <button class="back" mat-button matStepperPrevious>אחורה</button>
+      </div>
+  </mat-step>
 
-      <mat-step [stepControl]="hobbies" errorMessage="Address is required.">
+  <mat-step>
+    <ng-template matStepLabel>סיום</ng-template>
+      <ng-container *ngTemplateOutlet="stepFour"></ng-container>
+      <div>
+        <button class="next" mat-button  >שלח</button>
+        <button class="back" mat-button matStepperPrevious>אחורה</button>
+      </div>
+  </mat-step>
 
-        <form [formGroup]="hobbies">
-          <ng-template matStepLabel>תחומי עיניין</ng-template>
-
-
-          <form formGroupName="hobbs" class="label">
-            <h3>תחומי עיניין \ צרכים</h3>
-            <p> <mat-checkbox color="primary" formControlName="first">מועדון גברים</mat-checkbox></p>
-            <p> <mat-checkbox  color="primary" formControlName="second"> סיוע טכנולגי</mat-checkbox></p>
-            <p> <mat-checkbox color="primary" formControlName="third" >עזרה בקניות</mat-checkbox></p>
-            <p> <mat-checkbox color="primary" formControlName="fourth" >רכישת תרופות</mat-checkbox></p>
-            <p> <mat-checkbox color="primary" formControlName="fifth" > ליווי לבתי חולים</mat-checkbox></p>
-          </form>       
-
-          <form formGroupName="langs" class="label">
-            <h3>שליטה בשפות</h3>
-            <p><mat-checkbox color="primary" formControlName="first">עברית</mat-checkbox></p>
-            <p><mat-checkbox  color="primary" formControlName="second"> אנגלית</mat-checkbox></p>
-            <p><mat-checkbox  color="primary" formControlName="third">ערבית</mat-checkbox></p>
-            <p><mat-checkbox  color="primary" formControlName="fourth">רוסית</mat-checkbox></p>
-            <p><mat-checkbox  color="primary" formControlName="fifth">אמהרית</mat-checkbox></p>
-            <p><mat-checkbox  color="primary" formControlName="sixth">צרפתית</mat-checkbox></p>
-          </form>
-
-        <form formGroupName="type" class="label">
-            <h3>סוג</h3>
-            <p><mat-checkbox color="primary" formControlName="first" >כללי</mat-checkbox></p>
-            <p><mat-checkbox  color="primary" formControlName="second">סטודנט</mat-checkbox></p>
-            <p><mat-checkbox  color="primary" formControlName="third"> חייל</mat-checkbox></p>
-            <p><mat-checkbox  color="primary" formControlName="fourth"> תלמיד תיכון</mat-checkbox></p>
-            <p><mat-checkbox  color="primary" formControlName="fifth">תנועות נוער </mat-checkbox></p>
-        </form>
-
-        <form formGroupName="social" class="label">
-          <h3>מצב משפחתי</h3>
-          <p><mat-checkbox color="primary" formControlName="first">נשוי</mat-checkbox></p>
-          <p><mat-checkbox  color="primary" formControlName="second">אלמן</mat-checkbox></p>
-          <p><mat-checkbox color="primary" formControlName="third" > רווק</mat-checkbox></p>
-        </form>
-
-        <div class="label">
-          <h3> ספר לנו קצת על עצמך <mat-icon >sentiment_very_satisfied</mat-icon> </h3>
-          <textarea formControlName="bio" id="" cols="30" rows="10"></textarea>
-        </div>
-
-        </form>
-        <div>
-          <button class="next" mat-button matStepperNext>הבא -></button>
-          <button class="back" mat-button matStepperPrevious>אחורה</button>
-        </div>
-
-      </mat-step>
-      
-      <mat-step>
-        <ng-template matStepLabel>סיום</ng-template>
-        <p>הגעת לסוף הטופס אם ניתן או לחזור ולערוך פרטים או ללחוץ על שלח</p>
-
-        <div>
-          <button class="next" mat-button >שלח</button>
-          <button class="back" mat-button matStepperPrevious>אחורה</button>
-        </div>
-  
-      </mat-step>
-
-    </mat-horizontal-stepper>
+  </mat-vertical-stepper>
 </section>
+</ng-template>

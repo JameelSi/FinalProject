@@ -43,7 +43,7 @@ import { SignupComponent } from './signup/signup.component';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import { SigninComponent } from './signin/signin.component';
-
+import {AngularFireAuthModule} from '@angular/fire/auth'
 @NgModule({
   declarations: [
     AppComponent,
@@ -88,7 +88,8 @@ import { SigninComponent } from './signin/signin.component';
     ReactiveFormsModule,
     MatSelectModule,
     MatAutocompleteModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    AngularFireAuthModule
     // ScrollDispatchModule,
   ],
   providers: [ScrollDispatcher],

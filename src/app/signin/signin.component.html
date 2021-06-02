@@ -1,3 +1,4 @@
+<body>
 <mat-card dir="rtl">
     <mat-card-content>
       <form [formGroup]="form" (ngSubmit)="onSubmit()">
@@ -17,7 +18,8 @@
             Please provide a valid password
           </mat-error>
         </mat-form-field>
-        <button mat-raised-button color="primary">Login</button>
+        <button mat-raised-button color="primary" (click)="fun()">Login</button>
       </form>
     </mat-card-content>
   </mat-card>
+</body>
