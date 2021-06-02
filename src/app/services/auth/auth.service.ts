@@ -6,7 +6,6 @@ import { User } from 'src/app/types/user';
   providedIn: 'root'  
 })
 export class AuthService {
-
   constructor(
     private afa: AngularFireAuth,
     private afs: AngularFirestore
@@ -18,6 +17,8 @@ export class AuthService {
   async login(email: string, password: string){
     return this.afa.signInWithEmailAndPassword(email,password);
   }
+
+  
   async logout(){
     return this.afa.signOut();
   }
@@ -39,6 +40,13 @@ export class AuthService {
     const ref: AngularFirestoreDocument<User>=this.afs.doc(`users/${user.uid}`);
     ref.set(user);
   }
-
+  reset(emailAddress:string):boolean{
+    this.afa.sendPasswordResetEmail(emailAddress).then(function() {
+      return true;
+    }).catch(function(error) {
+      return false;
+    });
+    return false;
+  }
 
 }

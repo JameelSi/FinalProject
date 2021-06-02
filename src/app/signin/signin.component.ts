@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+import { DialogBoxComponent } from '../dialog-box/dialog-box.component';
+import { Router } from '@angular/router';
 import { AuthService } from '../services/auth/auth.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-signin',
@@ -10,62 +12,76 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   styleUrls: ['./signin.component.scss']
 })
 export class SigninComponent implements OnInit {
-  form: FormGroup;
-  public loginInvalid = false;
-  private formSubmitAttempt = false;
-  private returnUrl: string;
+  loginForm!: FormGroup;
+  loading:boolean = false;
+  loginInvalid:boolean  = false;
 
   constructor(    
     private fb: FormBuilder,
-    private route: ActivatedRoute,
     private router: Router,
     private authService:AuthService,
+    public dialog: MatDialog,
     readonly snackBar: MatSnackBar,
+
     ) {
-
-    this.returnUrl = this.route.snapshot.queryParams.returnUrl || '/game';
-
-    this.form = this.fb.group({
-      username: ['', Validators.email],
-      password: ['', Validators.required]
-    });
-
-   }
-
-  ngOnInit(): void {
-  }
-
-  async onSubmit(): Promise<void> {
-    this.loginInvalid = false;
-    this.formSubmitAttempt = false;
-    if (this.form.valid) {
-      try {
-        const username = this.form.get('username')?.value;
-        const password = this.form.get('password')?.value;
-      } catch (err) {
-        this.loginInvalid = true;
-      }
-    } else {
-      this.formSubmitAttempt = true;
+      
     }
+    
+    ngOnInit(): void {
+      this.loginForm = this.fb.group({
+        username: ['', [Validators.required, Validators.email]],
+        password: ['', Validators.required]
+      });
   }
 
-  fun(){
-    if(this.form.valid){
-      this.authService.login( this.form.get('username')?.value,this.form.get('password')?.value)
-      .then(result =>{
-        if(result)
-          this.router.navigate([""]);
-        else 
-          this.snackBar.open("שם משתמש או סיסמה לא נכונים ", '', { duration: 3000, direction: 'rtl', panelClass: ['snacks'] });
+  onSubmit() {
 
-      }).catch(err=>{
-        this.snackBar.open("נא לנסות בזמן מאוחר יותר", '', { duration: 3000, direction: 'rtl', panelClass: ['snacks'] });
-
-      })
-
-  
+    if (this.loginForm.invalid) {
+        return;
     }
-  }
+
+    this.loading = true;
+    this.authService.login(this.loginForm.controls.username.value, this.loginForm.controls.password.value)
+    .then(result =>{
+      if(result!=null)
+        this.router.navigate([""]);
+      else 
+        this.loginInvalid=true;
+
+    }).catch(err=>{
+      this.loading = false;
+      this.loginInvalid=true;
+    })
 
 }
+
+getEmailErrorMessage() {
+  if (this.loginForm.controls.username.hasError('required')) {
+    return 'שדה חובה';
+  }
+  return this.loginForm.controls.username.hasError('email') ? 'כתבובת מייל אינה בפורמט נכון' : '';
+}
+resetPass(element: any){
+  element.title="נא להכניס את כתובת המייל אליו יישלח לינק איפוס סיסמה"
+  element.dialogType = 'needs';
+  element.action="Add";
+  const dialogRef = this.dialog.open(DialogBoxComponent, {
+    width: '25%',
+    direction: 'rtl',
+    data: element,
+  });
+
+  dialogRef.afterClosed().subscribe(result => {
+    if (result&&result.data?.name) {
+      if(this.authService.reset(result.data.name))
+        this.snackBar.open("מייל נשלח בהצלחה ! נא לבדוק", '', { duration: 3000, direction: 'rtl', panelClass: ['snacks'] });
+      else
+        this.snackBar.open("לא קיים מייל כמו שהוכנס", '', { duration: 3000, direction: 'rtl', panelClass: ['snacks'] });
+    }
+
+    });
+
+}
+
+}
+

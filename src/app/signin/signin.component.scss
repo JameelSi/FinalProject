@@ -1,16 +1,45 @@
 mat-card {
-    // max-width: 400px;
-    width: 400px;
+    width: 30%;
     margin: 5em auto;
     text-align: center;
+  }
+  @media screen and (max-width: 800px) {
+    mat-card{
+      width: auto;
+    }
+}
+  mat-card-content{
+    margin-top: 40px;
+  }
+  mat-card-title{
+  font-weight: bolder;
   }
   
   mat-form-field {
     display: block;
+    margin: 10px;
+    margin-bottom: 0;
+  }
+  .reg{
+    color: blue;
   }
 
-  body{
-    background-color: aquamarine;
-    width: 100%;
-    height: 100%;
+  .forgotBtn{
+    border: none;
+    background-color: white;
+    text-decoration: underline;
+    color: #d65c47;
+
   }
+  .forgot{
+    float: left;
+    margin-bottom: 15px;
+    margin-right: 10px;
+  }
+
+.forgot :hover{
+  cursor: pointer;
+}
+.loginBtn{
+  width: 100%;
+}

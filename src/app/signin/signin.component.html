@@ -1,25 +1,42 @@
-<body>
-<mat-card dir="rtl">
-    <mat-card-content>
-      <form [formGroup]="form" (ngSubmit)="onSubmit()">
-        <h2>כניסה</h2>
-        <mat-error *ngIf="loginInvalid">
-          The username and password were not recognized
+<mat-card dir="rtl" class="mat-elevation-z8">
+
+  <mat-card-header>
+    <mat-card-title> כניסה</mat-card-title>
+  </mat-card-header>
+
+  <mat-divider></mat-divider>
+
+  <mat-card-content>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+
+      <mat-error *ngIf="loginInvalid">
+        אחד או יותר מהנתונים שגויים
+      </mat-error>
+
+      <mat-form-field appearance="outline" >
+        <input matInput placeholder="דו&quot;א " formControlName="username" required [class.is-invalid]="loginForm.errors?.required">
+        <mat-error *ngIf="loginForm.get('username')?.errors" > {{getEmailErrorMessage()}} </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" >
+        <input matInput type="password" placeholder="סיסמה" formControlName="password" required>
+        <mat-error>
+          שדה חובה
         </mat-error>
-        <mat-form-field class="full-width-input">
-          <input matInput placeholder="Email" formControlName="username" required>
-          <mat-error>
-            Please provide a valid email address
-          </mat-error>
-        </mat-form-field>
-        <mat-form-field class="full-width-input">
-          <input matInput type="password" placeholder="Password" formControlName="password" required>
-          <mat-error>
-            Please provide a valid password
-          </mat-error>
-        </mat-form-field>
-        <button mat-raised-button color="primary" (click)="fun()">Login</button>
-      </form>
-    </mat-card-content>
+      </mat-form-field>
+
+      <div class="forgot">
+        <button type="button" class="forgotBtn" (click)="resetPass({})" > שכחתי סיסמה !</button>
+      </div>
+      <button  type="submit" mat-raised-button color="primary" class="loginBtn">
+        <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+        התחבר
+      </button>
+    </form>
+  </mat-card-content>
+
+  <div>משתמש חדש?
+  <a routerLink="../signup" class="reg">רישום </a></div>
   </mat-card>
-</body>
+
