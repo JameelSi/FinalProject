@@ -5,11 +5,11 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ProjectsTrackingComponent } from './projects-tracking/projects-tracking.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
+import { ReactiveFormsModule } from '@angular/forms';
 import { AngularFireModule } from '@angular/fire'
 import { AngularFirestoreModule } from '@angular/fire/firestore'
 import { environment } from 'src/environments/environment';
-
+import { MatStepperModule} from '@angular/material/stepper';
 import { MatTableModule } from "@angular/material/table";
 import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -34,12 +34,16 @@ import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { MatCardModule } from '@angular/material/card';
 import { MatSpinner, MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { OverlayModule } from '@angular/cdk/overlay';
-
+import {MatSelectModule} from '@angular/material/select';
 import {TabMenuModule} from 'primeng/tabmenu';
 import { HomepageComponent } from './homepage/homepage.component';
 import { ToolbarComponent } from './toolbar/toolbar.component';
 import { ScrollDispatcher } from '@angular/cdk/scrolling';
-
+import { SignupComponent } from './signup/signup.component';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import {MatCheckboxModule} from '@angular/material/checkbox';
+import { SigninComponent } from './signin/signin.component';
+import {AngularFireAuthModule} from '@angular/fire/auth'
 @NgModule({
   declarations: [
     AppComponent,
@@ -48,7 +52,9 @@ import { ScrollDispatcher } from '@angular/cdk/scrolling';
     NeedsComponent,
     HomepageComponent,
     ToolbarComponent,
-  ],
+    SignupComponent,
+    SigninComponent
+    ],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -78,6 +84,12 @@ import { ScrollDispatcher } from '@angular/cdk/scrolling';
     MatChipsModule,
     MatMenuModule,
     TabMenuModule,
+    MatStepperModule,
+    ReactiveFormsModule,
+    MatSelectModule,
+    MatAutocompleteModule,
+    MatCheckboxModule,
+    AngularFireAuthModule
     // ScrollDispatchModule,
   ],
   providers: [ScrollDispatcher],

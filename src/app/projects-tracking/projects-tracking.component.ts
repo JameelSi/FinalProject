@@ -14,8 +14,6 @@ import { GetDataService } from '../services/get-data/get-data.service';
 import { ProgressSpinnerOverlayService } from '../services/progressSpinerOverlay/progress-spinner-overlay.service';
 
 import firebase from 'firebase/app';
-import {MenuItem} from 'primeng/api';
-
 
 interface areaCoord {
   id: string,
@@ -214,20 +212,20 @@ export class ProjectsTrackingComponent implements OnInit, OnDestroy {
     // else 
     if (action === 'Add' && type == 'project') {
       element.dialogTitle = 'נא להכניס את הנתונים החדשים'
-      element.type = 'project'
+      element.dialogType = 'project'
     }
     else if (action === 'Delete' && type == 'project') {
       element.dialogTitle = 'בטוח למחוק את השורה?'
+      element.dialogType = 'project'
     }
     else if (action === 'Update' && type == 'project') {
       element.dialogTitle = 'מה הערכים החדשים?'
-      element.type = 'project'
+      element.dialogType = 'project'
     }
     element.clubs = this.clubCoords
     element.action = action;
     const dialogRef = this.dialog.open(DialogBoxComponent, {
       width: '35%',
-      // height: '70%',
       direction: 'rtl',
       data: element,
     });
