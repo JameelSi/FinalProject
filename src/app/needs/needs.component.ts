@@ -83,6 +83,7 @@ export class NeedsComponent implements OnInit, OnDestroy {
     });
 
     dialogRef.afterClosed().subscribe(result => {
+      console.log(result)
       if (result) {
         if (result.event == 'Add' && type == 'collection') {
           // Create a reference to the cities collection
@@ -121,6 +122,9 @@ export class NeedsComponent implements OnInit, OnDestroy {
           result.data.content[result.data.content.indexOf(answerContent)] = result.data.name;
           this.afs.doc(`Services/${result.data.id}`).update({ content: result.data.content })
         }
+      }
+      else{
+        console.log("closed")
       }
 
     });

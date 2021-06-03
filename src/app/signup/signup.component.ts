@@ -28,6 +28,7 @@ export class SignupComponent implements OnInit {
   states: string[] = [
     'Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California', 'Colorado', 'Connecticut', 'Delaware',
     'Florida', 'Georgia', 'Hawaii', 'Idaho', 'Illinois', 'Indiana', 'Iowa', 'Kansas', 'Kentucky'];
+  hobbiesArr: string[]=['מועדון גברים','סיוע טכנולגי','עזרה בקניות','רכישת תרופות','ליווי לבתי חולים'];
 
   isBigScreen:boolean=true;
   
