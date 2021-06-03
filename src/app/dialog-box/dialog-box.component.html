@@ -1,75 +1,73 @@
-<h1 mat-dialog-title><strong>{{dialogTitle}}</strong></h1>
+<div class="body">
+  <h1 mat-dialog-title><strong>{{dialogTitle}}</strong></h1>
 
-<div mat-dialog-content>
-<form #projForm="ngForm" class="frm">
+  <div mat-dialog-content>
+    <form #projForm="ngForm" class="frm">
 
-    <ng-container *ngIf="dialogType === 'needs' && action != 'Delete'; else projectTemplate">
-      <mat-form-field>
-        <textarea placeholder="{{action}} Name" matInput [(ngModel)]="local_data.name"></textarea>
-      </mat-form-field>
-    </ng-container>
+      <ng-container *ngIf="dialogType === 'needs' && action != 'Delete'; else projectTemplate">
+        <mat-form-field>
+          <textarea name="name" matInput [(ngModel)]="local_data.name"></textarea>
+        </mat-form-field>
+      </ng-container>
 
-    <ng-template #projectTemplate>
-    <ng-container *ngIf="dialogType === 'project' && newProj && action != 'Delete'; else elseTemplate">
-      <mat-form-field appearance="fill">
-        <mat-label>{{actionHebrew[action]}} תאריך</mat-label>
-        <input matInput required id="date" name="date" [matDatepicker]="picker" [(ngModel)]="newProj.date"
-          #date="ngModel">
-        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-        <mat-datepicker #picker disabled="false"></mat-datepicker>
+      <ng-template #projectTemplate>
+        <ng-container *ngIf="dialogType === 'project' && newProj && action != 'Delete'; else elseTemplate">
+          <mat-form-field appearance="fill">
+            <mat-label>{{actionHebrew[action]}} תאריך</mat-label>
+            <input matInput required id="date" name="date" [matDatepicker]="picker" [(ngModel)]="newProj.date"
+              #date="ngModel">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker disabled="false"></mat-datepicker>
 
-        <div *ngIf="date.invalid && (date.dirty || date.touched)" class="alert">
-          <div *ngIf="date.errors?.required">
-            Date is required.
-          </div>
-        </div>
-      </mat-form-field>
+            <mat-error *ngIf="date.invalid && (date.dirty || date.touched)">
+              <div *ngIf="date.errors?.required">
+                שדה התאריך הינו חובה.
+              </div>
+            </mat-error>
+          </mat-form-field>
 
-      <!-- TODO make it a drop down list/ chips of existing club coords -->
-      <mat-form-field>
-        <mat-label>{{actionHebrew[action]}} מועדון</mat-label>
-        <mat-chip-list required class="mat-chip-list-stacked">
-          <mat-chip *ngFor="let clubCoord of local_data.clubs" [selectable]="true"
-            (click)="chipSelectionChanged(clubCoord.id)">
-            {{clubCoord.name}}<br>{{clubCoord.club}}<br>{{clubCoord.address}}<br>{{clubCoord.phone}}
-          </mat-chip>
-        </mat-chip-list>
-        <div
-          *ngIf="newProj.clubCoordinatorId.invalid && (newProj.clubCoordinatorId.dirty || newProj.clubCoordinatorId.touched)"
-          class="alert">
-          <!--TODO: error message not showing-->
-          <div *ngIf="newProj.clubCoordinatorId.errors?.required">
-            clubCoordinatorId is required.
-          </div>
-        </div>
-      </mat-form-field>
+            <mat-label><b>{{actionHebrew[action]}} מועדון </b>*</mat-label>
+            <mat-radio-group required name="clubCoordinatorId" [(ngModel)]="newProj.clubCoordinatorId">
+              <mat-radio-button *ngFor="let clubCoord of local_data.clubs" [value]="clubCoord.id">
+                {{clubCoord.name}}<br>{{clubCoord.club}}<br>{{clubCoord.address}}
+              </mat-radio-button>
+            </mat-radio-group>
 
-      <mat-form-field>
-        <textarea id="projectType" name="projectType" required placeholder="{{actionHebrew[action]}} סוג מיזם" matInput
-          [(ngModel)]="newProj.projectType" #projectType="ngModel"></textarea>
-        <div *ngIf="projectType.invalid && (projectType.dirty || projectType.touched)">
-          <div *ngIf="projectType.errors?.required">
-            projectType is required.
-          </div>
-        </div>
-      </mat-form-field>
+            <!--TODO: error message not showing-->
+            <!-- <div
+              *ngIf="newProj.clubCoordinatorId.invalid && (newProj.clubCoordinatorId.dirty || newProj.clubCoordinatorId.touched)"
+              class="alert">
+              <mat-error *ngIf="newProj.clubCoordinatorId.errors?.required">
+                שדה המועדון הינו חובה.
+              </mat-error>
+            </div> -->
 
-      <mat-form-field>
-        <textarea id="comments" name="comments" placeholder="{{actionHebrew[action]}} הערות" matInput
-          [(ngModel)]="newProj.comments"></textarea>
-      </mat-form-field>
-    </ng-container>
-  </ng-template>
+          <mat-form-field>
+            <input matInput id="projectType" name="projectType" required placeholder="{{actionHebrew[action]}} סוג מיזם"
+              [(ngModel)]="newProj.projectType" #projectType="ngModel">
+            <mat-error *ngIf="projectType.invalid && (projectType.dirty || projectType.touched)">
+              <div *ngIf="projectType.errors?.required">
+                שדה סוג מיזם הינו חובה.
+              </div>
+            </mat-error>
+          </mat-form-field>
 
+          <mat-form-field>
+            <textarea matInput id="comments" name="comments" placeholder="{{actionHebrew[action]}} הערות"
+              [(ngModel)]="newProj.comments"></textarea>
+          </mat-form-field>
+        </ng-container>
+      </ng-template>
 
-    <ng-template class="delete" #elseTemplate>
-      בטוח למחוק?<b>{{local_data.name}}</b>
-    </ng-template>
+      <ng-template class="delete" #elseTemplate>
+      </ng-template>
 
-    
-  </form>
-</div>
+    </form>
+  </div>
+
   <div mat-dialog-actions>
     <button mat-button [disabled]="projForm.invalid" (click)="doAction()">{{actionHebrew[action]}}</button>
     <button mat-button (click)="closeDialog()" mat-flat-button color="warn">בטל</button>
   </div>
+
+</div>

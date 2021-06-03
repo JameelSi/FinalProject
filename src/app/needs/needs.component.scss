@@ -1,6 +1,5 @@
 // Because hebrew is right to left 
 *{ 
-  // direction: rtl; 
   color: black;
 }
   /* 1. Enable smooth scrolling */
@@ -44,7 +43,7 @@ a {
   ol {
     list-style: none;
     padding-right: 30%;
-    margin-bottom: 35%;
+    // margin-bottom: 15%;
   }
 
   .contentTitle{
@@ -67,6 +66,7 @@ a {
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     margin:10px;
     font-size: 40px;
+
     }
     .add:hover{cursor: pointer;}
   /*----------------------------- */
@@ -79,8 +79,9 @@ a {
   background: linear-gradient(
     142.53deg
     ,#00a295,#26e8f4 98.75%),#3dcda7;
-    font-size: 40px;
+    font-size: 30px;
     float:left;
+
     border-radius: 5px;
     border-style: solid;
     border-color: white;
@@ -101,7 +102,7 @@ a {
 
   .panelHeader{
   height: 120px;
-  background-color: #00a295;
+  // background-color: #00a295;
   }
   .panelBox{
     display: flex;
@@ -163,17 +164,30 @@ a {
       word-wrap: break-word;
     }
 
+    // colors: https://uigradients.com/
     .first{
-      background: linear-gradient(to right,142.53deg,#1D2B64,#F8CDDA 98.75%),#3dcda7;
+      // cheer up emo kid
+      background: #9595e7;  /* fallback for old browsers */
+      background: -webkit-linear-gradient(to right, #f7797d, #a3a3e9);  /* Chrome 10-25, Safari 5.1-6 */
+      background: linear-gradient(to right, #f7797d, #a3a3e9); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
     }
     .second{
-      background: linear-gradient(142.53deg,#c471ed,#f64f59 98.75%),#3dcda7;
+      // megatron
+      background: #c6ffdd; /* fallback for old browsers */
+      background: -webkit-linear-gradient(to right, #c6ffdd, #fbd786, #f7797d); /* Chrome 10-25, Safari 5.1-6 */
+      background: linear-gradient(to right, #c6ffdd, #fbd786, #f7797d); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
     }
     .third{
-      background: linear-gradient(142.53deg,#b92b27,#f64f59 98.75%),#3dcda7;
+      // back to earth
+      background: #00C9FF;  /* fallback for old browsers */
+      background: -webkit-linear-gradient(to left, #92FE9D, #00C9FF);  /* Chrome 10-25, Safari 5.1-6 */
+      background: linear-gradient(to left, #92FE9D, #00C9FF); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
     }
     .fourth{
-      background: linear-gradient(142.53deg,#c31432,#240b36 98.75%),#3dcda7;
+      // azure lane
+      background: #7f9ad5;  /* fallback for old browsers */
+      background: -webkit-linear-gradient(to left, #4dd3f8, #8fb0ee, #7f9ad5);  /* Chrome 10-25, Safari 5.1-6 */
+      background: linear-gradient(to left, #4dd3f8, #8fb0ee, #7f9ad5); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
     }
 
     

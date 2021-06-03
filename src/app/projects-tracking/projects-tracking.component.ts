@@ -225,7 +225,7 @@ export class ProjectsTrackingComponent implements OnInit, OnDestroy {
     element.clubs = this.clubCoords
     element.action = action;
     const dialogRef = this.dialog.open(DialogBoxComponent, {
-      width: '35%',
+      // width: '35%',
       direction: 'rtl',
       data: element,
     });

@@ -6,6 +6,8 @@ import { DialogBoxComponent } from '../dialog-box/dialog-box.component';
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore'
 import { Observable, Subscription } from 'rxjs';
+import firebase from 'firebase/app';
+import { ConditionalExpr } from '@angular/compiler';
 
 export interface Item { title: string; content: Array<string>; id: string; }
 
@@ -30,10 +32,10 @@ export class NeedsComponent implements OnInit, OnDestroy {
 
   constructor(
     private observer: BreakpointObserver,
-    public dialog: MatDialog, 
+    public dialog: MatDialog,
     readonly snackBar: MatSnackBar,
     private afs: AngularFirestore
-     ) {
+  ) {
     this.itemsCollection = afs.collection<Item>('items');
   }
 
@@ -65,7 +67,6 @@ export class NeedsComponent implements OnInit, OnDestroy {
       element.dialogTitle = 'שם של הצורך שברצונך להוסיף?'
     else if (action === 'Delete' && type == 'collection')
       element.dialogTitle = 'בטוח למחוק את הצורך וכל מעניו?'
-
     else if (action === 'Add' && type == 'doc')
       element.dialogTitle = 'נא להקליד את תוכן המענה'
     else if (action === 'Delete' && type == 'doc')
@@ -84,10 +85,22 @@ export class NeedsComponent implements OnInit, OnDestroy {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         if (result.event == 'Add' && type == 'collection') {
-          if (true)
-            this.snackBar.open("הצורך כבר נמצא !", '', { duration: 1500, direction: 'rtl', panelClass: ['snacks'] });
-          else
-            this.afs.collection('Services').add({ title: result.data.name, content: [] })
+          // Create a reference to the cities collection
+          let servicesRef = firebase.firestore().collection("Services");
+          // Create a query against the collection.
+          let query = servicesRef.where("title", "==", result.data.name.trim());
+          let exists: boolean
+          // check if service title already exists, if so don't add it, else add to database
+          query.get().then((querySnapshot) => {
+            exists = !querySnapshot.empty
+          }).then(()=>{
+            if (exists){
+              this.snackBar.open("הצורך כבר נמצא !", '', { duration: 1500, direction: 'rtl', panelClass: ['snacks'] });
+            }
+            else{
+              this.afs.collection('Services').add({ title: result.data.name, content: [] })
+            }
+          })
         } else if (result.event == 'Delete' && type == 'collection') {
           this.afs.collection('Services').doc(result.data.id).delete()
         } else if (result.event == 'Update' && type == 'collection') {

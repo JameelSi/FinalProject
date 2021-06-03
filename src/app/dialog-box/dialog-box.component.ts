@@ -28,8 +28,8 @@ export class DialogBoxComponent implements OnInit {
   action: string;
   local_data: any;
   newProj?: project
-  dialogType: 'project' | 'needs'
-  actionHebrew: { [key: string]: string } = { "Add": 'הוסף', "Update": 'עדכן', "Delete": 'מחק' }
+  dialogType: 'project' | 'needs' | 'resetPass'
+  actionHebrew: { [key: string]: string } = { "Add": 'הוסף', "Update": 'עדכן', "Delete": 'מחק', "reset": 'שלח'}
 
   constructor(public dialogRef: MatDialogRef<DialogBoxComponent>, private afs: AngularFirestore,
     //@Optional() is used to prevent error if no data is passed
@@ -52,6 +52,7 @@ export class DialogBoxComponent implements OnInit {
   }
 
   doAction() {
+    console.log(this.newProj?.clubCoordinatorId)
     this.dialogRef.close({
       event: this.action, data: this.local_data,
       newProj: { ...this.newProj, 
