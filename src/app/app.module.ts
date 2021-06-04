@@ -44,6 +44,8 @@ import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import { SigninComponent } from './signin/signin.component';
 import {AngularFireAuthModule} from '@angular/fire/auth'
+import { MatRadioModule } from '@angular/material/radio';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -89,7 +91,8 @@ import {AngularFireAuthModule} from '@angular/fire/auth'
     MatSelectModule,
     MatAutocompleteModule,
     MatCheckboxModule,
-    AngularFireAuthModule
+    AngularFireAuthModule,
+    MatRadioModule,
     // ScrollDispatchModule,
   ],
   providers: [ScrollDispatcher],
