@@ -82,7 +82,6 @@ export class NeedsComponent implements OnInit, OnDestroy {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log(result)
       if (result) {
         if (result.event == 'Add' && type == 'collection') {
           if (true)
@@ -110,25 +109,9 @@ export class NeedsComponent implements OnInit, OnDestroy {
           this.afs.doc(`Services/${result.data.id}`).update({ content: result.data.content })
         }
       }
-      else{
-        console.log("closed")
-      }
 
     });
   }
-
-  // scrollToElement($element: any): void {
-  //   console.log($element);
-  //   this.viewportScroller.scrollToAnchor($element);
-  //   setTimeout(() => {
-  //     // $element.scrollIntoView({ behavior: "smooth", block: "start", inline: "nearest" });
-  //     // this.router.onSameUrlNavigation = "reload";
-  //     this.router.navigate(["/needs/"], { fragment: $element })
-  //     // .finally(() => {
-  //     //   this.router.onSameUrlNavigation = "ignore"; // Restore config after navigation completes
-  //     // });
-  //   }, 0)
-  // }
 
   ngOnDestroy(): void {
     this.subs.unsubscribe();

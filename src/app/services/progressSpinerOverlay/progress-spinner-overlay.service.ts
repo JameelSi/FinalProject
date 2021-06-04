@@ -50,15 +50,12 @@ export class ProgressSpinnerOverlayService {
       )
   }
   show() {
-    console.log("show");
     this.spin$.next(1);
   }
   hide() {
-    console.log("hide");
     this.spin$.next(-1);
   }
   reset() {
-    console.log("reset");
     this.spin$.next(0);
   }
 

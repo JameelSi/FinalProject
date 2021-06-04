@@ -1,5 +1,6 @@
 import { CdkScrollable, ScrollDispatcher } from '@angular/cdk/scrolling';
 import { Component, NgZone, OnInit } from '@angular/core';
+import { AuthService } from '../services/auth/auth.service';
 
 @Component({
   selector: 'app-toolbar',
@@ -9,10 +10,10 @@ import { Component, NgZone, OnInit } from '@angular/core';
 export class ToolbarComponent implements OnInit {
 
   isOnTop = true;
-  
   constructor(
     private scrollDispatcher: ScrollDispatcher,
-    private zone: NgZone
+    private zone: NgZone,
+    private authService:AuthService,
   ) {}
 
   ngOnInit(): void {
@@ -32,7 +33,12 @@ export class ToolbarComponent implements OnInit {
     //     });
     //   }
     // });
+  
+
   }
 
+  logOut(){
+    this.authService.logout()
+  }
 
 }

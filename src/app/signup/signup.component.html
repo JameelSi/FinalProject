@@ -9,6 +9,7 @@
         <p class="labelP">כתובת דוא"ל</p>
       <mat-form-field appearance="outline" floatLabel='never' >
         <input matInput placeholder="הקלד כאן.." formControlName="email" required>
+        <mat-error>שדה חובה</mat-error>
       </mat-form-field>
     </div>
 
@@ -19,6 +20,7 @@
         <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePassword">
           <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
         </button>
+        <mat-error>שדה חובה</mat-error>
       </mat-form-field>
     </div>
 
@@ -29,10 +31,10 @@
 
     <form [formGroup]="details">                  
       <div class="label">
-        
         <mat-form-field appearance="outline" dir="rtl">
           <mat-label>שם פרטי</mat-label>
           <input matInput placeholder="הקלד כאן.." formControlName="fName" required>
+          <mat-error>שדה חובה</mat-error>
         </mat-form-field>
       </div>
 
@@ -40,6 +42,7 @@
       <mat-form-field appearance="outline" dir="rtl">
         <mat-label>שם משפחה</mat-label>
         <input matInput placeholder="הקלד כאן.." formControlName="lName" required>
+        <mat-error>שדה חובה</mat-error>
       </mat-form-field>
     </div>
 
@@ -47,29 +50,29 @@
       <mat-form-field appearance="outline" dir="rtl">
         <mat-label>מספר פלאפון</mat-label>
         <input matInput placeholder="הקלד כאן.." formControlName="phone" required>
+        <mat-error>שדה חובה</mat-error>
     </mat-form-field>
   </div>
 
   <div class="label">
     <mat-form-field appearance="outline" dir="rtl">
       <mat-label>עיר מגורים</mat-label>
-      <input matInput disabled  value="ירושלים"  >
+      <input matInput disabled  value="ירושלים" >
+      <mat-error>שדה חובה</mat-error>
     </mat-form-field>
   </div>
 
   <div class="label">
     <mat-form-field appearance="outline" dir="rtl">
       <mat-label>שכונה</mat-label>
-      <input type="text" matInput placeholder="הקלד כאן.."  [matAutocomplete]="auto" [formControl]="neighborhood"  required>
+      <input type="text" matInput placeholder="הקלד כאן.."  [matAutocomplete]="auto" formControlName="neighborhood"  required>
 
       <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
         <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
           {{option}}
         </mat-option>
       </mat-autocomplete>
-
-      <mat-error *ngIf="neighborhood.invalid">{{getErrorMessage()}}</mat-error>
-      
+      <mat-error >{{getErrorMessage()}}</mat-error>
     </mat-form-field>
   </div>
 
@@ -84,59 +87,45 @@
     <mat-form-field appearance="outline" dir="rtl">
       <mat-label>גיל</mat-label>
       <input matInput placeholder="הקלד כאן.." formControlName="age" type="number"  required>
+      <mat-error>שדה חובה</mat-error>
     </mat-form-field>
   </div>
   
   <div class="label">
     <mat-form-field appearance="outline" dir="rtl">
         <mat-label>מגדר</mat-label>
-
         <mat-select formControlName="gender">
           <mat-option value="male">זכר</mat-option>
           <mat-option value="female">נקבה</mat-option>
           <mat-option value="none">לא רלוונטי</mat-option>
         </mat-select>
+        <mat-error >שדה חובה</mat-error>
       </mat-form-field>
   </div>
   </form>
 </ng-template>
 
 <ng-template #stepThree>
-    <form [formGroup]="hobbies">
+    <form [formGroup]="details2">
       <form formGroupName="hobbs" class="label">
         <h3>תחומי עיניין \ צרכים</h3>
-        <p> <mat-checkbox color="primary" formControlName="first">מועדון גברים</mat-checkbox></p>
-        <p> <mat-checkbox  color="primary" formControlName="second"> סיוע טכנולגי</mat-checkbox></p>
-        <p> <mat-checkbox color="primary" formControlName="third" >עזרה בקניות</mat-checkbox></p>
-        <p> <mat-checkbox color="primary" formControlName="fourth" >רכישת תרופות</mat-checkbox></p>
-        <p> <mat-checkbox color="primary" formControlName="fifth" > ליווי לבתי חולים</mat-checkbox></p>
+        <p *ngFor="let title of hobbiesArr; index as i" > <mat-checkbox  color="primary" formControlName="{{'item'+(i+1)}}">{{title}}</mat-checkbox></p>
       </form>       
       
 
       <form formGroupName="langs" class="label">
         <h3>שליטה בשפות</h3>
-        <p><mat-checkbox color="primary" formControlName="first">עברית</mat-checkbox></p>
-        <p><mat-checkbox  color="primary" formControlName="second"> אנגלית</mat-checkbox></p>
-        <p><mat-checkbox  color="primary" formControlName="third">ערבית</mat-checkbox></p>
-        <p><mat-checkbox  color="primary" formControlName="fourth">רוסית</mat-checkbox></p>
-        <p><mat-checkbox  color="primary" formControlName="fifth">אמהרית</mat-checkbox></p>
-        <p><mat-checkbox  color="primary" formControlName="sixth">צרפתית</mat-checkbox></p>
+        <p *ngFor="let title of langsArr; index as i"><mat-checkbox color="primary" formControlName="{{'item'+(i+1)}}">{{title}}</mat-checkbox></p>
       </form>
 
     <form formGroupName="type" class="label">
         <h3>סוג</h3>
-        <p><mat-checkbox color="primary" formControlName="first" >כללי</mat-checkbox></p>
-        <p><mat-checkbox  color="primary" formControlName="second">סטודנט</mat-checkbox></p>
-        <p><mat-checkbox  color="primary" formControlName="third"> חייל</mat-checkbox></p>
-        <p><mat-checkbox  color="primary" formControlName="fourth"> תלמיד תיכון</mat-checkbox></p>
-        <p><mat-checkbox  color="primary" formControlName="fifth">תנועות נוער </mat-checkbox></p>
+        <p *ngFor="let title of typeArr; index as i"><mat-checkbox color="primary" formControlName="{{'item'+(i+1)}}">{{title}}</mat-checkbox></p>
     </form>
 
     <form formGroupName="social" class="label">
       <h3>מצב משפחתי</h3>
-      <p><mat-checkbox color="primary" formControlName="first">נשוי</mat-checkbox></p>
-      <p><mat-checkbox  color="primary" formControlName="second">אלמן</mat-checkbox></p>
-      <p><mat-checkbox color="primary" formControlName="third" > רווק</mat-checkbox></p>
+      <p *ngFor="let title of statusArr; index as i"><mat-checkbox color="primary" formControlName="{{'item'+(i+1)}}">{{title}}</mat-checkbox></p>
     </form>
 
     <div class="label">
@@ -174,7 +163,7 @@
           </div>
       </mat-step>
     
-      <mat-step [stepControl]="hobbies" errorMessage="נא להשלים את כל השדות">
+      <mat-step [stepControl]="details2" errorMessage="נא להשלים את כל השדות">
         <ng-template matStepLabel>תחומי עיניין</ng-template>
           <ng-container *ngTemplateOutlet="stepThree"></ng-container>
           <div>
@@ -187,7 +176,7 @@
         <ng-template matStepLabel>סיום</ng-template>
           <ng-container *ngTemplateOutlet="stepFour"></ng-container>
           <div>
-            <button class="next" mat-button (click)="print()">שלח</button>
+            <button class="next" mat-button (click)="createUser()">שלח</button>
             <button class="back" mat-button matStepperPrevious>אחורה</button>
           </div>
       </mat-step>
@@ -215,7 +204,7 @@
       </div>
   </mat-step>
 
-  <mat-step [stepControl]="hobbies" errorMessage="Address is required.">
+  <mat-step [stepControl]="details2" errorMessage="Address is required.">
     <ng-template matStepLabel>תחומי עיניין</ng-template>
       <ng-container *ngTemplateOutlet="stepThree"></ng-container>
       <div>
