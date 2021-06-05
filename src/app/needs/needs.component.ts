@@ -7,7 +7,6 @@ import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore'
 import { Observable, Subscription } from 'rxjs';
 import firebase from 'firebase/app';
-import { ConditionalExpr } from '@angular/compiler';
 
 export interface Item { title: string; content: Array<string>; id: string; }
 
@@ -125,7 +124,9 @@ export class NeedsComponent implements OnInit, OnDestroy {
 
     });
   }
-
+  scroll(item: string) {
+    document.getElementById(item)!.scrollIntoView()
+  }
   ngOnDestroy(): void {
     this.subs.unsubscribe();
   }

@@ -1,10 +1,20 @@
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { Component, OnInit } from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {Observable, Subscription} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
 import {STEPPER_GLOBAL_OPTIONS} from '@angular/cdk/stepper';
 import {signupUser} from '../types/user'
+
+
+// for AutoComplete - validate that user picks from the list
+function containsValidator(validOptions: Array<string>) {
+  return (control: FormControl): { [key: string]: any } | null => {
+    if (validOptions.indexOf(control.value) !== -1) {
+      return null  
+    }
+    return { 'contains': true} }
+  }
 @Component({
   selector: 'app-signup',
   templateUrl: './signup.component.html',
@@ -59,126 +69,99 @@ export class SignupComponent implements OnInit {
       fName: [''],
       lName: [''],
       phone: [''],
-      neighborhood:['',this.containsValidator],
+      neighborhood:['',containsValidator(this.neighborhoods)],
       street: [''],
       age: ['',Validators.min(0)],
       gender: ['']
     });
 
     this.details2 = this.fb.group({
-      hobbs: this.fb.group({
-        item1:[''],
-        item2:[''],
-        item3:[''],
-        item4:[''],  
-        item5:['']
+      
+      hobbs:this.fb.group({
+        hobb:this.fb.array([],[Validators.required])
       }),
+      
       langs:this.fb.group({
-        item1:[''],
-        item2:[''],
-        item3:[''],
-        item4:[''],
-        item5:[''],
-        item6:['']
+        lang:this.fb.array([],[Validators.required])
       }),
-      type: this.fb.group({
-        item1:[''],
-        item2:[''],
-        item3:[''],
-        item4:[''],
-        item5:['']
-      })
-      ,social: this.fb.group({
-        item1:[''],
-        item2:[''],
-        item3:['']
+      types: this.fb.group({
+        type:this.fb.array([],[Validators.required])
+      }),
+      socials: this.fb.group({
+        social:this.fb.array([],[Validators.required])
       }),
       bio:['']
-
+      
     });
-
-    this.fourthFormGroup = this.fb.group({
-
-    });
-
-
-    if(this.details.get('neighborhood')!=null)
-      this.filteredOptions = this.details.get('neighborhood')!.valueChanges.pipe(
-        startWith(''),
-        map(value => this._filter(value))
-      );
-  }
-
-  //filter function for neighborhoods 
-  private _filter(value: string): string[] {
-    const filterValue = (value === null) ? '' : value.toLowerCase();
-    return this.neighborhoods.filter(option => option.toLowerCase().indexOf(filterValue) === 0);
-  }
-
-  private containsValidator(neighs: FormControl) {
     
-    if (neighs.value && this.neighborhoods.indexOf('yo')==-1) 
-      return {'contains': true};
-    return null;
-  }
-  // private containsValidator(control: AbstractControl): { [key: string]: boolean } | null {
-  //   if (control.value !== undefined && this.neighborhoods.indexOf(control.value)==-1) {
-  //       return { 'contains': true };
-  //   }
-  //   return null;
-  // } 
-
-  // private containsValidator(neighs: FormControl) {
-  //   if (neighs.value && this.neighborhoods.indexOf(neighs.value)==-1) {
-  //     return {
-  //       'contains': true
-  //     };
-  //   }
-  //   return null
-  // }
-  
-  getErrorMessage() {
-    if (this.details.get('neighborhood')?.hasError('contains')) {
+    this.fourthFormGroup = this.fb.group({
+      
+    });
+    
+    
+    if(this.details.get('neighborhood')!=null)
+    this.filteredOptions = this.details.get('neighborhood')!.valueChanges.pipe(
+      startWith(''),
+      map(value => this._filter(value))
+      );
+    }
+    
+    //filter function for neighborhoods 
+    private _filter(value: string): string[] {
+      const filterValue = (value === null) ? '' : value.toLowerCase();
+      return this.neighborhoods.filter(option => option.toLowerCase().indexOf(filterValue) === 0);
+    }
+    
+    getErrorMessage() {
+      if (this.details.get('neighborhood')?.hasError('contains')) {
       return 'נא לבחור מהרשימה';
     }
     return this.details.get('neighborhood')?.hasError('required') ? 'שדה חובה' : '';
   }
-
-  fillUserArraies(arr:Array<String>, str:string | (string | number)[]){
-    let i,index=0;
-
-    for(i in this.details2.get(str)?.value){
-      if(this.details2.get(str)?.value[i])
-      arr.push(this.hobbiesArr[index])
-      index++
-    }
-
-  }
   
   createUser(){
-    if(this.emailAndPassword.invalid||this.details.invalid||this.details2.invalid)
-      return;
-    var selectedHobbs:Array<string>=[],selectedLangs:Array<string>=[],selectedType:Array<string>=[],selectedStatus:Array<string>=[];
-    this.fillUserArraies(selectedHobbs,'hobbs');
-    this.fillUserArraies(selectedLangs,'langs');
-    this.fillUserArraies(selectedType,'type');
-    this.fillUserArraies(selectedStatus,'social');
     const user: signupUser= {
-        fName: this.details.get('fName')?.value,
-        lName: this.details.get('lName')?.value,
-        phone: this.details.get('phone')?.value,
-        city: 'ירושלים',
-        neighborhood: this.details.get('neighborhood')?.value,
-        street: this.details.get('street')?.value,
-        age: this.details.get('age')?.value,
-        id: this.details.get('id')?.value,
-        hobbies:selectedHobbs,
-        langs:selectedLangs,
-        type:selectedType,
-        status:selectedStatus,
-        message: this.details2.get('message')?.value
+      fName: this.details.get('fName')?.value,
+      lName: this.details.get('lName')?.value,
+      phone: this.details.get('phone')?.value,
+      city: 'ירושלים',
+      neighborhood: this.details.get('neighborhood')?.value,
+      street: this.details.get('street')?.value,
+      age: this.details.get('age')?.value,
+      id: this.details.get('id')?.value,
+      hobbies:this.details2.get('hobbs')?.get('hobb')?.value,
+      langs:this.details2.get('langs')?.get('lang')?.value,
+      type:this.details2.get('types')?.get('type')?.value,
+      status:this.details2.get('socials')?.get('social')?.value,
+      message: this.details2.get('message')?.value
     };
     
   }
-
+  
+  onCheckboxChange(e:any,str:string,str2:string) {
+    const checkArray: FormArray = this.details2.get(str)?.get(str2) as FormArray;
+    
+    if (e.target.checked) {
+      checkArray.push(new FormControl(e.target.value));
+    } else {
+      let i: number = 0;
+      checkArray.controls.forEach( (item) => {
+        if (item.value == e.target.value) {
+          checkArray.removeAt(i);
+          return;
+        }
+        i++;
+      });
+    }
+  }
+  
 }
+
+// hobbs: this.fb.group({
+//   item1:[''],
+//   item2:[''],
+//   item3:[''],
+//   item4:[''],  
+//   item5:['']
+// }),
+// hobbs: this.fb.array([]),

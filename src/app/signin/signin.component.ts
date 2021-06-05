@@ -62,7 +62,7 @@ getEmailErrorMessage() {
   return this.loginForm.controls.username.hasError('email') ? 'כתבובת מייל אינה בפורמט נכון' : '';
 }
 resetPass(element: any){
-  element.title="נא להכניס את כתובת המייל אליו יישלח לינק איפוס סיסמה"
+  element.dialogTitle="נא להכניס את כתובת המייל אליו יישלח לינק איפוס סיסמה"
   element.dialogType = 'needs';
   element.action="Add";
   const dialogRef = this.dialog.open(DialogBoxComponent, {

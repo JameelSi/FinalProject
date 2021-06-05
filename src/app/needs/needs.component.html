@@ -3,8 +3,9 @@
   <mat-drawer mode="side" class=mat-elevation-z8 position="end" dir="rtl">
     <h2 class="contentTitle">תוכן צרכים</h2>
     <ol class="listOfContents">
-      <li *ngFor="let item of items  | async let i=index"><a [routerLink]="['./']"
-          fragment="{{'item'+i}}">{{item.title}}</a></li>
+      <li *ngFor="let item of items  | async let i=index">
+        <a (click)="scroll('item'+i)">{{item.title}}</a>
+      </li>
     </ol>
     <button class="add" (click)="addDialog('Add',{},'collection')">+</button>
   </mat-drawer>
@@ -50,8 +51,3 @@
   </mat-drawer-content>
 
 </mat-drawer-container>
-
-<!-- <div [ngClass]="isSpecial ? 'special' : ''">This div is special</div> -->
-<!-- <div [ngStyle]="currentStyles">
-      This div is initially italic, normal weight, and extra large (24px).
-    </div> -->
