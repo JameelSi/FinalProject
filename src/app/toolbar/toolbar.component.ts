@@ -10,11 +10,14 @@ import { AuthService } from '../services/auth/auth.service';
 export class ToolbarComponent implements OnInit {
 
   isOnTop = true;
+  // isLoggedIn:boolean;
   constructor(
     private scrollDispatcher: ScrollDispatcher,
     private zone: NgZone,
-    private authService:AuthService,
-  ) {}
+    public authService:AuthService,
+  ) {
+    // this.isLoggedIn=authService.isLoggedIn;
+  }
 
   ngOnInit(): void {
     // this.scrollDispatcher.scrolled().subscribe((event: any) => {
@@ -33,12 +36,11 @@ export class ToolbarComponent implements OnInit {
     //     });
     //   }
     // });
-  
-
-  }
-
+    
+    }
   logOut(){
     this.authService.logout()
+    // this.isLoggedIn=false;
   }
 
 }

@@ -48,11 +48,9 @@ export class DialogBoxComponent implements OnInit {
       this.newProj = { projectType: '', comments: '', date: moment(), clubCoordinatorId: '' }
     }
     this.dialogTitle = this.local_data.dialogTitle;
-    // console.log(this.local_data)
   }
 
   doAction() {
-    console.log(this.newProj?.clubCoordinatorId)
     this.dialogRef.close({
       event: this.action, data: this.local_data,
       newProj: { ...this.newProj, 

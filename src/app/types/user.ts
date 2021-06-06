@@ -12,7 +12,6 @@ export interface signupUser{
     neighborhood: string,
     street: string,
     age: string,
-    id: string,
     hobbies:Array<string>,
     langs:Array<string>,
     type:Array<string>,

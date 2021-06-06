@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
   providedIn: 'root'  
 })
 export class AuthService {
-  userData: any;
+  userState: any=null;
 
   constructor(
     private afa: AngularFireAuth,
@@ -18,43 +18,27 @@ export class AuthService {
     // the state will only persist in the current session or tab, and will be cleared when the tab or window in which the user authenticated is closed
     this.afa.setPersistence("session")
 
-    this.afa.authState.subscribe(user => {
-      if (user) {
-        this.userData = user;
-        localStorage.setItem('user', JSON.stringify(this.userData));
-        JSON.parse(localStorage.getItem('user') as any);
-      } else {
-        localStorage.setItem('user', null as any);
-        JSON.parse(localStorage.getItem('user')as any);
-      }
-    })
+    this.afa.authState.subscribe((auth) => {
+      this.userState = auth
+    });
 
    }
-
-  async login(email: string, password: string){
-    return await this.afa.signInWithEmailAndPassword(email,password);
-  }
-
-  
-  logout(){
-    return this.afa.signOut().then(() => {
-      localStorage.removeItem('user');
-      this.router.navigate(['']);
-    })
-  }
 
   async signUp(email: string, password: string){
     // create a user in firebase auth and add it to our firestore 
     // note that auth and firestore are 2 differente things 
-    this.afa.createUserWithEmailAndPassword(email,password).then( result=>{
+    let temp= this.afa.createUserWithEmailAndPassword(email,password).then( result=>{
         const user: signinUser= {
           email,
           password,
           uid: result.user?.uid
         };
-
         this.addtoFireStore(user);
+        return user;
+    }).catch(function(error) {
+        return null
     });
+    return temp;
   }
   addtoFireStore(user:signinUser){
     // pass uid to prevent firestore to generate random id
@@ -62,18 +46,27 @@ export class AuthService {
     ref.set(user);
   }
 
-  reset(emailAddress:string):boolean{
-    this.afa.sendPasswordResetEmail(emailAddress).then(function() {
+  reset(emailAddress:string){
+    let temp=this.afa.sendPasswordResetEmail(emailAddress).then(function() {
       return true;
     }).catch(function(error) {
       return false;
     });
-    return false;
+    return temp;
+  }
+
+  async login(email: string, password: string){
+    return await this.afa.signInWithEmailAndPassword(email,password);
+  }
+  
+  logout(){
+    this.afa.signOut().then(() => {
+      this.router.navigate(['']);
+    })
   }
 
   get isLoggedIn(): boolean {
-    const user = JSON.parse(localStorage.getItem('user') as any);
-    return (user !== null) ? true : false;
+    return (this.userState !== null) ? true : false;
   }
-
+  
 }

@@ -2,15 +2,17 @@
   הפרטים ישארו חסויים במיזם
 </h1>
 
-
 <ng-template #stepOne>
+
   <form [formGroup]="emailAndPassword">
+    <div class="emailAndPassword">
     <div class="label">
       <p class="labelP">כתובת דוא"ל</p>
       <mat-form-field appearance="outline" floatLabel='never'>
         <input matInput placeholder="הקלד כאן.." formControlName="email" required>
-        <mat-error>שדה חובה</mat-error>
+        <mat-error>{{getErrorMessage(1)}}</mat-error>
       </mat-form-field>
+      <mat-error *ngIf="validCreation">המייל שהוכס כבר קיים</mat-error>
     </div>
 
     <div class="label">
@@ -22,16 +24,19 @@
           [attr.aria-pressed]="hidePassword">
           <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
         </button>
-        <mat-error>שדה חובה</mat-error>
+        <mat-error>{{getErrorMessage(2)}}</mat-error>
       </mat-form-field>
     </div>
+  </div>
+  <!-- <button class="createUserBtn && mat-elvation-z8" mat-raised-button (click)="createUser()">יצר משתמש</button> -->
 
+    
   </form>
 </ng-template>
 
 <ng-template #stepTwo>
 
-  <form [formGroup]="details">
+  <form class="form"[formGroup]="details">
     <div class="label">
       <mat-form-field appearance="outline" dir="rtl">
         <mat-label>שם פרטי</mat-label>
@@ -52,7 +57,7 @@
       <mat-form-field appearance="outline" dir="rtl">
         <mat-label>מספר פלאפון</mat-label>
         <input matInput placeholder="הקלד כאן.." formControlName="phone" required>
-        <mat-error>שדה חובה</mat-error>
+        <mat-error>{{getErrorMessage(3)}}</mat-error>
       </mat-form-field>
     </div>
 
@@ -67,8 +72,7 @@
     <div class="label">
       <mat-form-field appearance="outline" dir="rtl">
         <mat-label>שכונה</mat-label>
-        <input type="text" matInput placeholder="הקלד כאן.." [matAutocomplete]="auto" formControlName="neighborhood"
-          required>
+        <input type="text" matInput placeholder="הקלד כאן.." [matAutocomplete]="auto" formControlName="neighborhood"required>
 
         <button *ngIf="details.get('neighborhood')?.value" matSuffix mat-icon-button aria-label="נקה"
           (click)="details.get('neighborhood')?.setValue('')">
@@ -114,50 +118,69 @@
 </ng-template>
 
 <ng-template #stepThree>
-  <form [formGroup]="details2">
+  <form  class="form" [formGroup]="details2">
 
-    <form formGroupName="hobbs" class="label">
-      <h3 class="checkTtile">תחומי עיניין \ צרכים</h3>
-      <mat-error *ngIf="this.details2.get('hobbs')?.get('hobb')?.errors?.required">נא לסמן לפחות 1*</mat-error>
-      <div *ngFor="let data of hobbiesArr">
+    <form class="form" formGroupName="hobbs" class="checksLabel">
+      <div>
+        <h3 class="checkTtile">תחומי עיניין \ צרכים</h3>
+        <h5>
+          <mat-error class="err" *ngIf="this.details2.get('hobbs')?.get('hobb')?.errors?.required">נא לסמן לפחות 1*
+          </mat-error>
+        </h5>
+      </div>
+      <div *ngFor="let data of hobbiesArr" class="checks">
         <label>
-          <input type="checkbox" [value]="data" (change)="onCheckboxChange($event,'hobbs','hobb')" />
+          <input class="checBox" type="checkbox" [value]="data" (change)="onCheckboxChange($event,'hobbs','hobb')" />
           {{data}}
         </label>
       </div>
     </form>
 
 
-    <form formGroupName="langs" class="label">
-      <h3 class="checkTtile">שליטה בשפות</h3>
-      <h5>
-        <mat-error *ngIf="this.details2.get('langs')?.get('lang')?.errors?.required">נא לסמן לפחות 1*</mat-error>
-      </h5>
-      <div *ngFor="let data of langsArr">
+    <form class="form" formGroupName="langs" class="checksLabel">
+      <div>
+        <h3 class="checkTtile">שליטה בשפות</h3>
+        <h5>
+          <mat-error class="err" *ngIf="this.details2.get('langs')?.get('lang')?.errors?.required">נא לסמן לפחות 1*
+          </mat-error>
+        </h5>
+      </div>
+      <div *ngFor="let data of langsArr" class="checks">
         <label>
-          <input type="checkbox" [value]="data" (change)="onCheckboxChange($event,'langs','lang')" />
+          <input class="checBox" type="checkbox" [value]="data" (change)="onCheckboxChange($event,'langs','lang')" />
           {{data}}
         </label>
       </div>
     </form>
 
-    <form formGroupName="types" class="label">
-      <h3 class="checkTtile">סוג</h3>
-      <mat-error *ngIf="this.details2.get('types')?.get('type')?.errors?.required">נא לסמן לפחות 1*</mat-error>
-      <div *ngFor="let data of typeArr">
+    <form class="form" formGroupName="types" class="checksLabel">
+      <div>
+        <h3 class="checkTtile">סוג</h3>
+        <h5>
+          <mat-error class="err" *ngIf="this.details2.get('types')?.get('type')?.errors?.required">נא לסמן לפחות 1*
+          </mat-error>
+        </h5>
+      </div>
+      <div *ngFor="let data of typeArr" class="checks">
         <label>
-          <input type="checkbox" [value]="data" (change)="onCheckboxChange($event,'types','type')" />
+          <input class="checBox" type="checkbox" [value]="data" (change)="onCheckboxChange($event,'types','type')" />
           {{data}}
         </label>
       </div>
     </form>
 
-    <form formGroupName="socials" class="label">
-      <h3 class="checkTtile">מצב משפחתי</h3>
-      <mat-error *ngIf="this.details2.get('socials')?.get('social')?.errors?.required">נא לסמן לפחות 1*</mat-error>
-      <div *ngFor="let data of hobbiesArr; let i=index">
+    <form formGroupName="socials" class="checksLabel">
+      <div>
+        <h3 class="checkTtile">מצב משפחתי</h3>
+        <h5>
+          <mat-error class="err" *ngIf="this.details2.get('socials')?.get('social')?.errors?.required">נא לסמן לפחות 1*
+          </mat-error>
+        </h5>
+      </div>
+      <div *ngFor="let data of hobbiesArr; let i=index" class="checks">
         <label>
-          <input type="checkbox" [value]="data" (change)="onCheckboxChange($event,'socials','social')" />
+          <input class="checBox" type="checkbox" [value]="data"
+            (change)="onCheckboxChange($event,'socials','social')" />
           {{data}}
         </label>
       </div>
@@ -173,24 +196,19 @@
 </ng-template>
 
 <ng-template #stepFour>
-  <p>הגעת לסוף הטופס אם ניתן או לחזור ולערוך פרטים או ללחוץ על שלח</p>
+  <p>הגעת לסוף הטופס ניתן לערוך פרטים או ללחוץ על שלח</p>
 </ng-template>
-
-
-
 
 <ng-template [ngIf]="isBigScreen" [ngIfElse]="smallScreen">
   <section>
     <mat-horizontal-stepper #stepper dir="rtl">
-
-
       <mat-step [stepControl]="emailAndPassword" errorMessage="נא להשלים את כל השדות">
         <ng-template matStepLabel>יצירת חשבון</ng-template>
         <ng-container *ngTemplateOutlet="stepOne"></ng-container>
-        <button class="next" mat-button matStepperNext>הבא -></button>
+        <button mat-button class="next" matStepperNext>הבא -></button>
       </mat-step>
 
-      <mat-step [stepControl]="details" errorMessage="נא להשלים את כל השדות">
+      <mat-step  [stepControl]="details" errorMessage="נא להשלים את כל השדות">
         <ng-template matStepLabel>פרטים אישיים</ng-template>
         <ng-container *ngTemplateOutlet="stepTwo"></ng-container>
         <div>
@@ -199,7 +217,7 @@
         </div>
       </mat-step>
 
-      <mat-step [stepControl]="details2" errorMessage="נא להשלים את כל השדות">
+      <mat-step  [stepControl]="details2" errorMessage="נא להשלים את כל השדות">
         <ng-template matStepLabel>תחומי עיניין</ng-template>
         <ng-container *ngTemplateOutlet="stepThree"></ng-container>
         <div>
@@ -208,15 +226,15 @@
         </div>
       </mat-step>
 
-      <mat-step errorMessage="נא להשלים את כל השדות">
+      <mat-step  errorMessage="נא להשלים את כל השדות">
         <ng-template matStepLabel>סיום</ng-template>
+        <mat-error style="float: left;" *ngIf="validCreation"><strong>המייל שהוכס כבר קיים</strong></mat-error>
         <ng-container *ngTemplateOutlet="stepFour"></ng-container>
         <div>
           <button class="next" mat-button (click)="createUser()">שלח</button>
           <button class="back" mat-button matStepperPrevious>אחורה</button>
         </div>
       </mat-step>
-
     </mat-horizontal-stepper>
   </section>
 </ng-template>
@@ -224,7 +242,6 @@
 <ng-template #smallScreen>
   <section>
     <mat-vertical-stepper #stepper dir="rtl">
-
       <mat-step [stepControl]="emailAndPassword" errorMessage="Name is required.">
         <ng-template matStepLabel>יצירת חשבון</ng-template>
         <ng-container *ngTemplateOutlet="stepOne"></ng-container>
@@ -257,7 +274,6 @@
           <button class="back" mat-button matStepperPrevious>אחורה</button>
         </div>
       </mat-step>
-
     </mat-vertical-stepper>
   </section>
 </ng-template>
