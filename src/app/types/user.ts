@@ -17,4 +17,5 @@ export interface signupUser{
     type:Array<string>,
     status:Array<string>,
     message: string,
+    admin:boolean
 }

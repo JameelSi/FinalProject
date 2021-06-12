@@ -15,9 +15,7 @@ export class ToolbarComponent implements OnInit {
     private scrollDispatcher: ScrollDispatcher,
     private zone: NgZone,
     public authService:AuthService,
-  ) {
-    // this.isLoggedIn=authService.isLoggedIn;
-  }
+  ) {}
 
   ngOnInit(): void {
     // this.scrollDispatcher.scrolled().subscribe((event: any) => {
@@ -40,7 +38,6 @@ export class ToolbarComponent implements OnInit {
     }
   logOut(){
     this.authService.logout()
-    // this.isLoggedIn=false;
   }
 
 }

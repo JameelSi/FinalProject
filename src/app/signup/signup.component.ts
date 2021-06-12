@@ -179,6 +179,7 @@ export class SignupComponent implements OnInit {
         this.validCreation = true;
       // user created
       else {
+        this.validCreation = true;
         let msg, street;
         if (!this.details2.get('message')?.value)
           msg = null;
@@ -188,7 +189,9 @@ export class SignupComponent implements OnInit {
           street = null;
         else
           street = this.details2.get('street')?.value
-        const user: signupUser = {
+
+        this.afs.doc(`users/${result.uid}`).update({
+
           fName: this.details.get('fName')?.value,
           lName: this.details.get('lName')?.value,
           phone: this.details.get('phone')?.value,
@@ -200,17 +203,18 @@ export class SignupComponent implements OnInit {
           langs: this.details2.get('langs')?.get('lang')?.value,
           type: this.details2.get('types')?.get('type')?.value,
           status: this.details2.get('socials')?.get('social')?.value,
-          message: msg
-        };
-        this.afs.doc(`users/${result.uid}`).update({ user }).then(result => {
+          message: msg,
+          admin: false
+          
+        }).then(result => {
           this.snackBar.open("התהליך סיים בהצלחה", '', { duration: 3000, direction: 'rtl', panelClass: ['snacks'] });
-          this.router.navigate(["sigin"]);
+          this.router.navigate(['']);
         }).catch(err => {
           this.snackBar.open("קרתה שגיאה נא לנסות בזמן מאוחר יותר", '', { duration: 3000, direction: 'rtl', panelClass: ['snacks'] });
         })
 
       }
-    }).catch(err=>{
+    }).catch(err => {
       console.log('err from signup')
     })
   }
