@@ -4,7 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { DialogBoxComponent } from '../dialog-box/dialog-box.component';
 import { Router } from '@angular/router';
 import { AuthService } from '../services/auth/auth.service';
-import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-signin',
@@ -62,9 +62,15 @@ getEmailErrorMessage() {
   return this.loginForm.controls.username.hasError('email') ? 'כתבובת מייל אינה בפורמט הנכון' : '';
 }
 resetPass(element: any){
+<<<<<<< HEAD
   element.dialogTitle = "נא להכניס את כתובת המייל אליו יישלח לינק איפוס סיסמה"
   element.dialogType = "resetPass"
   element.action = "reset"
+=======
+  element.dialogTitle="נא להכניס את כתובת המייל אליו יישלח לינק איפוס סיסמה"
+  element.dialogType = 'needs';
+  element.action="Add";
+>>>>>>> eba8fee81a15a4da63a8791d11f7ec550ee88354
   const dialogRef = this.dialog.open(DialogBoxComponent, {
     direction: 'rtl',
     data: element,

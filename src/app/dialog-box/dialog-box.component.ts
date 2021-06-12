@@ -46,7 +46,6 @@ export class DialogBoxComponent implements OnInit {
       this.newProj = { projectType: '', comments: '', date: moment(), clubCoordinatorId: '' }
     }
     this.dialogTitle = this.local_data.dialogTitle;
-    // console.log(this.local_data)
   }
 
   doAction() {

@@ -12,6 +12,7 @@ export interface MenuItem {
   // showOnDesktop: boolean;
 }
 
+import { AuthService } from '../services/auth/auth.service';
 @Component({
   selector: 'app-toolbar',
   templateUrl: './toolbar.component.html',
@@ -46,6 +47,7 @@ export class ToolbarComponent implements OnInit {
     private scrollDispatcher: ScrollDispatcher,
     private zone: NgZone,
     private observer: BreakpointObserver,
+    public authService:AuthService,
   ) {}
 
   ngOnInit(): void {
@@ -66,6 +68,10 @@ export class ToolbarComponent implements OnInit {
     //     });
     //   }
     // });
+    
+    }
+  logOut(){
+    this.authService.logout()
   }
   ngAfterViewInit() {
 

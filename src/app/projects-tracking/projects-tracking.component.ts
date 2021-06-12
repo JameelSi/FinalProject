@@ -6,7 +6,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatDrawer } from '@angular/material/sidenav';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { MatTabChangeEvent } from '@angular/material/tabs';
+import {MatAccordion} from '@angular/material/expansion';
 import { BehaviorSubject, combineLatest, Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { DialogBoxComponent } from '../dialog-box/dialog-box.component';
@@ -68,6 +68,8 @@ export class ProjectsTrackingComponent implements OnInit, OnDestroy {
   // @ViewChild(MatSort) sort!: MatSort;
   @ViewChildren(MatSort) sorts!: QueryList<MatSort>;
   @ViewChildren(MatPaginator) paginators!: QueryList<MatPaginator>;
+  @ViewChild(MatAccordion) accordion!: MatAccordion;
+
 
   areaCoords: areaCoord[] = []
   clubCoords: clubCoord[] = []
@@ -176,7 +178,9 @@ export class ProjectsTrackingComponent implements OnInit, OnDestroy {
   // for admins get all, for area coords get their 8, so on... 
 
   getAreaCoordsData(areaCoord: areaCoord | 'all') {
+    
     if (areaCoord === "all") {
+      this.accordion.closeAll();
       this.currAreaCoord = undefined
       this.currNeighborhoods = this.allNeighborhoods
     } else {

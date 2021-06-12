@@ -7,7 +7,6 @@ import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore'
 import { Observable, Subscription } from 'rxjs';
 import firebase from 'firebase/app';
-import { ConditionalExpr } from '@angular/compiler';
 
 export interface Item { title: string; content: Array<string>; id: string; }
 
@@ -83,7 +82,6 @@ export class NeedsComponent implements OnInit, OnDestroy {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log(result)
       if (result) {
         if (result.event == 'Add' && type == 'collection') {
           // Create a reference to the cities collection
@@ -123,26 +121,12 @@ export class NeedsComponent implements OnInit, OnDestroy {
           this.afs.doc(`Services/${result.data.id}`).update({ content: result.data.content })
         }
       }
-      else{
-        console.log("closed")
-      }
 
     });
   }
-
-  // scrollToElement($element: any): void {
-  //   console.log($element);
-  //   this.viewportScroller.scrollToAnchor($element);
-  //   setTimeout(() => {
-  //     // $element.scrollIntoView({ behavior: "smooth", block: "start", inline: "nearest" });
-  //     // this.router.onSameUrlNavigation = "reload";
-  //     this.router.navigate(["/needs/"], { fragment: $element })
-  //     // .finally(() => {
-  //     //   this.router.onSameUrlNavigation = "ignore"; // Restore config after navigation completes
-  //     // });
-  //   }, 0)
-  // }
-
+  scroll(item: string) {
+    document.getElementById(item)!.scrollIntoView()
+  }
   ngOnDestroy(): void {
     this.subs.unsubscribe();
   }

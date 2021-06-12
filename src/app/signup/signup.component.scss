@@ -6,12 +6,17 @@
 section{
     margin: 50px;
 }
-form{
+.form{
     background-color: #FDFDFD;
     display: flex;
     flex-wrap: wrap;
     min-height: 30vh;
     justify-content: space-evenly;
+}
+.emailAndPassword{
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
 }
 
 .label{
@@ -20,8 +25,7 @@ form{
     margin: 10px;
     padding: 10px;
     flex: 1;
-    flex-basis:25%
-    
+    flex-basis:25%;
 }
 .labelP{
     font-weight: bold;
@@ -35,6 +39,11 @@ form{
     width: 15%;
     font-weight: bolder;
     // margin-right: 17%;
+    float: left;
+}
+.lastErr{
+    display: flex;
+    flex-direction: column;
     float: left;
 }
 
@@ -51,7 +60,36 @@ mat-checkbox{
 }
 h3{
     font-weight: bold;
+    margin:0px;
 }
+
+.checks{
+    margin-right: 8px;
+    font-size: 14px;
+}
+.checBox{
+    height: 15px;
+    width: 20px;
+}
+.checksLabel{
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    flex-basis:25%
+}
+.err{
+    margin-top:-4px;
+}
+
+.createUserBtn{
+    font-weight: bold;
+    height: fit-content;
+    align-self: auto;
+    background-color: #48BF92;
+    color: #FDFDFD;
+
+}
+
 
 @media screen and (max-width: 800px) {
     section{
