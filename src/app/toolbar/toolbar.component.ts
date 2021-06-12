@@ -49,23 +49,23 @@ export class ToolbarComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.scrollDispatcher.scrolled().subscribe((event: any) => {
-      console.log('event', event)
-      const scroll = event.CdkScrollable.measureScrollOffset("start");
-      let newIsOnTop = this.isOnTop;
+    // this.scrollDispatcher.scrolled().subscribe((event: any) => {
+    //   console.log('event', event)
+    //   const scroll = event.CdkScrollable.measureScrollOffset("start");
+    //   let newIsOnTop = this.isOnTop;
 
-      if (scroll > 0) {
-        newIsOnTop = false
-      } else {
-        newIsOnTop = true;
-      }
+    //   if (scroll > 0) {
+    //     newIsOnTop = false
+    //   } else {
+    //     newIsOnTop = true;
+    //   }
 
-      if (newIsOnTop !== this.isOnTop) {
-        this.zone.run(() => {
-          this.isOnTop = newIsOnTop;
-        });
-      }
-    });
+    //   if (newIsOnTop !== this.isOnTop) {
+    //     this.zone.run(() => {
+    //       this.isOnTop = newIsOnTop;
+    //     });
+    //   }
+    // });
   }
   ngAfterViewInit() {
 
