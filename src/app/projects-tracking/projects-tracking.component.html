@@ -1,6 +1,7 @@
 
-<div class="menu-header" *ngIf="sidenav.mode == 'over'">
+<div class="menu-header" *ngIf="sidenav.mode == 'over'" >
     <span class="spacer"></span>
+    <div style="display: flex; flex-direction: row; align-items:baseline;">
     <h4 class="title">רכזי אזור</h4>
     <button mat-icon-button (click)="sidenav.toggle()">
         <mat-icon *ngIf="!sidenav.opened">
@@ -10,6 +11,7 @@
             close
         </mat-icon>
     </button>
+    </div>
 </div>
 
 <!-------------------- SIDENAV DRAWER ------------------------------------------------------>
@@ -65,18 +67,18 @@
 
 
         <!-------------------- NEIGHB MANAGER ------------------------------------------------------>
-        <mat-card class="mngr-details-container" *ngIf="currNeighborhood?.managerInfo">
-            <mat-card-title dir="rtl"> מידע על מנהל אזור</mat-card-title>
-            <mat-card-content class="mngr-details" dir="rtl">
+        <mat-card dir="rtl" class="mngr-details-container" *ngIf="currNeighborhood?.managerInfo">
+            <mat-card-title > מידע על מנהל אזור</mat-card-title>
+            <mat-card-content class="mngr-details">
                 <section>
-                        {{currNeighborhood?.managerInfo?.name}} :שם
+                    שם: {{currNeighborhood?.managerInfo?.name}} 
                 </section>
                 <section>
-                        {{currNeighborhood?.managerInfo?.email}} :מייל
-                    </section>
+                    מייל: {{currNeighborhood?.managerInfo?.email}}
+                </section>
                 <section>
-                        {{currNeighborhood?.managerInfo?.phone}} :פלאפון
-                    </section>
+                    פלאפון: {{currNeighborhood?.managerInfo?.phone}}
+                </section>
             </mat-card-content>
         </mat-card>
     </div>
@@ -95,7 +97,7 @@
 
         <ng-container matColumnDef="date">
             <mat-header-cell *matHeaderCellDef mat-sort-header>תאריך</mat-header-cell>
-            <mat-cell *matCellDef="let project" >{{project.date.toDate() | date: 'HH:mm dd/MM/yy'}}
+            <mat-cell *matCellDef="let project" >{{project.date.toDate() | date: 'dd/MM/yy'}}
             </mat-cell>
         </ng-container>
 

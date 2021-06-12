@@ -2,17 +2,20 @@ import { BreakpointObserver } from '@angular/cdk/layout';
 import { ScrollDispatcher } from '@angular/cdk/scrolling';
 import { Component, NgZone, OnInit, ViewChild } from '@angular/core';
 import { MatToolbar } from '@angular/material/toolbar';
+import { AuthService } from '../services/auth/auth.service';
 
 export interface MenuItem {
   label: string;
   icon: string;
   route: string;
+  admin: boolean;
+  requireLogIn?: boolean;
+  click?: Function
   // showOnMobile: boolean;
   // showOnTablet: boolean;
   // showOnDesktop: boolean;
 }
 
-import { AuthService } from '../services/auth/auth.service';
 @Component({
   selector: 'app-toolbar',
   templateUrl: './toolbar.component.html',
@@ -23,26 +26,29 @@ export class ToolbarComponent implements OnInit {
   isOnTop = true;
   menuItems: MenuItem[] = [
     {
-      label: "מעקב מיזמים",
-      icon: "table_chart", // summorize / show_chart
-      route: "/projectsTracking",
-    },{
-      label: "מענים",
-      icon: "medical_services",
-      route: "/needs",
+      label: "דף הבית",
+      icon: "home",
+      route: "/home",
+      admin: false,
     },{
       label: "רישום",
       icon: "person_add_alt",
       route: "/signup",
+      admin: false,
     }, {
-      label: "כניסה",
-      icon: "login",
-      route: "/signin",
-    }, {
-      label: "דף הבית",
-      icon: "home",
-      route: "/home",
-    }]
+      label: "מעקב מיזמים",
+      icon: "table_chart", // summorize / show_chart
+      route: "/projectsTracking",
+      admin: true,
+
+    },{
+      label: "מענים",
+      icon: "medical_services",
+      route: "/needs",
+      admin: false,
+    },
+    
+  ]
   constructor(
     private scrollDispatcher: ScrollDispatcher,
     private zone: NgZone,
@@ -74,6 +80,6 @@ export class ToolbarComponent implements OnInit {
     this.authService.logout()
   }
   ngAfterViewInit() {
-
+    // console.log(this.authService.isAdmin())
   }
 }

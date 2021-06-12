@@ -3,7 +3,6 @@ import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/fire
 import { Observable } from 'rxjs';
 import { GetDataService } from '../services/get-data/get-data.service';
 import firebase from 'firebase/app';
-import { Reference } from '@angular/compiler/src/render3/r3_ast';
 
 interface responsiveCarouselOption {
   breakpoint: string,
@@ -15,8 +14,9 @@ interface volunteeringOpp {
   title: string,
   type: any,
   description: string,
-  date: Date,
-  id: string,
+  date?: Date,
+  id?: string,
+  img? : string,
 }
 
 @Component({
@@ -33,43 +33,38 @@ export class HomepageComponent implements OnInit {
 
     constructor(private afs: AngularFirestore, private dataProvider: GetDataService,) {
 
-      // this.volunteeringOpps = [
-      //   {
-      //     name: "opportunity 1",
-      //     title: "hu",
-      //     description: "hu",
-      //     img: "../../assets/imgs/hands2.jpg",
-      //     type: "",
-      //   },
-      //   {
-      //     name: "opportunity 2",
-      //     title: "he",
-      //     description: "he",
-      //     img: "../../assets/imgs/hands.jpg",
-      //     type: "",
-      //   },
-      //   {
-      //     name: "opportunity 3",
-      //     title: "ha",
-      //     description: "ha",
-      //     img: "../../assets/imgs/people_transparent.png",
-      //     type: "",
-      //   },
-      //   {
-      //     name: "opportunity 4",
-      //     title: "hi",
-      //     description: "hi",
-      //     img: "../../assets/imgs/hands2.jpg",
-      //     type: "",
-      //   },
-      //   {
-      //     name: "opportunity 5",
-      //     title: "ho",
-      //     description: "ho",
-      //     img: "../../assets/imgs/hands.jpg",
-      //     type: "",
-      //   },
-      // ]
+      this.volunteeringOpps = [
+        {
+          title: "hu",
+          description: "hu",
+          img: "../../assets/imgs/shopping.png",
+          type: "",
+        },
+        {
+          title: "he",
+          description: "he",
+          img: "../../assets/imgs/technology.png",
+          type: "",
+        },
+        {
+          title: "ha",
+          description: "ha",
+          img: "../../assets/imgs/hands.jpg",
+          type: "",
+        },
+        {
+          title: "hi",
+          description: "hi",
+          img: "../../assets/imgs/dancing.png",
+          type: "",
+        },
+        {
+          title: "ho",
+          description: "ho",
+          img: "../../assets/imgs/music.png",
+          type: "",
+        },
+      ]
 
       this.responsiveOptions = [
         {
@@ -91,12 +86,12 @@ export class HomepageComponent implements OnInit {
     }
 
 ngOnInit(): void {
-  this.dataProvider.getProjectVolOppsData().subscribe(res =>{
-    this.volunteeringOpps = res
-    // this.volunteeringOpps.forEach(opp => {
-    //   opp.type = this.storage.refFromURL(opp.type)
-    // })
-  })
+  // this.dataProvider.getProjectVolOppsData().subscribe(res =>{
+  //   this.volunteeringOpps = res
+  //   // this.volunteeringOpps.forEach(opp => {
+  //   //   opp.type = this.storage.refFromURL(opp.type)
+  //   // })
+  // })
 }
 
 }

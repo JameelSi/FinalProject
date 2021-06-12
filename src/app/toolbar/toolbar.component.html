@@ -26,7 +26,7 @@
 </mat-toolbar> -->
 <!-- </div> -->
 
-    <!-- <button mat-button routerLink="/home">דף הבית</button>
+<!-- <button mat-button routerLink="/home">דף הבית</button>
     <button *ngIf="!authService.isLoggedIn"  mat-button routerLink="/signup">רישום</button>
     <button *ngIf="!authService.isLoggedIn" mat-button  routerLink="/signin">
         <mat-icon>login</mat-icon>
@@ -43,21 +43,38 @@
     <mat-toolbar fxLayout="row" class="fixed-toolbar">
         <span fxFlex>גיל שלילי זה אנחנו</span>
         <span class="spacer"></span>
-        <button mat-button routerLink={{item.route}} *ngFor="let item of menuItems" fxHide.lt-sm>
-            <!-- <mat-icon class="mr">{{item.icon}}</mat-icon> -->
-            {{item.label}}
-        </button>
+        <ng-container *ngIf="!authService.isLoggedIn">
+            <mat-icon fxHide fxShow.lt-sm>login</mat-icon>
+            <button routerLink="/signin" mat-button>כניסה</button>
+        </ng-container>
+        <div routerLink={{item.route}} *ngFor="let item of menuItems" fxHide.lt-sm>
+            <ng-container *ngIf=" ( item.admin && authService.isLoggedIn && authService.isAdmin ) || !item.admin 
+            || item.requireLogIn && authService.isLoggedIn">
+                <!-- <mat-icon class="mr">{{item.icon}}</mat-icon> -->
+                <button mat-button>
+                    {{item.label}}
+                </button>
+            </ng-container>
+        </div>
+        <ng-container *ngIf="authService.isLoggedIn">
+            <mat-icon fxHide fxShow.lt-sm>logout</mat-icon>
+            <button mat-button (click)="logOut()">יציאה</button>
+        </ng-container>
+
         <button mat-icon-button [matMenuTriggerFor]="dropMenu" fxHide fxShow.lt-sm>
             <mat-icon>more_vert</mat-icon>
         </button>
         <!-- add signin/sign out outside menu -->
         <mat-menu #dropMenu="matMenu">
             <div routerLink={{item.route}} *ngFor="let item of menuItems">
-                <button mat-menu-item>
-                    <mat-icon>{{item.icon}}</mat-icon>
-                    {{item.label}}
-                </button>
-                <mat-divider></mat-divider>
+                <ng-container *ngIf=" ( item.admin && authService.isLoggedIn && authService.isAdmin ) || !item.admin 
+                    || item.requireLogIn && authService.isLoggedIn">
+                    <button mat-menu-item>
+                        <mat-icon>{{item.icon}}</mat-icon>
+                        {{item.label}}
+                    </button>
+                    <mat-divider></mat-divider>
+                </ng-container>
             </div>
         </mat-menu>
     </mat-toolbar>

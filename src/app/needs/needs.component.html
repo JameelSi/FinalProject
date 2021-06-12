@@ -7,13 +7,13 @@
         <a (click)="scroll('item'+i)">{{item.title}}</a>
       </li>
     </ol>
-    <button class="add" (click)="addDialog('Add',{},'collection')">+</button>
+    <button *ngIf="authService.isLoggedIn && authService.isAdmin" class="add" (click)="addDialog('Add',{},'collection')">+</button>
   </mat-drawer>
 
   <mat-drawer-content id="mainContent" dir="rtl">
     <mat-accordion>
       <div *ngFor="let item of items | async let i=index" id="{{'item'+i}}" class="panelBox">
-        <div class="icons">
+        <div *ngIf="authService.isLoggedIn && authService.isAdmin" class="icons">
           <mat-icon (click)="addDialog('Update',item,'collection')">edit</mat-icon>
           <mat-icon class="delete" (click)="addDialog('Delete',item,'collection')">delete</mat-icon>
         </div>
@@ -29,16 +29,16 @@
           </mat-expansion-panel-header>
           <div class="answersContentBox">
             <div *ngFor="let content of item.content; index as i" class="answersBox">
-              <mat-icon class="answersDelete" (click)="addDialog('Delete',item,'doc',content)">do_not_disturb_on
+              <mat-icon *ngIf="authService.isLoggedIn && authService.isAdmin" class="answersDelete" (click)="addDialog('Delete',item,'doc',content)">do_not_disturb_on
               </mat-icon>
               <div class="answersContent"
                 [ngClass]="{ 'first': i%4===0,'second' : i%4===1,'third':i%4===2,'fourth':i%4==3}">
                 {{content}}
-                <mat-icon class="sss" (click)="addDialog('Update',item,'doc',content)">edit</mat-icon>
+                <mat-icon *ngIf="authService.isLoggedIn && authService.isAdmin" class="sss" (click)="addDialog('Update',item,'doc',content)">edit</mat-icon>
               </div>
             </div>
           </div>
-          <button class="answersAdd" (click)="addDialog('Add',item,'doc')">+</button>
+          <button *ngIf="authService.isLoggedIn && authService.isAdmin" class="answersAdd" (click)="addDialog('Add',item,'doc')">+</button>
 
 
         </mat-expansion-panel>

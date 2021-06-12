@@ -7,6 +7,7 @@ import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore'
 import { Observable, Subscription } from 'rxjs';
 import firebase from 'firebase/app';
+import { AuthService } from '../services/auth/auth.service';
 
 export interface Item { title: string; content: Array<string>; id: string; }
 
@@ -33,7 +34,8 @@ export class NeedsComponent implements OnInit, OnDestroy {
     private observer: BreakpointObserver,
     public dialog: MatDialog,
     readonly snackBar: MatSnackBar,
-    private afs: AngularFirestore
+    private afs: AngularFirestore,
+    public authService:AuthService,
   ) {
     this.itemsCollection = afs.collection<Item>('items');
   }
