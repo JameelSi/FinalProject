@@ -1,4 +1,87 @@
-<div>
+<div class="body">
 
-    <p>homepage works!</p>
+    <div dir="rtl" class="bkg-img">
+        <div class="welcome-spacer"></div>
+        <div class="welcome-wrapper">
+            <img class="side-img-mobile" fxHide fxShow.lt-sm src="../../assets/imgs/people_transparent.png">
+            <div class="spacer" fxHide fxShow.lt-sm></div>
+            <div class="welcome">ברוכים הבאים לאתר שלנו!
+                <div class="spacer"></div>
+                <div fxHide.lt-sm class="spacer"></div>
+                <div class="welcome-info">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
+                    et
+                    dolore magna aliqua.
+                    <!-- Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
+                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
+                    fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
+                    deserunt mollit anim id est laborum. -->
+                </div>
+                <div fxHide.lt-sm class="spacer"></div>
+                <div class="spacer"></div>
+                <div class="btn-wrapper">
+                    <button class="main-btn" mat-raised-button color="accent">click me!</button>
+                    <button class="main-btn" mat-raised-button color="accent">click me 2!</button>
+                </div>
+            </div>
+            <img fxHide.lt-sm class="side-img" src="../../assets/imgs/people_transparent.png">
+            <!-- <div class="welcome">[some-pic]</div> -->
+        </div>
+    </div>
+
+    <div class="spacer"></div>
+
+    <p-carousel [value]="volunteeringOpps" [numVisible]="3" [numScroll]="1" [responsiveOptions]="responsiveOptions">
+        <ng-template pTemplate="header">
+            <div dir="rtl" class="vol-header">הזדמנויות התנדבות</div>
+        </ng-template>
+        <ng-template let-volunteerOpp pTemplate="item">
+            <div class="vol-item">
+                <div class="vol-item-content">
+                    <div class="p-mb-3">
+                    </div>
+                    <div>
+                        <div class="p-mb-3">
+                            <img src="" [alt]="volunteerOpp.title" class="vol-image" />
+                        </div>
+                        <h4 class="p-mb-1">{{volunteerOpp.name}}</h4>
+                        <h6 class="p-mt-0 p-mb-3">{{volunteerOpp.description}}</h6>
+                        <h6 class="p-mt-0 p-mb-3">click for more info</h6>
+                        <!-- <span [class]="'product-badge status-'+product.inventoryStatus.toLowerCase()">{{product.inventoryStatus}}</span> -->
+                        <!-- <div class="car-buttons p-mt-5">
+                            <p-button type="button" styleClass="p-button p-button-rounded p-mr-2" icon="pi pi-search"></p-button>
+                            <p-button type="button" styleClass="p-button-success p-button-rounded p-mr-2" icon="pi pi-star"></p-button>
+                            <p-button type="button" styleClass="p-button-help p-button-rounded" icon="pi pi-cog"></p-button>
+                            </div> -->
+                    </div>
+                </div>
+            </div>
+        </ng-template>
+    </p-carousel>
+
+    <div class="spacer"></div>
+
+    <!-- <mat-divider class="footer-divider"></mat-divider> -->
+
+    <!-- <div class="spacer app-footer"></div> -->
+
+    <footer dir="rtl">
+        <div class="spacer"></div>
+        <div class="app-footer">
+            <div class="social">
+                <img class="footer-img" src="../../assets/imgs/people_transparent.png">
+                <!-- <div class="social-icons">
+                    <mat-icon>facebook</mat-icon>
+                    <mat-icon>instagram</mat-icon>
+                </div> -->
+            </div>
+            <div class="footer-links-wrapper">
+                <a href class="footer-links">קצת עלינו</a>
+                <a href class="footer-links">צור קשר</a>
+            </div>
+        </div>
+        <div class="spacer"></div>
+        <mat-divider class="footer-divider"></mat-divider>
+    </footer>
+
 </div>

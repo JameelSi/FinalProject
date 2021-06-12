@@ -1,41 +1,57 @@
-mat-card {
-    width: 30%;
-    margin: 5em auto;
-    text-align: center;
-  }
-  @media screen and (max-width: 800px) {
-    mat-card{
-      width: auto;
-    }
+.bkg-img{
+  background: url('../../assets/imgs/hands2.jpg') no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  height: 100vh;
 }
-  mat-card-content{
-    margin-top: 40px;
+mat-card {
+  // display:inline-block;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  /* bring your own prefixes */
+  transform: translate(-50%, -50%);
+  width: 30%;
+  // margin: 5em auto;
+  text-align: center;
+}
+@media screen and (max-width: 800px) {
+  mat-card{
+    width: auto;
   }
-  mat-card-title{
+}
+
+mat-card-content{
+  margin-top: 40px;
+}
+
+mat-card-title{
   font-weight: bolder;
-  }
+}
   
-  mat-form-field {
-    display: block;
-    margin: 10px;
-    margin-bottom: 0;
-  }
-  .reg{
-    color: blue;
-  }
+mat-form-field {
+  display: block;
+  margin: 10px;
+  margin-bottom: 0;
+}
+.reg{
+  color: blue;
+}
 
-  .forgotBtn{
-    border: none;
-    background-color: white;
-    text-decoration: underline;
-    color: #d65c47;
+.forgotBtn{
+  border: none;
+  background-color: white;
+  text-decoration: underline;
+  color: #d65c47;
 
-  }
-  .forgot{
-    float: left;
-    margin-bottom: 15px;
-    margin-right: 10px;
-  }
+}
+.forgot{
+  float: left;
+  margin-bottom: 15px;
+  margin-right: 10px;
+}
 
 .forgot :hover{
   cursor: pointer;

@@ -1,21 +1,53 @@
-<div class="scroll-wrapper" cdkScrollable>
+<!-- <app-toolbar> -->
+<!-- <div class="menu-header">
+        <span class="spacer"></span>
+        <button mat-icon-button *ngIf="sidenav.mode === 'over'" (click)="sidenav.toggle()">
+            <mat-icon *ngIf="!sidenav.opened">
+                menu
+            </mat-icon>
+            <mat-icon *ngIf="sidenav.opened">
+                close
+            </mat-icon>
+        </button>
+    </div> -->
 
-<mat-toolbar class="sticky-toolbar" >
-
+<!-- <div class="scroll-wrapper" cdkScrollable> -->
+<!-- <mat-toolbar class="sticky-toolbar" >
     <span>App name</span>
     <span class="spacer"></span>
     <button mat-button routerLink="/projectsTracking">מעקב מיזמים</button>
     <button mat-button routerLink="/needs">מענים</button>
-    <button mat-button routerLink="/home">דף הבית</button>
     <button mat-button routerLink="/signup">רישום</button>
     <button mat-button routerLink="/signin">
         <mat-icon>login</mat-icon>
-        כניסה</button>
-    <!-- <nav>
-        <a routerLink="/projectsTracking">מעקב מיזמים</a>
-    </nav> -->
+        כניסה
+    </button>
+    <button mat-button routerLink="/home">דף הבית</button>
+</mat-toolbar> -->
+<!-- </div> -->
 
-</mat-toolbar>
 
+<!--breakpoints: https://github.com/angular/flex-layout/issues/821 -->
+<div dir="rtl">
+    <mat-toolbar fxLayout="row" class="fixed-toolbar">
+        <span fxFlex>גיל שלילי זה אנחנו</span>
+        <span class="spacer"></span>
+        <button mat-button routerLink={{item.route}} *ngFor="let item of menuItems" fxHide.lt-sm>
+            <!-- <mat-icon class="mr">{{item.icon}}</mat-icon> -->
+            {{item.label}}
+        </button>
+        <button mat-icon-button [matMenuTriggerFor]="dropMenu" fxHide fxShow.lt-sm>
+            <mat-icon>more_vert</mat-icon>
+        </button>
+        <!-- add signin/sign out outside menu -->
+        <mat-menu #dropMenu="matMenu">
+            <div routerLink={{item.route}} *ngFor="let item of menuItems">
+                <button mat-menu-item>
+                    <mat-icon>{{item.icon}}</mat-icon>
+                    {{item.label}}
+                </button>
+                <mat-divider></mat-divider>
+            </div>
+        </mat-menu>
+    </mat-toolbar>
 </div>
-

@@ -59,14 +59,13 @@ getEmailErrorMessage() {
   if (this.loginForm.controls.username.hasError('required')) {
     return 'שדה חובה';
   }
-  return this.loginForm.controls.username.hasError('email') ? 'כתבובת מייל אינה בפורמט נכון' : '';
+  return this.loginForm.controls.username.hasError('email') ? 'כתבובת מייל אינה בפורמט הנכון' : '';
 }
 resetPass(element: any){
-  element.title="נא להכניס את כתובת המייל אליו יישלח לינק איפוס סיסמה"
-  element.dialogType = 'needs';
-  element.action="Add";
+  element.dialogTitle = "נא להכניס את כתובת המייל אליו יישלח לינק איפוס סיסמה"
+  element.dialogType = "resetPass"
+  element.action = "reset"
   const dialogRef = this.dialog.open(DialogBoxComponent, {
-    width: '25%',
     direction: 'rtl',
     data: element,
   });
@@ -74,9 +73,9 @@ resetPass(element: any){
   dialogRef.afterClosed().subscribe(result => {
     if (result&&result.data?.name) {
       if(this.authService.reset(result.data.name))
-        this.snackBar.open("מייל נשלח בהצלחה ! נא לבדוק", '', { duration: 3000, direction: 'rtl', panelClass: ['snacks'] });
+        this.snackBar.open("מייל נשלח בהצלחה! נא לבדוק", '', { duration: 3000, direction: 'rtl', panelClass: ['snacks'] });
       else
-        this.snackBar.open("לא קיים מייל כמו שהוכנס", '', { duration: 3000, direction: 'rtl', panelClass: ['snacks'] });
+        this.snackBar.open("המייל שהוכנס אינו קיים", '', { duration: 3000, direction: 'rtl', panelClass: ['snacks'] });
     }
 
     });

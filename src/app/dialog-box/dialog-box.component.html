@@ -4,7 +4,7 @@
   <div mat-dialog-content>
     <form #projForm="ngForm" class="frm">
 
-      <ng-container *ngIf="dialogType === 'needs' && action != 'Delete'; else projectTemplate">
+      <ng-container *ngIf="(dialogType === 'needs' || 'resetPass') && action != 'Delete'; else projectTemplate">
         <mat-form-field>
           <textarea name="name" matInput [(ngModel)]="local_data.name"></textarea>
         </mat-form-field>

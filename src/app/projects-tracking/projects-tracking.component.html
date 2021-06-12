@@ -12,10 +12,10 @@
     </button>
 </mat-toolbar> -->
 
-<!-- <app-toolbar> -->
-<div class="menu-header">
+<div class="menu-header" *ngIf="sidenav.mode == 'over'">
     <span class="spacer"></span>
-    <button mat-icon-button *ngIf="sidenav.mode === 'over'" (click)="sidenav.toggle()">
+    <h4 class="title">רכזי אזור</h4>
+    <button mat-icon-button (click)="sidenav.toggle()">
         <mat-icon *ngIf="!sidenav.opened">
             menu
         </mat-icon>
@@ -24,15 +24,12 @@
         </mat-icon>
     </button>
 </div>
-<!-- </app-toolbar> -->
-
 
 <!-------------------- SIDENAV DRAWER ------------------------------------------------------>
 <mat-drawer-container>
     <mat-drawer #sidenav mode="side" position="end">
-        <h4 class="title">רכזי אזור</h4>
-
-        <mat-divider></mat-divider>
+        <h4 class="title" *ngIf="sidenav.mode == 'side'">רכזי אזור</h4>
+        <mat-divider *ngIf="sidenav.mode == 'side'"></mat-divider>
         <mat-accordion>
             <mat-expansion-panel class="menu-button" hideToggle (opened)="getAreaCoordsData('all')" expanded>
                 <mat-expansion-panel-header>
@@ -64,7 +61,7 @@
         <div dir="rtl" class="menu-container">
             <button class="neighbs-menu-btn" mat-raised-button color="primary" [matMenuTriggerFor]="menu"
                 menuData="currNeighborhoods">
-                <mat-icon class=''>menu</mat-icon>
+                <mat-icon class=''>expand_more</mat-icon> <!--unfold_more/expand_more/menu-->
                 שכונות
             </button>
             <mat-menu #menu="matMenu">

@@ -22,8 +22,6 @@ interface project {
 
 export class DialogBoxComponent implements OnInit {
 
-  // date?: Date;
-
   dialogTitle: string;
   action: string;
   local_data: any;
@@ -52,7 +50,6 @@ export class DialogBoxComponent implements OnInit {
   }
 
   doAction() {
-    console.log(this.newProj?.clubCoordinatorId)
     this.dialogRef.close({
       event: this.action, data: this.local_data,
       newProj: { ...this.newProj, 
@@ -63,11 +60,6 @@ export class DialogBoxComponent implements OnInit {
 
   closeDialog() {
     this.dialogRef.close({ event: 'Cancel' });
-  }
-
-  chipSelectionChanged(clubCoordId: string) {
-    if (this.newProj)
-      this.newProj.clubCoordinatorId = clubCoordId.trim()
   }
 
   ngOnInit(): void {

@@ -1,15 +1,18 @@
+// $drawer-bkg-color: #F4F7FA; #FAFAFA
+$drawer-bkg-color: #f3f7fA; //default
+$mngr-dtls-bkg-color: #a3a5a7;
+
+
 mat-toolbar {
     background: #3F51B5;
     color: white;
 }
 
-// $drawer-bkg-color: #F4F7FA; #FAFAFA
-$drawer-bkg-color: #f3f7fA; //default
-$mngr-dtls-bkg-color: #a3a5a7;
-
 .menu-header{
     display: flex;
+    background-color:$drawer-bkg-color;
 }
+
 .spacer {
     flex: 1 1 auto;
 }
@@ -26,7 +29,7 @@ mat-drawer {
     border-right: none;
     background: $drawer-bkg-color;
     // color: white;
-    border-radius: 10px;
+    // border-radius: 10px;
     // padding: 16px;
     text-align: center;
 }

@@ -39,12 +39,17 @@ import {TabMenuModule} from 'primeng/tabmenu';
 import { HomepageComponent } from './homepage/homepage.component';
 import { ToolbarComponent } from './toolbar/toolbar.component';
 import { ScrollDispatcher } from '@angular/cdk/scrolling';
+import {ScrollingModule} from '@angular/cdk/scrolling';
 import { SignupComponent } from './signup/signup.component';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import { SigninComponent } from './signin/signin.component';
 import {AngularFireAuthModule} from '@angular/fire/auth'
 import { MatRadioModule } from '@angular/material/radio';
+import { FlexLayoutModule } from '@angular/flex-layout';
+
+import { CarouselModule } from 'primeng/carousel';
+import {ButtonModule} from 'primeng/button';
 
 @NgModule({
   declarations: [
@@ -93,7 +98,10 @@ import { MatRadioModule } from '@angular/material/radio';
     MatCheckboxModule,
     AngularFireAuthModule,
     MatRadioModule,
-    // ScrollDispatchModule,
+    CarouselModule,
+    FlexLayoutModule,
+    ScrollingModule,
+    ButtonModule,
   ],
   providers: [ScrollDispatcher],
   bootstrap: [AppComponent],

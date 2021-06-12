@@ -41,6 +41,14 @@ export interface clubCoord {
   phone: string
 }
 
+interface volunteeringOpp {
+  title: string,
+  type: string,
+  description: string,
+  date: Date,
+  id: string,
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -50,12 +58,16 @@ export class GetDataService {
   neighbsRef: AngularFirestoreCollection<neighborhood>
   managersRef: AngularFirestoreCollection<manager>
   clubCoordsRef: AngularFirestoreCollection<clubCoord>
+  volunteeringOppsRef: AngularFirestoreCollection<volunteeringOpp>;
 
   constructor(private store: AngularFirestore) {
     this.areaCoordsRef = this.store.collection("AreaCoordinators")
     this.neighbsRef = this.store.collection("ירושלים")
     this.managersRef = this.store.collection("Managers")
     this.clubCoordsRef = this.store.collection("ClubCoordinators")
+    this.volunteeringOppsRef = this.store.collection("volunteeringOpportunities", ref => {
+      return ref.orderBy("date")
+    })
   }
 
   // get data for projects tracking page
@@ -72,6 +84,12 @@ export class GetDataService {
     clubCoords = this.clubCoordsRef.valueChanges({ idField: 'id' })
     return [areaCoords, allNeighborhoods, managers, clubCoords]
 
+  }
+
+  getProjectVolOppsData(){
+    let volOpps: Observable<volunteeringOpp[]>
+    volOpps = this.volunteeringOppsRef.valueChanges({ idField: 'id' });
+    return volOpps
   }
 
 

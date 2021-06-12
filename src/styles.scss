@@ -1,14 +1,19 @@
 /* You can add global styles to this file, and also import other style files */
 
+// get primeng icons
+@import  "~primeicons/primeicons.css";
+@import  "~primeng/resources/themes/saga-blue/theme.css";
+@import  "~primeng/resources/primeng.css";
+
 html, body {
     height: 100%;
 
 }
 body {
-     margin: 0; 
-     font-family: Roboto, "Helvetica Neue", sans-serif;
-     background-image: url('./assets/imgs/hands2.jpg');
-     background-repeat: no-repeat; 
+    margin: 0; 
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+    // background-image: url('./assets/imgs/hands2.jpg');
+    // background-repeat: no-repeat; 
     //  background-size: cover;
-    background-size: 100% 100%;
-     }
+    // background-size: 100% 100%;
+}

@@ -1,21 +1,12 @@
 .spacer {
     flex: 1 1 auto;
 }
-// mat-toolbar {
-//     background-color: transparent;
+
+//.fixed-toolbar {
+//     display:contents;
+//     position: fixed;
+//     top: 0;
+//     z-index: 9999;
+//     // background-color: transparent;
 // }
-.scroll-wrapper {
-    overflow: auto;
-    max-height: 500px;
-}
-  
-.sticky-toolbar {
-    position: sticky;
-    background-color: #3695E7;
-    top: 0px;
-}
-  
-.opaque {
-    background-color: transparent;
-    color: black;
-}
+
