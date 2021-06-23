@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
-import { Observable } from 'rxjs';
 import { GetDataService } from '../services/get-data/get-data.service';
-import firebase from 'firebase/app';
 
 interface responsiveCarouselOption {
   breakpoint: string,
@@ -12,7 +10,7 @@ interface responsiveCarouselOption {
 
 interface volunteeringOpp {
   title: string,
-  type: any,
+  type: string,
   description: string,
   date?: Date,
   id?: string,
@@ -27,44 +25,12 @@ interface volunteeringOpp {
 
 export class HomepageComponent implements OnInit {
 
-  // storage = firebase.storage();
   volunteeringOpps!: volunteeringOpp[];
   responsiveOptions: responsiveCarouselOption[]
-
-    constructor(private afs: AngularFirestore, private dataProvider: GetDataService,) {
-
-      this.volunteeringOpps = [
-        {
-          title: "hu",
-          description: "hu",
-          img: "../../assets/imgs/shopping.png",
-          type: "",
-        },
-        {
-          title: "he",
-          description: "he",
-          img: "../../assets/imgs/technology.png",
-          type: "",
-        },
-        {
-          title: "ha",
-          description: "ha",
-          img: "../../assets/imgs/hands.jpg",
-          type: "",
-        },
-        {
-          title: "hi",
-          description: "hi",
-          img: "../../assets/imgs/dancing.png",
-          type: "",
-        },
-        {
-          title: "ho",
-          description: "ho",
-          img: "../../assets/imgs/music.png",
-          type: "",
-        },
-      ]
+  // profileUrl!: Observable<string | null>;
+    constructor(
+      private afs: AngularFirestore,
+      private dataProvider: GetDataService,) {
 
       this.responsiveOptions = [
         {
@@ -86,12 +52,9 @@ export class HomepageComponent implements OnInit {
     }
 
 ngOnInit(): void {
-  // this.dataProvider.getProjectVolOppsData().subscribe(res =>{
-  //   this.volunteeringOpps = res
-  //   // this.volunteeringOpps.forEach(opp => {
-  //   //   opp.type = this.storage.refFromURL(opp.type)
-  //   // })
-  // })
+  this.dataProvider.getProjectVolOppsData().subscribe(res =>{
+    this.volunteeringOpps = res
+  })
 }
 
 }

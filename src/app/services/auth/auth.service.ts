@@ -4,14 +4,12 @@ import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firest
 import { signinUser } from 'src/app/types/user';
 import { Router } from '@angular/router';
 import firebase from 'firebase/app';
-import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
   userState: any = null;
-  admin: boolean = false;
   constructor(
     private afa: AngularFireAuth,
     private afs: AngularFirestore,
@@ -22,13 +20,6 @@ export class AuthService {
 
     this.afa.authState.subscribe((auth) => {
       this.userState = auth
-      if (this.userState) {
-        firebase.firestore().doc(`users/${auth?.uid}`).get().then((doc) => {
-          this.admin = doc.data()?.admin
-        })
-      }else{
-        this.admin= false
-      }
     });
 
   }
@@ -77,19 +68,8 @@ export class AuthService {
     return (this.userState !== null) ? true : false;
   }
 
-  get isAdmin():boolean{
-    return this.admin
-  }
 
-  // isAdmin(): boolean {
-    // let temp= false
-    // firebase.firestore().doc(`users/${this.userState.uid}`).get().then((doc) => {
-    //     temp = doc.data()?.user.admin
-    //     console.log(temp)
-    // })
-    // return temp
-  //   return false
-  // }
+
 
 }
 
