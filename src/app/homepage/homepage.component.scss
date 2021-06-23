@@ -6,14 +6,14 @@
   // background: url('../../assets/imgs/hands2.jpg') no-repeat center center; 
 
   // dirty fog
-  background: #B993D6;  /* fallback for old browsers */
-  background: -webkit-linear-gradient(to right, #8CA6DB, #B993D6);  /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(to right, #8CA6DB, #B993D6); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  // background: #B993D6;  /* fallback for old browsers */
+  // background: -webkit-linear-gradient(to right, #8CA6DB, #B993D6);  /* Chrome 10-25, Safari 5.1-6 */
+  // background: linear-gradient(to right, #8CA6DB, #B993D6); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 
   // // dania
-  // background: #BE93C5;  /* fallback for old browsers */
-  // background: -webkit-linear-gradient(to left, #7BC6CC, #BE93C5);  /* Chrome 10-25, Safari 5.1-6 */
-  // background: linear-gradient(to left, #7BC6CC, #BE93C5); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  background: #BE93C5;  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to left, #7BC6CC, #BE93C5);  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to left, #7BC6CC, #BE93C5); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
  
   -webkit-background-size: cover;
   -moz-background-size: cover;
@@ -63,6 +63,7 @@
   width: 20vh;
   font-size: large;
   margin: 2vh;
+  // background-color: #24272a;
 }
 
 .side-img-mobile{
@@ -137,24 +138,26 @@ footer{
   width: 200px;
   margin: 1vh;
   color: white;
-  // background-color: burlywood;
 }
 
 .footer-divider{
   width: 80%;
-  background-color: rgb(221, 85, 131);
+  // background-color: rgb(221, 85, 131);
+  background-color: #24272a;
   margin-right: 10%;
 }
 
-@media screen and (max-width: 800px) {
+@media screen and (max-width: 959px) {
   .welcome-wrapper{
     flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
   }
   .welcome-spacer{
-    height: 10%;
+    height: 6%;
   }
   .side-img-mobile{
-    width: 80%;
+    width: 67%;
   }
   .welcome{
     padding-right: 2vh;
@@ -166,6 +169,9 @@ footer{
   }
   .vol-header{
     margin: 2vh 2vh 5vh 0;
+  }
+  .vol-image {
+    max-height: 20vh;
   }
 }
 

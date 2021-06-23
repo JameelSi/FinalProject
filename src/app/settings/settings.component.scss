@@ -1,0 +1,71 @@
+// Because hebrew is right to left 
+*{ 
+    color: black;
+}
+/* 1. Enable smooth scrolling */
+html {scroll-behavior: smooth;}
+
+.title{
+    font-size: 20px;
+    font-weight: bolder;
+    flex: 1;
+}
+
+.cards{
+    width: 70%;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}       
+
+.panelHeader{
+    height: 120px;
+    // background-color: #00a295;
+}
+.panelBox{
+    display: flex;
+    justify-content: center;
+    margin: 20px;
+}
+
+mat-panel-description{
+    flex:1;
+}
+
+.contentWrapper{
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+.singleContentBox{
+    margin: 10px;
+    display: flex;
+    flex-wrap: nowrap;
+}
+.content{
+    overflow-wrap: break-word;
+    word-break: break-all;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+.icons{
+    display: flex;
+    flex-direction: column;      
+    justify-content: center;
+}
+.delete{
+    margin-top:10%;
+    color: red;
+}
+mat-icon{margin:10px;}
+mat-icon:hover{cursor: pointer;}
+.delete{color: red;}
+
+.addButtons{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    
+}
+

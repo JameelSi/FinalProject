@@ -41,15 +41,16 @@
 <!--breakpoints: https://github.com/angular/flex-layout/issues/821 -->
 <div dir="rtl">
     <mat-toolbar fxLayout="row" class="fixed-toolbar">
-        <span fxFlex>גיל שלילי זה אנחנו</span>
+        <span fxFlex routerLink="/" style="cursor: pointer;">הגיל השלישי זה אנחנו</span>
         <span class="spacer"></span>
         <ng-container *ngIf="!authService.isLoggedIn">
             <mat-icon fxHide fxShow.lt-sm>login</mat-icon>
             <button routerLink="/signin" mat-button>כניסה</button>
         </ng-container>
         <div routerLink={{item.route}} *ngFor="let item of menuItems" fxHide.lt-sm>
-            <ng-container *ngIf=" ( item.admin && authService.isLoggedIn && authService.isAdmin ) || !item.admin 
-            || item.requireLogIn && authService.isLoggedIn">
+            <ng-container
+                *ngIf="( !item.admin || (item.superAdmin && authService.isLoggedIn && authService.isSuperAdmin) || (item.admin && authService.isLoggedIn && authService.type!='' ) ) 
+                && ((item.requireLogIn && authService.isLoggedIn) || (item.requireLogOut && !authService.isLoggedIn || item.showAll))">
                 <!-- <mat-icon class="mr">{{item.icon}}</mat-icon> -->
                 <button mat-button>
                     {{item.label}}
@@ -67,8 +68,10 @@
         <!-- add signin/sign out outside menu -->
         <mat-menu #dropMenu="matMenu">
             <div routerLink={{item.route}} *ngFor="let item of menuItems">
-                <ng-container *ngIf=" ( item.admin && authService.isLoggedIn && authService.isAdmin ) || !item.admin 
-                    || item.requireLogIn && authService.isLoggedIn">
+                <ng-container
+                    *ngIf=" ( !item.admin || (item.superAdmin && superAdmin) || 
+                    (item.admin && !item.superAdmin && authService.type!=''  ) ) 
+                && ((item.requireLogIn && authService.isLoggedIn) || (item.requireLogOut && !authService.isLoggedIn || item.showAll))">
                     <button mat-menu-item>
                         <mat-icon>{{item.icon}}</mat-icon>
                         {{item.label}}

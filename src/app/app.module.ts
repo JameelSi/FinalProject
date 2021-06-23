@@ -50,6 +50,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { CarouselModule } from 'primeng/carousel';
 import {ButtonModule} from 'primeng/button';
+import { SettingsComponent } from './settings/settings.component';
 
 @NgModule({
   declarations: [
@@ -60,7 +61,8 @@ import {ButtonModule} from 'primeng/button';
     HomepageComponent,
     ToolbarComponent,
     SignupComponent,
-    SigninComponent
+    SigninComponent,
+    SettingsComponent
     ],
   imports: [
     BrowserModule,
