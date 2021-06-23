@@ -6,12 +6,13 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatDrawer } from '@angular/material/sidenav';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import {MatAccordion} from '@angular/material/expansion';
-import { BehaviorSubject, combineLatest, Subscription } from 'rxjs';
-import { filter } from 'rxjs/operators';
+import { MatAccordion } from '@angular/material/expansion';
+import { BehaviorSubject, combineLatest, concat, forkJoin, Subscription } from 'rxjs';
+import { concatMap, filter, map, tap } from 'rxjs/operators';
 import { DialogBoxComponent } from '../dialog-box/dialog-box.component';
 import { GetDataService } from '../services/get-data/get-data.service';
 import { ProgressSpinnerOverlayService } from '../services/progressSpinerOverlay/progress-spinner-overlay.service';
+import { AuthService } from '../services/auth/auth.service';
 
 import firebase from 'firebase/app';
 
@@ -81,8 +82,9 @@ export class ProjectsTrackingComponent implements OnInit, OnDestroy {
   projectsToDisplay!: MatTableDataSource<project>
   defaultSelectedTab: number = -1
   currAreaCoord?: areaCoord
-  currNeighborhood?: neighborhood //without tabs
+  currNeighborhood?: neighborhood
   spin: boolean = false;
+  adminType!: string;
 
   private paginator!: MatPaginator;
   private sort!: MatSort;
@@ -90,7 +92,13 @@ export class ProjectsTrackingComponent implements OnInit, OnDestroy {
   private subs = new Subscription();
 
   constructor(private crf: ChangeDetectorRef, private observer: BreakpointObserver, public dialog: MatDialog,
-    private dataProvider: GetDataService, private afs: AngularFirestore, private progressSpinner: ProgressSpinnerOverlayService) { }
+    private dataProvider: GetDataService, private afs: AngularFirestore,
+    public authService: AuthService,
+    private progressSpinner: ProgressSpinnerOverlayService) {
+    this.authService.authData$.subscribe(auth => {
+      this.adminType = auth.type
+    })
+  }
 
   ngOnDestroy(): void {
     this.subs.unsubscribe();
@@ -133,11 +141,43 @@ export class ProjectsTrackingComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.subs.add(combineLatest(this.dataProvider.getProjectTrackingData()).subscribe(([areaCoords, allNeighborhoods, managers, clubCoords]) => {
-      this.areaCoords = areaCoords;
+    this.subs.add(combineLatest(
+      this.dataProvider.getProjectTrackingData(),
+      this.authService.authData$
+    ).subscribe(([ data, auth ]) => {
+      const [areaCoords, allNeighborhoods, managers, clubCoords] = data;
+      // filter data when getting from firestore according to user time, 
+      // for admins get all, for area coords get their 8, so on... TODO
+      this.areaCoords = areaCoords
       this.allNeighborhoods = allNeighborhoods;
       this.managers = managers;
       this.clubCoords = clubCoords;
+
+      if (!auth.superAdmin) {
+        let neighs: any
+        this.areaCoords = areaCoords.filter(item => (item.id.trim() == auth.uid))
+        if (auth.type === "AreaCoordinators") {
+          neighs = this.areaCoords.reduce((acc, ac) => acc.concat(ac.neighborhoods), [] as string[]);
+        }
+        else if (auth.type === "Managers") {
+          this.managers = managers.filter(item => (item.id.trim() == auth.uid))
+          neighs = this.managers.reduce((acc, ac) => acc.concat(ac.neighborhoods), [] as string[]);
+        }
+        if (neighs)
+          this.allNeighborhoods = allNeighborhoods.filter(n => neighs.indexOf(n.id) > -1).sort();
+      }
+
+      if (this.authService.isLoggedIn) {
+        let uid = auth.uid
+        let temp
+        if (auth.type === "AreaCoordinators")
+          temp = this.areaCoords.find(i => (i.id.trim() == uid))
+        else if (auth.type === "Managers")
+          temp = this.managers[0]
+        console.log(uid, this.areaCoords)
+        if (temp)
+          temp.name = "אני"
+      }
       this.allNeighborhoods.forEach(neighb => {
         neighb.managerInfo = this.managers.find(i => i.id.trim() == neighb.managerId.trim())
         neighb.projects.forEach(proj => {
@@ -148,8 +188,8 @@ export class ProjectsTrackingComponent implements OnInit, OnDestroy {
         this.currNeighborhoods = this.allNeighborhoods
         this.currNeighborhoods.sort()
       }
-      if(this.projectsToDisplay && this.currNeighborhood){
-        this.currNeighborhood = this.allNeighborhoods.find(element=> element.id == this.currNeighborhood?.id)
+      if (this.projectsToDisplay && this.currNeighborhood) {
+        this.currNeighborhood = this.allNeighborhoods.find(element => element.id == this.currNeighborhood?.id)
         this.projectsToDisplay.data = this.currNeighborhood?.projects ?? []
       } else {
         this.currNeighborhood = this.currNeighborhoods[0]
@@ -174,11 +214,9 @@ export class ProjectsTrackingComponent implements OnInit, OnDestroy {
     return ordered
   }
 
-  // filter data when getting from firestore according to user time, 
-  // for admins get all, for area coords get their 8, so on... 
 
   getAreaCoordsData(areaCoord: areaCoord | 'all') {
-    
+
     if (areaCoord === "all") {
       this.accordion.closeAll();
       this.currAreaCoord = undefined

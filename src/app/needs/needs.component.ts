@@ -78,7 +78,6 @@ export class NeedsComponent implements OnInit, OnDestroy {
     element.action = action;
     element.dialogType = 'needs';
     const dialogRef = this.dialog.open(DialogBoxComponent, {
-      width: '25%',
       direction: 'rtl',
       data: element,
     });

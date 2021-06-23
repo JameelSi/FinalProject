@@ -5,13 +5,15 @@ import { NeedsComponent } from './needs/needs.component';
 import { ProjectsTrackingComponent } from './projects-tracking/projects-tracking.component';
 import { SignupComponent } from './signup/signup.component';
 import { SigninComponent } from './signin/signin.component';
+import { SettingsComponent } from './settings/settings.component';
 
 const routes: Routes = [
   { path: 'projectsTracking', component: ProjectsTrackingComponent },
   { path: 'needs', component: NeedsComponent },
   { path: 'home', component: HomepageComponent },
-  { path: 'signup', component:SignupComponent},
-  { path: 'signin', component:SigninComponent},
+  { path: 'signup', component: SignupComponent},
+  { path: 'signin', component: SigninComponent},
+  { path: 'settings', component: SettingsComponent},
   { path: '', redirectTo: '/home', pathMatch: 'full' },
 ];
 

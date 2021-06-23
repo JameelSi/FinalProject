@@ -52,7 +52,7 @@
         <!-------------------- NEIGHB MENU ------------------------------------------------------>
     <div class="firstLine"> 
         <div dir="rtl" class="menu-container">
-            <button class="neighbs-menu-btn" mat-raised-button [matMenuTriggerFor]="menu"
+            <button *ngIf="currNeighborhoods && currNeighborhoods.length>1" class="neighbs-menu-btn" mat-raised-button [matMenuTriggerFor]="menu"
                 menuData="currNeighborhoods">
                 <mat-icon class=''>expand_more</mat-icon> <!--unfold_more/expand_more/menu-->
                 שכונות

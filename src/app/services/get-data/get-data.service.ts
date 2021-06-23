@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
-import { Observable } from 'rxjs';
+import { combineLatest, Observable } from 'rxjs';
+import { take } from 'rxjs/operators';
 // import { map, catchError } from 'rxjs/operators';
 
 export interface areaCoord {
@@ -71,18 +72,12 @@ export class GetDataService {
   }
 
   // get data for projects tracking page
-  getProjectTrackingData(): [Observable<areaCoord[]>, Observable<neighborhood[]>, Observable<manager[]>, Observable<clubCoord[]>] {
-
-    let areaCoords: Observable<areaCoord[]>
-    let allNeighborhoods: Observable<neighborhood[]>
-    let managers: Observable<manager[]>
-    let clubCoords: Observable<clubCoord[]>
-
-    areaCoords = this.areaCoordsRef.valueChanges({ idField: 'id' })
-    allNeighborhoods = this.neighbsRef.valueChanges({ idField: 'id' })
-    managers = this.managersRef.valueChanges({ idField: 'id' })
-    clubCoords = this.clubCoordsRef.valueChanges({ idField: 'id' })
-    return [areaCoords, allNeighborhoods, managers, clubCoords]
+  getProjectTrackingData() {
+    const areaCoords = this.areaCoordsRef.valueChanges({ idField: 'id' })
+    const allNeighborhoods = this.neighbsRef.valueChanges({ idField: 'id' })
+    const managers = this.managersRef.valueChanges({ idField: 'id' })
+    const clubCoords = this.clubCoordsRef.valueChanges({ idField: 'id' })
+    return combineLatest([areaCoords, allNeighborhoods, managers, clubCoords]);
 
   }
 

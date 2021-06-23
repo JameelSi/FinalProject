@@ -9,8 +9,10 @@ export interface MenuItem {
   icon: string;
   route: string;
   admin: boolean;
-  requireLogIn?: boolean;
-  click?: Function
+  superAdmin?: boolean;
+  requireLogIn: boolean;
+  requireLogOut? : boolean;
+  showAll?: boolean;
   // showOnMobile: boolean;
   // showOnTablet: boolean;
   // showOnDesktop: boolean;
@@ -24,28 +26,47 @@ export interface MenuItem {
 export class ToolbarComponent implements OnInit {
   @ViewChild(MatToolbar) nav!: MatToolbar;
   isOnTop = true;
+  superAdmin!: boolean
   menuItems: MenuItem[] = [
     {
       label: "דף הבית",
       icon: "home",
       route: "/home",
       admin: false,
+      requireLogIn: false,
+      requireLogOut: false,
+      showAll: true,
     },{
       label: "רישום",
       icon: "person_add_alt",
       route: "/signup",
       admin: false,
+      requireLogIn: false,
+      requireLogOut: true
     }, {
       label: "מעקב מיזמים",
       icon: "table_chart", // summorize / show_chart
       route: "/projectsTracking",
       admin: true,
-
+      requireLogIn: true,
+      requireLogOut: false
     },{
       label: "מענים",
       icon: "medical_services",
       route: "/needs",
       admin: false,
+      requireLogIn: false,
+      requireLogOut: false,
+      showAll: true,
+    }, {
+      label: "הגדרות",
+      icon: "",
+      route: "/settings",
+      admin: true,
+      requireLogIn: true,
+      requireLogOut: false,
+      showAll: false,
+      superAdmin: true,
     },
     
   ]
@@ -54,7 +75,11 @@ export class ToolbarComponent implements OnInit {
     private zone: NgZone,
     private observer: BreakpointObserver,
     public authService:AuthService,
-  ) {}
+  ) {
+    this.authService.authData$.subscribe(data=>{
+      this.superAdmin = data.superAdmin
+    })
+  }
 
   ngOnInit(): void {
     // this.scrollDispatcher.scrolled().subscribe((event: any) => {

@@ -5,18 +5,16 @@
   /* 1. Enable smooth scrolling */
 html {scroll-behavior: smooth;}
 
-mat-drawer-container {height: calc(100vh - 65px);}
-
-// mat-toolbar {
-//   background: #4082D4;
-//   justify-content: center;
-// }
+mat-drawer-container {
+  // padding-top: 65px;
+  height: 100vh;
+}
 
 // side drawer
 mat-drawer {
-  width: 30%;
+  // margin-top: 65px;
   padding: 16px;
-  height: 100%;
+  width: 30%;
 }
 
 /*--------------------Content link style */
@@ -66,7 +64,7 @@ a {
     margin:10px;
     font-size: 40px;
     position: absolute;
-    bottom: 5px;
+    bottom: 5px; // 10vh TODO
     left: 5px;
     }
     .add:hover{cursor: pointer;}

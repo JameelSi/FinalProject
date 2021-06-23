@@ -48,6 +48,8 @@ export class SignupComponent implements OnInit {
   statusArr: string[] = ['נשוי', 'אלמן', 'רווק'];
 
 
+  collec: 'Volunteers' | 'Elderly' = 'Volunteers'
+
   constructor(
     private fb: FormBuilder,
     private observer: BreakpointObserver,
@@ -169,17 +171,17 @@ export class SignupComponent implements OnInit {
 
   createUser() {
     if (this.emailAndPassword.invalid || this.details.invalid || this.details2.invalid) {
-      this.snackBar.open("נא להשלים כל מהשבאדום!", '', { duration: 3000, direction: 'rtl', panelClass: ['snacks'] });
+      this.snackBar.open("נא להשלים כל מה שבאדום!", '', { duration: 3000, direction: 'rtl', panelClass: ['snacks'] });
       return;
     }
     //try creating a new user 
-    this.authService.signUp(this.emailAndPassword.get('email')?.value, this.emailAndPassword.get('password')?.value).then(result => {
+    this.authService.signUp(this.emailAndPassword.get('email')?.value, this.emailAndPassword.get('password')?.value, this.collec).then(result => {
       // if the email already exists return and show an error 
       if (!result)
         this.validCreation = true;
       // user created
       else {
-        this.validCreation = true;
+        this.validCreation = false;
         let msg, street;
         if (!this.details2.get('message')?.value)
           msg = null;
@@ -203,9 +205,7 @@ export class SignupComponent implements OnInit {
           langs: this.details2.get('langs')?.get('lang')?.value,
           type: this.details2.get('types')?.get('type')?.value,
           status: this.details2.get('socials')?.get('social')?.value,
-          message: msg,
-          admin: false
-          
+          message: msg
         }).then(result => {
           this.snackBar.open("התהליך סיים בהצלחה", '', { duration: 3000, direction: 'rtl', panelClass: ['snacks'] });
           this.router.navigate(['']);
