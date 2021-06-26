@@ -9,7 +9,6 @@ export interface MenuItem {
   icon: string;
   route: string;
   admin: boolean;
-  superAdmin?: boolean;
   requireLogIn: boolean;
   requireLogOut? : boolean;
   showAll?: boolean;
@@ -24,9 +23,12 @@ export interface MenuItem {
   styleUrls: ['./toolbar.component.scss']
 })
 export class ToolbarComponent implements OnInit {
+
   @ViewChild(MatToolbar) nav!: MatToolbar;
   isOnTop = true;
-  superAdmin!: boolean
+  isAdmin!: boolean
+  userType!: string
+
   menuItems: MenuItem[] = [
     {
       label: "דף הבית",
@@ -37,9 +39,16 @@ export class ToolbarComponent implements OnInit {
       requireLogOut: false,
       showAll: true,
     },{
-      label: "רישום",
+      label: "רישום למתנדב",
       icon: "person_add_alt",
-      route: "/signup",
+      route: "/signup/Volunteers",
+      admin: false,
+      requireLogIn: false,
+      requireLogOut: true
+    }, {
+      label: "רישום לקשיש",
+      icon: "person_add_alt",
+      route: "/signup/Elderlies",
       admin: false,
       requireLogIn: false,
       requireLogOut: true
@@ -66,10 +75,9 @@ export class ToolbarComponent implements OnInit {
       requireLogIn: true,
       requireLogOut: false,
       showAll: false,
-      superAdmin: true,
-    },
-    
+    }, 
   ]
+
   constructor(
     private scrollDispatcher: ScrollDispatcher,
     private zone: NgZone,
@@ -77,7 +85,8 @@ export class ToolbarComponent implements OnInit {
     public authService:AuthService,
   ) {
     this.authService.authData$.subscribe(data=>{
-      this.superAdmin = data.superAdmin
+      this.isAdmin = data.admin
+      this.userType = data.type
     })
   }
 
@@ -104,7 +113,5 @@ export class ToolbarComponent implements OnInit {
   logOut(){
     this.authService.logout()
   }
-  ngAfterViewInit() {
-    // console.log(this.authService.isAdmin())
-  }
+  
 }

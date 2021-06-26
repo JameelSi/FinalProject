@@ -29,6 +29,7 @@ export class NeedsComponent implements OnInit, OnDestroy {
   private subs = new Subscription();
   private itemsCollection: AngularFirestoreCollection<Item>;
   items!: Observable<Item[]>;
+  isAdmin!: boolean;
 
   constructor(
     private observer: BreakpointObserver,
@@ -38,6 +39,9 @@ export class NeedsComponent implements OnInit, OnDestroy {
     public authService:AuthService,
   ) {
     this.itemsCollection = afs.collection<Item>('items');
+    this.authService.authData$.subscribe(data=>{
+      this.isAdmin = data.admin
+    })
   }
 
   ngOnInit() {

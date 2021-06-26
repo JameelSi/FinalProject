@@ -2,7 +2,7 @@
 <div class="menu-header" *ngIf="sidenav.mode == 'over'" >
     <span class="spacer"></span>
     <div style="display: flex; flex-direction: row; align-items:baseline;">
-    <h4 class="title">רכזי אזור</h4>
+    <h4 class="title">מרכזי אזור</h4>
     <button mat-icon-button (click)="sidenav.toggle()">
         <mat-icon *ngIf="!sidenav.opened">
             menu
@@ -29,7 +29,7 @@
 
             <button class="mat-elevation-z2 && allBtn"  (click)="getAreaCoordsData('all')">כל השכונות</button>
 
-            <h4 class="title" *ngIf="sidenav.mode == 'side'">רכזי אזור</h4>
+            <h4 class="title" *ngIf="sidenav.mode == 'side'">מרכזי אזור</h4>
             <mat-divider *ngIf="sidenav.mode == 'side'"></mat-divider>
             <mat-expansion-panel class="menu-button" hideToggle (click)="getAreaCoordsData(areaCoord);"
                 *ngFor='let areaCoord of areaCoords'>
@@ -68,7 +68,7 @@
 
         <!-------------------- NEIGHB MANAGER ------------------------------------------------------>
         <mat-card dir="rtl" class="mngr-details-container" *ngIf="currNeighborhood?.managerInfo">
-            <mat-card-title > מידע על מנהל אזור</mat-card-title>
+            <mat-card-title > מידע על מנהל תחום</mat-card-title>
             <mat-card-content class="mngr-details">
                 <section>
                     שם: {{currNeighborhood?.managerInfo?.name}} 
@@ -104,7 +104,9 @@
         <ng-container matColumnDef="clubCoordinatorId">
             <mat-header-cell *matHeaderCellDef mat-sort-header>מעדון</mat-header-cell>
             <mat-cell class="description-cell" *matCellDef="let project">
-                {{project.clubInfo?.club}}
+                {{project.clubInfo?.club}}, {{project.clubInfo?.address}}
+                <br>
+                {{project.clubInfo?.name}}, {{project.clubInfo?.phone}} 
             </mat-cell>
 
         </ng-container>

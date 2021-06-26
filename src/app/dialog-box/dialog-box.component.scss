@@ -10,6 +10,7 @@ mat-form-field{
   width: 100%;
   margin-bottom: 2vh;
 }
+
 mat-radio-group {
   display: flex;
   flex-direction: column;
@@ -23,4 +24,8 @@ mat-radio-button {
 ul {
   list-style-type: none;
   margin-top: 4px;
+}
+.checkBoxes{
+  height: 100px;
+  overflow-y: auto;
 }

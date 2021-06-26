@@ -39,7 +39,8 @@ export interface clubCoord {
   address: string,
   club: string,
   name: string,
-  phone: string
+  phone: string,
+  coordPhone: string | undefined,
 }
 
 interface volunteeringOpp {
@@ -87,5 +88,10 @@ export class GetDataService {
     return volOpps
   }
 
+  getJerNeighborhoods(){
+    let neighborhoods: Observable<neighborhood[]>
+    neighborhoods = this.neighbsRef.valueChanges({ idField: 'id' });
+    return neighborhoods
+  }
 
 }

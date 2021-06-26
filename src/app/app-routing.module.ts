@@ -11,7 +11,7 @@ const routes: Routes = [
   { path: 'projectsTracking', component: ProjectsTrackingComponent },
   { path: 'needs', component: NeedsComponent },
   { path: 'home', component: HomepageComponent },
-  { path: 'signup', component: SignupComponent},
+  { path: 'signup/:userType', component: SignupComponent},
   { path: 'signin', component: SigninComponent},
   { path: 'settings', component: SettingsComponent},
   { path: '', redirectTo: '/home', pathMatch: 'full' },

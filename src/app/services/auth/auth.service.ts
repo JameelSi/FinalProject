@@ -10,7 +10,7 @@ import { ReplaySubject } from 'rxjs';
 
 type AuthData = {
   uid: string,
-  superAdmin: boolean,
+  admin: boolean,
   type: string
 }
 
@@ -21,7 +21,7 @@ export class AuthService {
 
   userState: any = null;
   type = "";
-  superAdmin = false;
+  admin = false;
   areaCoord = false;
   manager = false;
   clubCoord = false;
@@ -44,13 +44,13 @@ export class AuthService {
       concatMap(auth => defer(() => firebase.firestore().collection('Admin').doc(`${auth?.uid}`).get()))
     ).subscribe(doc => {
       this.type = doc.data()?.type
-      this.superAdmin = doc.data()?.superAdmin;
-      this.authSubject.next({ uid: this.uid, type: this.type, superAdmin: this.superAdmin });
+      this.admin = doc.data()? true : false
+      this.authSubject.next({ uid: this.uid, type: this.type, admin: this.admin });
     });
   }
 
   async signUp(email: string, password: string,
-    collec: "AreaCoordinators" | "Managers" | "ClubCoordinators" | "Volunteers" | "Elderly" = "AreaCoordinators") {
+    collec: string) {
     // create a user in firebase auth and add it to our firestore 
     // note that auth and firestore are 2 differente things 
     let temp = this.afa.createUserWithEmailAndPassword(email, password).then(result => {
@@ -59,7 +59,7 @@ export class AuthService {
         password,
         uid: result.user?.uid
       };
-      this.addtoFireStore(user, collec)
+      // this.addtoFireStore(user, collec)
       return user;
     }).catch(function (error) {
       return null
@@ -67,10 +67,10 @@ export class AuthService {
     return temp;
   }
 
-  addtoFireStore(user: signinUser, collec: "AreaCoordinators" | "Managers" | "ClubCoordinators" | "Volunteers" | "Elderly" = "AreaCoordinators") {
+  addtoFireStore(user: signinUser, collec: string) {
     // pass uid to prevent firestore to generate random id
     const ref: AngularFirestoreDocument<signinUser> = this.afs.collection(collec).doc(`${user.uid}`);
-    ref.set(user);
+    ref.set(user).catch(err=>{console.log(err)});
   }
 
   reset(emailAddress: string) {
@@ -96,12 +96,12 @@ export class AuthService {
     return (this.userState !== null) ? true : false;
   }
 
-  get isSuperAdmin(): boolean {
-    return this.superAdmin
+  get isAdmin(): boolean {
+    return this.admin
   }
 
-  get isSuperAdmin$() {
-    return this.authSubject.pipe(map(({ superAdmin }) => superAdmin)), take(1);
+  get isAdmin$() {
+    return this.authSubject.pipe(map(({ admin }) => admin));
   }
 
   get adminType(): string {
@@ -109,7 +109,7 @@ export class AuthService {
   }
 
   get adminType$() {
-    return this.authSubject.pipe(map(({ type }) => type), take(1))
+    return this.authSubject.pipe(map(({ type }) => type))
   }
 
   get uid(): string {
@@ -117,11 +117,11 @@ export class AuthService {
   }
 
   get uid$() {
-    return this.authSubject.pipe(map((({ uid }) => uid)), take(1));
+    return this.authSubject.pipe(map((({ uid }) => uid)));
   }
 
   get authData$() {
-    return this.authSubject.asObservable().pipe(take(1));
+    return this.authSubject.asObservable();
   }
 
 

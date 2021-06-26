@@ -8,12 +8,12 @@
         *ngIf="(dialogType === 'needs' || dialogType === 'resetPass') && action != 'Delete'; else projectTemplate">
         <mat-form-field>
           <textarea required name="name" matInput [(ngModel)]="local_data.name" #name="ngModel"></textarea>
+          <mat-error *ngIf="name.invalid && (name.dirty || name.touched)">
+            <div *ngIf="name.errors?.required">
+              שדה זה הינו חובה.
+            </div>
+          </mat-error>
         </mat-form-field>
-        <mat-error *ngIf="name.invalid && (name.dirty || name.touched)">
-          <div *ngIf="name.errors?.required">
-            שדה זה הינו חובה.
-          </div>
-        </mat-error>
       </ng-container>
 
       <ng-template #projectTemplate>
@@ -73,14 +73,14 @@
           <mat-form-field>
             <textarea required name="id" matInput placeholder="{{actionHebrew[action]}} שם השכונה"
               [(ngModel)]="newNeighb.id" #id="ngModel"></textarea>
+            <mat-error *ngIf="id.invalid && (id.dirty || id.touched)">
+              <div *ngIf="id.errors?.required">
+                שדה זה הינו חובה.
+              </div>
+            </mat-error>
           </mat-form-field>
-          <mat-error *ngIf="id.invalid && (id.dirty || id.touched)">
-            <div *ngIf="id.errors?.required">
-              שדה זה הינו חובה.
-            </div>
-          </mat-error>
 
-          <mat-label><b>{{actionHebrew[action]}} מנהל גיל שלישי </b>*</mat-label>
+          <mat-label><b>{{actionHebrew[action]}} מנהל תחום </b>*</mat-label>
           <mat-radio-group required name="managerId" [(ngModel)]="newNeighb.managerId">
             <mat-radio-button *ngFor="let manager of local_data.managers" [value]="manager.id">
               {{manager.name}}<br>{{manager.email}}<br>{{manager.phone}}
@@ -94,62 +94,82 @@
         <ng-container *ngIf="(dialogType === 'areaCoord' || dialogType === 'clubCoord' || dialogType === 'manager') 
          && newUser && action != 'Delete'; else elseTemplate  ">
 
-          <!-- <ng-container *ngIf="dialogType === 'areaCoord' || dialogType === 'manager'">
-
-            <mat-form-field>
-              <textarea required name="email" matInput placeholder="{{actionHebrew[action]}} מייל" [(ngModel)]="$any(newUser).email"
-                #email="ngModel"></textarea>
-            </mat-form-field>
-            <mat-error *ngIf="email.invalid && (email.dirty || email.touched)">
-              <div *ngIf="email.errors?.required">
-                שדה זה הינו חובה.
-              </div>
-            </mat-error>
+          <ng-container *ngIf="dialogType === 'areaCoord' || dialogType === 'manager'">
             <mat-error *ngIf="invalidCreation">המייל שהוכס כבר קיים</mat-error>
+            <mat-form-field>
+              <input required type="email" name="email" matInput placeholder="{{actionHebrew[action]}} מייל"
+                [(ngModel)]="$any(newUser).email" #email="ngModel" pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" />
+              <mat-error *ngIf="email.invalid && (email.dirty || email.touched)">
+                <div *ngIf="email.errors?.required">
+                  שדה זה הינו חובה.
+                </div>
+                <div *ngIf="email.errors?.pattern">המייל שהוכס אינו תקין</div>
+              </mat-error>
+            </mat-form-field>
+          </ng-container>
 
+          <ng-container *ngIf="dialogType === 'areaCoord' ">
             <mat-form-field>
               <textarea required name="password" matInput placeholder="{{actionHebrew[action]}} סיסמא"
                 [(ngModel)]="newPassword" #password="ngModel"></textarea>
+              <mat-error *ngIf="password.invalid && (password.dirty || password.touched)">
+                <div *ngIf="password.errors?.required">
+                  שדה זה הינו חובה.
+                </div>
+              </mat-error>
             </mat-form-field>
-            <mat-error *ngIf="password.invalid && (password.dirty || password.touched)">
-              <div *ngIf="password.errors?.required">
-                שדה זה הינו חובה.
-              </div>
-            </mat-error>
+          </ng-container>
 
-          </ng-container> -->
-
-          <ng-container *ngIf="dialogType === 'areaCoord' || dialogType === 'manager'">
-          <mat-form-field>
-            <textarea required name="email" matInput placeholder="{{actionHebrew[action]}} מייל" [(ngModel)]="$any(newUser).email"
-              #email="ngModel"></textarea>
-          </mat-form-field>
-          <mat-error *ngIf="email.invalid && (email.dirty || email.touched)">
-            <div *ngIf="email.errors?.required">
-              שדה זה הינו חובה.
-            </div>
-          </mat-error>
-        </ng-container>
-        
           <mat-form-field>
             <textarea required name="name" matInput placeholder="{{actionHebrew[action]}} שם" [(ngModel)]="newUser.name"
               #name="ngModel"></textarea>
+            <mat-error *ngIf="name.invalid && (name.dirty || name.touched)">
+              <div *ngIf="name.errors?.required">
+                שדה זה הינו חובה.
+              </div>
+            </mat-error>
           </mat-form-field>
-          <mat-error *ngIf="name.invalid && (name.dirty || name.touched)">
-            <div *ngIf="name.errors?.required">
-              שדה זה הינו חובה.
-            </div>
-          </mat-error>
+
+          <ng-container *ngIf="dialogType === 'clubCoord'">
+            <mat-form-field>
+              <input name="coordPhone" matInput placeholder="{{actionHebrew[action]}} מספר טלפון של הרכז"
+                [(ngModel)]="$any(newUser).coordPhone" #coordPhone="ngModel" />
+            </mat-form-field>
+          </ng-container>
+
+          <ng-container *ngIf="dialogType === 'clubCoord'">
+
+            <mat-form-field>
+              <textarea required name="club" matInput placeholder="{{actionHebrew[action]}} שם מועדון"
+                [(ngModel)]="$any(newUser).club" #club="ngModel"></textarea>
+              <mat-error *ngIf="club.invalid && (club.dirty || club.touched)">
+                <div *ngIf="club.errors?.required">
+                  שדה זה הינו חובה.
+                </div>
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field>
+              <textarea required name="address" matInput placeholder="{{actionHebrew[action]}} כתובת"
+                [(ngModel)]="$any(newUser).address" #address="ngModel"></textarea>
+              <mat-error *ngIf="address.invalid && (address.dirty || address.touched)">
+                <div *ngIf="address.errors?.required">
+                  שדה זה הינו חובה.
+                </div>
+              </mat-error>
+            </mat-form-field>
+
+          </ng-container>
 
           <mat-form-field>
-            <textarea required name="phone" matInput placeholder="{{actionHebrew[action]}} מספר טלפון"
-              [(ngModel)]="newUser.phone" #phone="ngModel"></textarea>
+            <input required name="phone" matInput placeholder="{{actionHebrew[action]}} מספר טלפון"
+              [(ngModel)]="newUser.phone" #phone="ngModel" />
+            <mat-error *ngIf="phone.invalid && (phone.dirty || phone.touched)">
+              <div *ngIf="phone.errors?.required">
+                שדה זה הינו חובה.
+              </div>
+            </mat-error>
           </mat-form-field>
-          <mat-error *ngIf="phone.invalid && (phone.dirty || phone.touched)">
-            <div *ngIf="phone.errors?.required">
-              שדה זה הינו חובה.
-            </div>
-          </mat-error>
 
           <!-- neighborhoods checkboxes -->
           <ng-container *ngIf="(dialogType === 'areaCoord' || dialogType === 'manager') ">
@@ -158,7 +178,7 @@
             <mat-error *ngIf="dialogType === 'areaCoord'">חובה לבחור לפחות שכונה אחת</mat-error>
             <mat-error *ngIf="dialogType === 'manager'">לבחור שכונה אחת בלבד</mat-error>
             <span>
-              <ul>
+              <ul class="checkBoxes">
                 <li *ngFor="let neighb of local_data.allNeighborhoods">
                   <mat-checkbox name="neighborhoods" [(ngModel)]="neighb.currentValue" #neighborhoods="ngModel">
                     {{neighb.id}}
@@ -166,31 +186,6 @@
                 </li>
               </ul>
             </span>
-          </ng-container>
-
-
-          <ng-container *ngIf="dialogType === 'clubCoord'">
-
-              <mat-form-field>
-                <textarea required name="club" matInput placeholder="{{actionHebrew[action]}} שם מועדון"
-                  [(ngModel)]="$any(newUser).club" #club="ngModel"></textarea>
-              </mat-form-field>
-              <mat-error *ngIf="club.invalid && (club.dirty || club.touched)">
-                <div *ngIf="club.errors?.required">
-                  שדה זה הינו חובה.
-                </div>
-              </mat-error>
-            
-            <mat-form-field>
-              <textarea required name="address" matInput placeholder="{{actionHebrew[action]}} כתובת"
-                [(ngModel)]="$any(newUser).address" #address="ngModel"></textarea>
-            </mat-form-field>
-            <mat-error *ngIf="address.invalid && (address.dirty || address.touched)">
-              <div *ngIf="address.errors?.required">
-                שדה זה הינו חובה.
-              </div>
-            </mat-error>
-
           </ng-container>
 
         </ng-container>
@@ -204,8 +199,8 @@
   </div>
 
   <div mat-dialog-actions>
-    <button mat-button [disabled]="projForm.invalid" (click)="doAction()">{{actionHebrew[action]}}</button>
-    <button mat-button (click)="closeDialog()" mat-flat-button color="warn">בטל</button>
+    <button mat-button [disabled]="projForm.invalid" color="warn" (click)="doAction()">{{actionHebrew[action]}}</button>
+    <button mat-button (click)="closeDialog()" mat-flat-button>בטל</button>
   </div>
 
 </div>

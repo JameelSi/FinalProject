@@ -1,14 +1,15 @@
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { Observable, Subscription } from 'rxjs';
+import { combineLatest, Observable, Subscription } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
 import { signupUser } from '../types/user'
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthService } from '../services/auth/auth.service';
 import { AngularFirestore } from '@angular/fire/firestore'
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { GetDataService } from '../services/get-data/get-data.service';
 
 // for AutoComplete - validate that user picks from the list
 function containsValidator(validOptions: Array<string>) {
@@ -19,6 +20,35 @@ function containsValidator(validOptions: Array<string>) {
     return { 'contains': true }
   }
 }
+
+interface Elderly {
+  fName: string,
+  lName: string,
+  phone: string,
+  email: string,
+  city: 'ירושלים',
+  neighborhood: string,
+  street: string,
+  age: number,
+  needs: string[],
+  langs: string[],
+  maritalStatus: string,
+  message: string
+}
+interface Volunteer {
+  fName: string,
+  lName: string,
+  phone: string,
+  email: string,
+  city: 'ירושלים',
+  neighborhood: string,
+  street: string,
+  age: number,
+  hobbies: string[],
+  langs: string[],
+  volType: string,
+  message: string
+}
 @Component({
   selector: 'app-signup',
   templateUrl: './signup.component.html',
@@ -27,6 +57,7 @@ function containsValidator(validOptions: Array<string>) {
 })
 
 export class SignupComponent implements OnInit {
+  ready = false;
   // screen width subscriber
   subs = new Subscription();
   // observor for neighborhood field  
@@ -38,17 +69,24 @@ export class SignupComponent implements OnInit {
   details2!: FormGroup;
   fourthFormGroup!: FormGroup;
 
-  validCreation = false;
+  invalidCreation = false;
   showSteps = false;
+
+  // for volunteers
   hidePassword: boolean = true;
-  neighborhoods: string[] = ['מאה שערים', 'פסגת זאב', 'נווה יעקב', 'גבעת רם', 'הר הצופים'];
-  hobbiesArr: string[] = ['מועדון גברים', 'סיוע טכנולגי', 'עזרה בקניות', 'רכישת תרופות', 'ליווי לבתי חולים'];
+  neighborhoods: string[] = [];
+  hobbiesArr: string[] = ['הרצאות', 'הדרכת מחשבים/ סמארטפונים', 'ביקורי בית', 'חבר טלפוני'];
+  volTypeArr: string[] = ['כללי', 'סטודנט', 'חייל', 'תלמיד תיכון', 'תנועות נוער'];
+  _volType!: string
+
   langsArr: string[] = ['עברית', 'אנגלית', 'ערבית', 'רוסית', 'אמהרית', 'צרפתית'];
-  typeArr: string[] = ['כללי', 'סטודנט', 'חייל', 'תלמיד תיכון', 'תנועות נוער'];
+
+  // for elderlies
+  needsArr: string[] = ['מועדון/ מרכז חברתי', 'מועדון גברים', 'סיוע טכנולגי', 'עזרה בקניות', 'רכישת תרופות', 'ליווי לבתי חולים'];
   statusArr: string[] = ['נשוי', 'אלמן', 'רווק'];
+  _maritalStatus!: string
 
-
-  collec: 'Volunteers' | 'Elderly' = 'Volunteers'
+  collec!: string
 
   constructor(
     private fb: FormBuilder,
@@ -57,8 +95,13 @@ export class SignupComponent implements OnInit {
     private authService: AuthService,
     private afs: AngularFirestore,
     private router: Router,
-
-  ) { }
+    private dataProvider: GetDataService,
+    private route: ActivatedRoute,
+  ) {
+    this.ready = false;
+    
+   
+  }
 
   ngAfterViewInit() {
 
@@ -69,56 +112,85 @@ export class SignupComponent implements OnInit {
             this.isBigScreen = false;
           else
             this.isBigScreen = true;
-
         }))
     });
-
   }
 
   ngOnInit() {
-    this.emailAndPassword = this.fb.group({
-      email: ['', Validators.pattern("[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$")],
-      password: ['', Validators.minLength(6)]
-    });
+    this.subs.add(combineLatest([this.route.params, this.dataProvider.getJerNeighborhoods()]).subscribe(([routeParams, jerNeighbs]) => {
+      this.collec = routeParams.userType ?? 'Volunteers'
+      this.neighborhoods = jerNeighbs.map(neighb => neighb.id)
+    // this.subs.add(this.dataProvider.getJerNeighborhoods().subscribe(jerNeighbs => {
+    // console.log(this.neighborhoods)
+    if (this.collec === "Volunteers") {
+      this.emailAndPassword = this.fb.group({
+        email: ['', Validators.pattern("[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$")],
+        password: ['', Validators.minLength(6)]
+      });
+      this.details = this.fb.group({
+        fName: [''],
+        lName: [''],
+        phone: ['', [Validators.maxLength(10), Validators.minLength(7)]],
+        neighborhood: ['', containsValidator(this.neighborhoods)],
+        street: [''],
+        age: ['', [Validators.min(10), Validators.max(100)]],
+        gender: ['']
+      });
 
-    this.details = this.fb.group({
-      fName: [''],
-      lName: [''],
-      phone: ['', [Validators.maxLength(10), Validators.minLength(7)]],
-      neighborhood: ['', containsValidator(this.neighborhoods)],
-      street: [''],
-      age: ['', Validators.min(0)],
-      gender: ['']
-    });
+      this.details2 = this.fb.group({
+        hobbs: this.fb.group({
+          hobb: this.fb.array([], [Validators.required])
+        }),
+        langs: this.fb.group({
+          lang: this.fb.array([], [Validators.required])
+        }),
+        volTypes: this.fb.group({
+          volType: this.fb.array([], [Validators.required])
+        }),
+        bio: ['']
+      });
+    }
+    else if (this.collec === "Elderlies") {
+      this.details = this.fb.group({
+        fName: [''],
+        lName: [''],
+        phone: ['', [Validators.maxLength(10), Validators.minLength(7)]],
+        email: ['', Validators.email],
+        neighborhood: ['', containsValidator(this.neighborhoods)],
+        street: [''],
+        age: ['', [Validators.min(10), Validators.max(100)]],
+        gender: ['']
+      });
 
-    this.details2 = this.fb.group({
+      this.details2 = this.fb.group({
+        needs: this.fb.group({
+          need: this.fb.array([], [Validators.required])
+        }),
+        langs: this.fb.group({
+          lang: this.fb.array([], [Validators.required])
+        }),
+        socials: ['', Validators.required],
+        bio: ['']
+      });
+    }
 
-      hobbs: this.fb.group({
-        hobb: this.fb.array([], [Validators.required])
-      }),
-
-      langs: this.fb.group({
-        lang: this.fb.array([], [Validators.required])
-      }),
-      types: this.fb.group({
-        type: this.fb.array([], [Validators.required])
-      }),
-      socials: this.fb.group({
-        social: this.fb.array([], [Validators.required])
-      }),
-      bio: ['']
-
-    });
     this.fourthFormGroup = this.fb.group({
 
     });
-
-
+    this.ready = true
     if (this.details.get('neighborhood') != null)
       this.filteredOptions = this.details.get('neighborhood')!.valueChanges.pipe(
         startWith(''),
         map(value => this._filter(value))
       );
+    }));
+
+    // }))
+
+  }
+
+  ngOnDestroy() {
+    this.subs.unsubscribe()
   }
 
   onCheckboxChange(e: any, str: string, str2: string) {
@@ -145,9 +217,12 @@ export class SignupComponent implements OnInit {
 
   getErrorMessage(type?: number) {
     if (type == 1) {
-      if (this.emailAndPassword.get('email')?.hasError('required'))
+      if (this.emailAndPassword?.get('email')?.hasError('required') || this.details.get('email')?.hasError('required'))
         return 'שדה חובה';
-      return this.emailAndPassword.get('email')?.hasError('pattern') ? 'האמייל שהוכנס לא תקין' : '';
+      if (this.emailAndPassword?.get('email')?.hasError('pattern') || this.details.get('email')?.hasError('pattern'))
+        return 'האמייל שהוכנס לא תקין';
+      else
+        return ''
     }
     else if (type == 2) {
       if (this.emailAndPassword.get('password')?.hasError('required'))
@@ -169,53 +244,69 @@ export class SignupComponent implements OnInit {
   }
 
 
-  createUser() {
+  createVolunteer() {
+    console.log(this.details)
     if (this.emailAndPassword.invalid || this.details.invalid || this.details2.invalid) {
       this.snackBar.open("נא להשלים כל מה שבאדום!", '', { duration: 3000, direction: 'rtl', panelClass: ['snacks'] });
       return;
     }
     //try creating a new user 
-    this.authService.signUp(this.emailAndPassword.get('email')?.value, this.emailAndPassword.get('password')?.value, this.collec).then(result => {
+    this.authService.signUp(this.emailAndPassword.get('email')?.value, this.emailAndPassword.get('password')?.value, this.collec)
+    .then(result => {
       // if the email already exists return and show an error 
       if (!result)
-        this.validCreation = true;
+        this.invalidCreation = true;
       // user created
       else {
-        this.validCreation = false;
-        let msg, street;
-        if (!this.details2.get('message')?.value)
-          msg = null;
-        else
-          msg = this.details2.get('message')?.value
-        if (!this.details2.get('street')?.value)
-          street = null;
-        else
-          street = this.details2.get('street')?.value
+        this.invalidCreation = false;
 
-        this.afs.doc(`users/${result.uid}`).update({
-
+        this.afs.collection(this.collec).doc(`${result.uid}`).update({
           fName: this.details.get('fName')?.value,
           lName: this.details.get('lName')?.value,
+          email: result.email,
           phone: this.details.get('phone')?.value,
           city: 'ירושלים',
           neighborhood: this.details.get('neighborhood')?.value,
-          street: street,
+          street: this.details2.get('street')?.value ?? null,
           age: this.details.get('age')?.value,
           hobbies: this.details2.get('hobbs')?.get('hobb')?.value,
           langs: this.details2.get('langs')?.get('lang')?.value,
-          type: this.details2.get('types')?.get('type')?.value,
-          status: this.details2.get('socials')?.get('social')?.value,
-          message: msg
+          volType: this.details2.get('volTypes')?.get('volType')?.value,
+          message: this.details2.get('message')?.value ?? null
         }).then(result => {
           this.snackBar.open("התהליך סיים בהצלחה", '', { duration: 3000, direction: 'rtl', panelClass: ['snacks'] });
           this.router.navigate(['']);
         }).catch(err => {
           this.snackBar.open("קרתה שגיאה נא לנסות בזמן מאוחר יותר", '', { duration: 3000, direction: 'rtl', panelClass: ['snacks'] });
         })
-
       }
     }).catch(err => {
-      console.log('err from signup')
+      console.log('err from signup, auth func')
     })
   }
+
+  createElderly() {
+    console.log(this.details)
+
+    this.afs.collection(this.collec).add({
+      fName: this.details.get('fName')?.value,
+      lName: this.details.get('lName')?.value,
+      phone: this.details.get('phone')?.value,
+      email: this.details.get('email')?.value,
+      city: 'ירושלים',
+      neighborhood: this.details.get('neighborhood')?.value,
+      street: this.details2.get('street')?.value ?? null,
+      age: this.details.get('age')?.value,
+      needs: this.details2.get('needs')?.get('need')?.value,
+      langs: this.details2.get('langs')?.get('lang')?.value,
+      maritalStatus: this.details2.get('socials')?.value ?? null,
+      message: this.details2.get('message')?.value ?? null
+    }).then(result => {
+      this.snackBar.open("התהליך סיים בהצלחה", '', { duration: 3000, direction: 'rtl', panelClass: ['snacks'] });
+      this.router.navigate(['']);
+    }).catch(err => {
+      this.snackBar.open("קרתה שגיאה נא לנסות בזמן מאוחר יותר", '', { duration: 3000, direction: 'rtl', panelClass: ['snacks'] });
+    })
+  }
+
 }

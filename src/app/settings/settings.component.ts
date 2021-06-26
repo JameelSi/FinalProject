@@ -44,7 +44,8 @@ interface clubCoord {
   address: string,
   club: string,
   name: string,
-  phone: string
+  phone: string,
+  coordPhone: string | undefined
 }
 
 @Component({
@@ -73,7 +74,7 @@ export class SettingsComponent implements OnInit {
       this.items = [
         {
           type: "areaCoord",
-          nameH: "רכזי אזור",
+          nameH: "מרכזי אזור",
           content: this.areaCoords,
           collec: "AreaCoordinators"
         },
@@ -85,7 +86,7 @@ export class SettingsComponent implements OnInit {
         },
         {
           type: "manager",
-          nameH: "מנהלי גיל שלישי",
+          nameH: "מנהלי תחום",
           content: this.managers,
           collec: "Managers"
         },
@@ -136,7 +137,7 @@ export class SettingsComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log(result)
+      // console.log(result)
       if (result && result.event != 'Cancel') {
         if (result.data.action === "Add" && result.data.dialogType === "neighb") {
           // Create a reference to the cities collection
@@ -156,32 +157,49 @@ export class SettingsComponent implements OnInit {
                 managerId: result.newNeighb.managerId,
               })
                 .then(() => {
-                  console.log("Document successfully written!");
+                  this.snackBar.open("התהליך סיים בהצלחה", '', { duration: 3000, direction: 'rtl', panelClass: ['snacks'] });
                 })
                 .catch((error) => {
-                  console.error("Error writing document: ", error);
+                  this.snackBar.open("קרתה שגיאה נא לנסות בזמן מאוחר יותר", '', { duration: 3000, direction: 'rtl', panelClass: ['snacks'] });
                 });
             }
           })
         }
-        else if (result.data.action === "Add" && (result.data.dialogType === "areaCoord"
-          || result.data.dialogType === "clubCoord" || result.data.dialogType === "manager")) {
+        else if (result.data.action === "Add" && (result.data.dialogType === "clubCoord" || result.data.dialogType === "manager")) {
           this.db.collection(collec).add({
             ...result.newUser
           })
             .then((docRef) => {
-              console.log("Document written ");
+              this.snackBar.open("התהליך סיים בהצלחה", '', { duration: 3000, direction: 'rtl', panelClass: ['snacks'] });
             })
             .catch((error) => {
-              console.error("Error adding document: ", error);
+              this.snackBar.open("קרתה שגיאה נא לנסות בזמן מאוחר יותר", '', { duration: 3000, direction: 'rtl', panelClass: ['snacks'] });
             });
         }
+        else if (result.data.action === "Add" && result.data.dialogType === "areaCoord") {
+
+          Promise.all(
+            [ this.db.collection(collec).doc(result.newUser.uid).set({
+              ...result.newUser
+            }),
+            this.db.collection('Admin').doc(result.newUser.uid).set({
+              type: collec,
+              superAdmin: true,
+            }) ]
+          )
+            .then((docRef: any) => {
+              this.snackBar.open("התהליך סיים בהצלחה", '', { duration: 3000, direction: 'rtl', panelClass: ['snacks'] });
+            })
+            .catch((error: any) => {
+              this.snackBar.open("קרתה שגיאה נא לנסות בזמן מאוחר יותר", '', { duration: 3000, direction: 'rtl', panelClass: ['snacks'] });
+            })
+        }
         else if (result.data.action === "Delete") {
-          console.log(collec, doc)
+          // console.log(collec, doc)
           this.afs.collection(collec).doc(doc).delete().then(() => {
-            console.log("Document successfully deleted!");
+            this.snackBar.open("התהליך סיים בהצלחה", '', { duration: 3000, direction: 'rtl', panelClass: ['snacks'] });
           }).catch((error) => {
-            console.error("Error removing document: ", error);
+            this.snackBar.open("קרתה שגיאה נא לנסות בזמן מאוחר יותר", '', { duration: 3000, direction: 'rtl', panelClass: ['snacks'] });
           });
         }
 

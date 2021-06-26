@@ -5,7 +5,8 @@ import { MatChipSelectionChange } from '@angular/material/chips';
 import { FormControl } from '@angular/forms';
 import * as moment from 'moment';
 import { AuthService } from '../services/auth/auth.service';
-// import { firestore } from 'firebase/app';
+import firebase from 'firebase/app';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 interface project {
   projectType: any,
@@ -20,7 +21,8 @@ type areaCoord = {
   email: string,
   phone: string,
   neighborhoods: string[],
-  superAdmin?: boolean,
+  password?: string,
+  uid?: string
 }
 
 type neighborhood = {
@@ -44,7 +46,8 @@ type clubCoord = {
   address: string,
   club: string,
   name: string,
-  phone: string
+  phone: string,
+  coordPhone: string | undefined
 }
 
 type user = clubCoord | manager | areaCoord
@@ -70,10 +73,12 @@ export class DialogBoxComponent implements OnInit {
   newEmail?: string;
   newPassword?: string;
   invalidCreation: boolean = false;
+  secondaryApp!: any
 
   constructor(public dialogRef: MatDialogRef<DialogBoxComponent>,
     private afs: AngularFirestore,
     public authService: AuthService,
+    readonly snackBar: MatSnackBar,
     //@Optional() is used to prevent error if no data is passed
     @Optional() @Inject(MAT_DIALOG_DATA) public data: any) {
     this.local_data = { ...data };
@@ -103,7 +108,6 @@ export class DialogBoxComponent implements OnInit {
         email: "",
         phone: "",
         neighborhoods: [],
-        superAdmin: this.local_data.superAdmin,
       }
     }
     else if (this.dialogType == 'manager') {
@@ -119,18 +123,34 @@ export class DialogBoxComponent implements OnInit {
         address: "",
         club: "",
         name: "",
-        phone: ""
+        phone: "",
+        coordPhone: undefined,
       }
     }
     this.dialogTitle = this.local_data.dialogTitle;
   }
 
   doAction() {
-    if ( (this.dialogType === 'areaCoord' || this.dialogType === 'manager' ) && this.action!="Delete")
+    if ((this.dialogType === 'areaCoord' || this.dialogType === 'manager') && this.action != "Delete")
       this.updateNeighbs()
-    // if (this.dialogType === 'areaCoord')
-    //   this.createUser()
-    if (!this.invalidCreation) {
+    if (this.dialogType === 'areaCoord') {
+      this.createUser().then(() => {
+        if (!this.invalidCreation) {
+          this.dialogRef.close({
+            event: this.action,
+            data: this.local_data,
+            newNeighb: this.newNeighb,
+            newProj: {
+              ...this.newProj,
+              comments: this.newProj?.comments.length == 0 ? "אין" : this.newProj?.comments,
+              date: this.newProj?.date.toDate()
+            },
+            newUser: this.newUser
+          });
+        }
+      })
+    }
+    else if (!this.invalidCreation) {
       this.dialogRef.close({
         event: this.action,
         data: this.local_data,
@@ -160,19 +180,40 @@ export class DialogBoxComponent implements OnInit {
     });
   }
 
-  // async createUser() {
-  //   if ((this.newUser as manager | areaCoord).email && this.newPassword) {
-  //     //try creating a new user 
-  //     await this.authService.signUp((this.newUser as manager | areaCoord).email, this.newPassword, 'AreaCoordinators').then(result => {
-  //       // if the email already exists return and show an error 
-  //       if (!result)
-  //         this.invalidCreation = true;
-  //       // user created
-  //       else {
-  //         this.invalidCreation = false;
-  //       }
-  //     })
-  //   }
-  // }
+  async createUser() {
+    if ((this.newUser as areaCoord).email && this.newPassword) {
+      //try creating a new user 
+      const config = {
+        apiKey: "AIzaSyDlr_TVnprFbrWL557dAC-1OdTMyNvxqTk",
+        authDomain: "simhatv2test.firebaseapp.com",
+        projectId: "simhatv2test",
+        storageBucket: "simhatv2test.appspot.com",
+        messagingSenderId: "186409866492",
+        appId: "1:186409866492:web:3e40efbd9ba31d4cc63379",
+        measurementId: "G-JQX7RBYSQC"
+      };
+      if(firebase.apps.length === 1)
+        this.secondaryApp = firebase.initializeApp(config, "Secondary");
+      else
+        this.secondaryApp = firebase.apps[1]
+      await this.secondaryApp.auth().createUserWithEmailAndPassword((this.newUser as areaCoord).email, this.newPassword).then((res: any) => {
+        if (!res) {
+          this.invalidCreation = true;
+        }
+        // user created
+        else {
+          this.invalidCreation = false;
+          (this.newUser as areaCoord).uid = res.user?.uid
+          // console.log("User " + res.user?.uid + " created successfully!");
+          //I don't know if the next statement is necessary 
+          this.secondaryApp.auth().signOut();
+        }
+      })
+        .catch((err: any) => {
+          this.invalidCreation = true;
+          this.snackBar.open(err, '', { duration: 3000, direction: 'rtl', panelClass: ['snacks'] });
+        })
+    }
+  }
 
 }

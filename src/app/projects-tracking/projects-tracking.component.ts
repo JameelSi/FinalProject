@@ -53,7 +53,8 @@ interface clubCoord {
   address: string,
   club: string,
   name: string,
-  phone: string
+  phone: string,
+  coordPhone: string | undefined,
 }
 
 @Component({
@@ -141,10 +142,10 @@ export class ProjectsTrackingComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.subs.add(combineLatest(
+    this.subs.add(combineLatest([
       this.dataProvider.getProjectTrackingData(),
       this.authService.authData$
-    ).subscribe(([ data, auth ]) => {
+    ]).subscribe(([data, auth]) => {
       const [areaCoords, allNeighborhoods, managers, clubCoords] = data;
       // filter data when getting from firestore according to user time, 
       // for admins get all, for area coords get their 8, so on... TODO
@@ -153,30 +154,35 @@ export class ProjectsTrackingComponent implements OnInit, OnDestroy {
       this.managers = managers;
       this.clubCoords = clubCoords;
 
-      if (!auth.superAdmin) {
-        let neighs: any
-        this.areaCoords = areaCoords.filter(item => (item.id.trim() == auth.uid))
-        if (auth.type === "AreaCoordinators") {
-          neighs = this.areaCoords.reduce((acc, ac) => acc.concat(ac.neighborhoods), [] as string[]);
-        }
-        else if (auth.type === "Managers") {
-          this.managers = managers.filter(item => (item.id.trim() == auth.uid))
-          neighs = this.managers.reduce((acc, ac) => acc.concat(ac.neighborhoods), [] as string[]);
-        }
-        if (neighs)
-          this.allNeighborhoods = allNeighborhoods.filter(n => neighs.indexOf(n.id) > -1).sort();
-      }
+      // if (!auth.superAdmin) {
+      //   let neighs: any
+      //   this.areaCoords = areaCoords.filter(item => (item.id.trim() == auth.uid))
+      //   if (auth.type === "AreaCoordinators") {
+      //     neighs = this.areaCoords.reduce((acc, ac) => acc.concat(ac.neighborhoods), [] as string[]);
+      //   }
+      // else if (auth.type === "Managers") {
+      //   this.managers = managers.filter(item => (item.id.trim() == auth.uid))
+      //   neighs = this.managers.reduce((acc, ac) => acc.concat(ac.neighborhoods), [] as string[]);
+      // }
+      //   if (neighs)
+      //     this.allNeighborhoods = allNeighborhoods.filter(n => neighs.indexOf(n.id) > -1).sort();
+      // }
 
       if (this.authService.isLoggedIn) {
         let uid = auth.uid
         let temp
         if (auth.type === "AreaCoordinators")
           temp = this.areaCoords.find(i => (i.id.trim() == uid))
-        else if (auth.type === "Managers")
-          temp = this.managers[0]
-        console.log(uid, this.areaCoords)
-        if (temp)
-          temp.name = "אני"
+        // else if (auth.type === "Managers")
+        //   temp = this.managers[0]
+        if (temp) {
+          temp.name = "שכונות שלי"
+          let idx = this.areaCoords.indexOf(temp)
+          let temp2 = this.areaCoords[0]
+          this.areaCoords[0] = temp
+          this.areaCoords[idx]= temp2
+        }
+
       }
       this.allNeighborhoods.forEach(neighb => {
         neighb.managerInfo = this.managers.find(i => i.id.trim() == neighb.managerId.trim())

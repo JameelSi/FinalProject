@@ -13,10 +13,12 @@
                     </mat-icon>
                     <div class="content">
                         <div>{{content.name}}</div>
+                        <div *ngIf="item.type==='clubCoord'">{{content.coordPhone}}</div>
                         <div *ngIf="item.type==='neighb'">{{content.id}}</div>
                         <div>{{content.email}}</div>
                         <div>{{content.phone}}</div>
                         <div>{{content.club}}</div>
+                        
                     </div>
                     <!-- <mat-icon (click)="openDialog('Update', {}, item.collec, content.id, item.type)">edit</mat-icon> -->
                 </div>
@@ -30,9 +32,9 @@
                     (super admin) to
                     jerusalem</button> -->
                 <button *ngIf="item.type==='areaCoord'" mat-stroked-button color="primary"
-                    (click)="openDialog('Add', {}, item.collec, undefined, item.type)">הוסף רכז אזור</button>
+                    (click)="openDialog('Add', {}, item.collec, undefined, item.type)">הוסף מרכז אזור</button>
                 <button *ngIf="item.type==='manager'" mat-stroked-button color="primary"
-                    (click)="openDialog('Add', {}, item.collec, undefined, item.type)">הוסף מנהל גיל שלישי</button>
+                    (click)="openDialog('Add', {}, item.collec, undefined, item.type)">הוסף מנהל תחום</button>
                 <button *ngIf="item.type==='clubCoord'" mat-stroked-button color="primary"
                     (click)="openDialog('Add', {}, item.collec, undefined, item.type)">הוסף רכז מועדון</button>
             </div>
