@@ -1,65 +1,23 @@
-<!-- <app-toolbar> -->
-<!-- <div class="menu-header">
-        <span class="spacer"></span>
-        <button mat-icon-button *ngIf="sidenav.mode === 'over'" (click)="sidenav.toggle()">
-            <mat-icon *ngIf="!sidenav.opened">
-                menu
-            </mat-icon>
-            <mat-icon *ngIf="sidenav.opened">
-                close
-            </mat-icon>
-        </button>
-    </div> -->
-
-<!-- <div class="scroll-wrapper" cdkScrollable> -->
-<!-- <mat-toolbar class="sticky-toolbar" >
-    <span>App name</span>
-    <span class="spacer"></span>
-    <button mat-button  routerLink="/projectsTracking">מעקב מיזמים</button>
-    <button mat-button routerLink="/needs">מענים</button>
-    <button mat-button routerLink="/signup">רישום</button>
-    <button mat-button routerLink="/signin">
-        <mat-icon>login</mat-icon>
-        כניסה
-    </button>
-    <button mat-button routerLink="/home">דף הבית</button>
-</mat-toolbar> -->
-<!-- </div> -->
-
-<!-- <button mat-button routerLink="/home">דף הבית</button>
-    <button *ngIf="!authService.isLoggedIn"  mat-button routerLink="/signup">רישום</button>
-    <button *ngIf="!authService.isLoggedIn" mat-button  routerLink="/signin">
-        <mat-icon>login</mat-icon>
-        כניסה</button>
-    <nav>
-        <a routerLink="/projectsTracking">מעקב מיזמים</a>
-    </nav>
-    <button *ngIf="authService.isLoggedIn"  mat-button (click)="logOut()" >יציאה</button>
-</mat-toolbar> -->
-
-
 <!--breakpoints: https://github.com/angular/flex-layout/issues/821 -->
 <div dir="rtl">
     <mat-toolbar fxLayout="row" class="fixed-toolbar">
-        <span fxFlex routerLink="/" style="cursor: pointer;">הגיל השלישי זה אנחנו</span>
-        <span class="spacer"></span>
-        <ng-container *ngIf="!authService.isLoggedIn">
-            <mat-icon fxHide fxShow.lt-sm>login</mat-icon>
-            <button routerLink="/signin" mat-button>כניסה</button>
-        </ng-container>
-        <div routerLink={{item.route}} *ngFor="let item of menuItems" fxHide.lt-sm>
-            <ng-container
-                *ngIf="( !item.admin || (item.superAdmin && authService.isLoggedIn && authService.isSuperAdmin) || (item.admin && authService.isLoggedIn && authService.type!='' ) ) 
+        <span fxFlex routerLink="/" style="cursor: pointer;"><img src="../assets/imgs/logo.png"></span>
+            <div routerLink={{item.route}} *ngFor="let item of menuItems" fxHide.lt-sm>
+                <ng-container
+                    *ngIf="( !item.admin || (item.superAdmin && authService.isLoggedIn && authService.isSuperAdmin) || (item.admin && authService.isLoggedIn && authService.type!='' ) ) 
                 && ((item.requireLogIn && authService.isLoggedIn) || (item.requireLogOut && !authService.isLoggedIn || item.showAll))">
-                <!-- <mat-icon class="mr">{{item.icon}}</mat-icon> -->
-                <button mat-button>
-                    {{item.label}}
-                </button>
-            </ng-container>
-        </div>
+                    <button mat-button>
+                        {{item.label}}
+                    </button>
+                </ng-container>
+            </div>
+        <ng-container *ngIf="!authService.isLoggedIn">
+            <button routerLink="/signin" mat-stroked-button  color=primary>כניסה</button>
+        </ng-container>
+
         <ng-container *ngIf="authService.isLoggedIn">
-            <mat-icon fxHide fxShow.lt-sm>logout</mat-icon>
-            <button mat-button (click)="logOut()">יציאה</button>
+            <button mat-button (click)="logOut()"  mat-stroked-button>יציאה</button>
+            <mat-divider></mat-divider>
         </ng-container>
 
         <button mat-icon-button [matMenuTriggerFor]="dropMenu" fxHide fxShow.lt-sm>

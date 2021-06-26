@@ -51,6 +51,7 @@ import { AngularFireStorageModule } from '@angular/fire/storage';
 import { CarouselModule } from 'primeng/carousel';
 import {ButtonModule} from 'primeng/button';
 import { SettingsComponent } from './settings/settings.component';
+import { MessagesComponent } from './messages/messages.component';
 
 @NgModule({
   declarations: [
@@ -62,7 +63,8 @@ import { SettingsComponent } from './settings/settings.component';
     ToolbarComponent,
     SignupComponent,
     SigninComponent,
-    SettingsComponent
+    SettingsComponent,
+    MessagesComponent
     ],
   imports: [
     BrowserModule,
