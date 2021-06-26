@@ -47,10 +47,11 @@ import { SigninComponent } from './signin/signin.component';
 import {AngularFireAuthModule} from '@angular/fire/auth'
 import { MatRadioModule } from '@angular/material/radio';
 import { FlexLayoutModule } from '@angular/flex-layout';
-
+import { AngularFireStorageModule } from '@angular/fire/storage';
 import { CarouselModule } from 'primeng/carousel';
 import {ButtonModule} from 'primeng/button';
 import { SettingsComponent } from './settings/settings.component';
+import { MessagesComponent } from './messages/messages.component';
 
 @NgModule({
   declarations: [
@@ -62,7 +63,8 @@ import { SettingsComponent } from './settings/settings.component';
     ToolbarComponent,
     SignupComponent,
     SigninComponent,
-    SettingsComponent
+    SettingsComponent,
+    MessagesComponent
     ],
   imports: [
     BrowserModule,
@@ -104,6 +106,7 @@ import { SettingsComponent } from './settings/settings.component';
     FlexLayoutModule,
     ScrollingModule,
     ButtonModule,
+    AngularFireStorageModule
   ],
   providers: [ScrollDispatcher],
   bootstrap: [AppComponent],

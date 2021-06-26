@@ -21,6 +21,7 @@ mat-divider {
     margin-top: 16px;
     margin-bottom: 16px;
     background-color: rgba(255, 255, 255, 0.5);
+    padding-top: 6%;
 }
 
 mat-drawer {
@@ -28,9 +29,7 @@ mat-drawer {
     width: 200px;
     border-right: none;
     background: $drawer-bkg-color;
-    // color: white;
-    // border-radius: 10px;
-    // padding: 16px;
+    margin-top: 6%;
     text-align: center;
 }
 
@@ -72,9 +71,9 @@ mat-drawer {
 }
 
 
-mat-drawer-container {
-    // height: 100%;
-    height: calc(100vh - 65px);
+mat-drawer-container{
+    height:100vh;
+    padding-top: 6%;
 }
 
 .menu-container {

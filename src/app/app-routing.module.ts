@@ -6,6 +6,7 @@ import { ProjectsTrackingComponent } from './projects-tracking/projects-tracking
 import { SignupComponent } from './signup/signup.component';
 import { SigninComponent } from './signin/signin.component';
 import { SettingsComponent } from './settings/settings.component';
+import { MessagesComponent } from './messages/messages.component';
 
 const routes: Routes = [
   { path: 'projectsTracking', component: ProjectsTrackingComponent },
@@ -14,6 +15,7 @@ const routes: Routes = [
   { path: 'signup/:userType', component: SignupComponent},
   { path: 'signin', component: SigninComponent},
   { path: 'settings', component: SettingsComponent},
+  { path: 'messages', component: MessagesComponent},
   { path: '', redirectTo: '/home', pathMatch: 'full' },
 ];
 

@@ -75,7 +75,17 @@ export class ToolbarComponent implements OnInit {
       requireLogIn: true,
       requireLogOut: false,
       showAll: false,
-    }, 
+      // superAdmin: true,
+    },{
+      label: "ריכוז הודעות",
+      icon: "",
+      route: "/messages",
+      admin: false,
+      requireLogIn: false,
+      requireLogOut: false,
+      showAll: true,
+    }
+    
   ]
 
   constructor(
