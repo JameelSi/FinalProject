@@ -43,7 +43,7 @@ export interface clubCoord {
   coordPhone: string | undefined,
 }
 
-interface volunteeringOpp {
+interface event {
   title: string,
   type: string,
   description: string,
@@ -60,14 +60,14 @@ export class GetDataService {
   neighbsRef: AngularFirestoreCollection<neighborhood>
   managersRef: AngularFirestoreCollection<manager>
   clubCoordsRef: AngularFirestoreCollection<clubCoord>
-  volunteeringOppsRef: AngularFirestoreCollection<volunteeringOpp>;
+  eventsRef: AngularFirestoreCollection<event>;
 
   constructor(private store: AngularFirestore) {
     this.areaCoordsRef = this.store.collection("AreaCoordinators")
     this.neighbsRef = this.store.collection("ירושלים")
     this.managersRef = this.store.collection("Managers")
     this.clubCoordsRef = this.store.collection("ClubCoordinators")
-    this.volunteeringOppsRef = this.store.collection("volunteeringOpportunities", ref => {
+    this.eventsRef = this.store.collection("Events", ref => {
       return ref.orderBy("date")
     })
   }
@@ -83,8 +83,8 @@ export class GetDataService {
   }
 
   getProjectVolOppsData(){
-    let volOpps: Observable<volunteeringOpp[]>
-    volOpps = this.volunteeringOppsRef.valueChanges({ idField: 'id' });
+    let volOpps: Observable<event[]>
+    volOpps = this.eventsRef.valueChanges({ idField: 'id' });
     return volOpps
   }
 

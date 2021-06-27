@@ -34,25 +34,24 @@
 
 <div class="spacer"></div>
 
-<p-carousel [value]="volunteeringOpps" [numVisible]="3" [numScroll]="1" [responsiveOptions]="responsiveOptions">
+<p-carousel [value]="events" [numVisible]="3" [numScroll]="1" [responsiveOptions]="responsiveOptions">
     <ng-template pTemplate="header">
         <div dir="rtl" class="vol-header">אירועים 
-            <!-- *ngIf="authService.isLoggedIn && authService.type != '' && authService.isSuperAdmin" -->
-            <div class="addBtn"*ngIf="authService.isLoggedIn && authService.type != '' && authService.isSuperAdmin"  (click)="addDialog('Add',{},'collection')" >הוסף אירוע</div>
+            <div class="addBtn"*ngIf="authService.isLoggedIn && isAdmin" (click)="openDialog('Add',{}, undefined)" >הוסף אירוע</div>
         </div>
         
     </ng-template>
 
-    <ng-template let-volunteerOpp pTemplate="item">
+    <ng-template let-currEvent pTemplate="item">
         <div class="vol-item">
             <div class="vol-item-content">
                 <div class="p-mb-3"></div>
                 <div>
                     <div class="p-mb-3">
-                        <img src="{{volunteerOpp.img}}" [alt]="volunteerOpp.title" class="vol-image" />
+                        <img src="{{currEvent.img}}" [alt]="currEvent.title" class="vol-image" />
                     </div>
-                    <h4 class="p-mb-1">{{volunteerOpp.name}}</h4>
-                    <h6 class="p-mt-0 p-mb-3">{{volunteerOpp.description}}</h6>
+                    <h4 class="p-mb-1">{{currEvent.name}}</h4>
+                    <h6 class="p-mt-0 p-mb-3">{{currEvent.description}}</h6>
                     <h6 class="p-mt-0 p-mb-3">click for more info</h6>
                 </div>
             </div>

@@ -68,7 +68,7 @@
 
 
       <ng-template #neighbTemplate>
-        <ng-container *ngIf="dialogType === 'neighb' && newNeighb && action != 'Delete'; else coordTemplate">
+        <ng-container *ngIf="dialogType === 'neighb' && newNeighb && action != 'Delete'; else eventsTemplate">
 
           <mat-form-field>
             <textarea required name="id" matInput placeholder="{{actionHebrew[action]}} שם השכונה"
@@ -92,7 +92,7 @@
 
       <ng-template #coordTemplate>
         <ng-container *ngIf="(dialogType === 'areaCoord' || dialogType === 'clubCoord' || dialogType === 'manager') 
-         && newUser && action != 'Delete'; else elseTemplate  ">
+         && newUser && action != 'Delete'; else eventsTemplate">
 
           <ng-container *ngIf="dialogType === 'areaCoord' || dialogType === 'manager'">
             <mat-error *ngIf="invalidCreation">המייל שהוכס כבר קיים</mat-error>
@@ -188,6 +188,37 @@
             </span>
           </ng-container>
 
+        </ng-container>
+      </ng-template>
+
+      <ng-template #eventsTemplate>
+        <ng-container *ngIf="dialogType === 'event'; else eventsTemplate ">
+        <mat-form-field appearance="fill">
+          <mat-label>{{actionHebrew[action]}} תאריך</mat-label>
+          <input matInput required id="date2" name="date2" [matDatepicker]="picker2" [(ngModel)]="newEvent.date"
+            #date2="ngModel">
+          <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+          <mat-datepicker #picker2 disabled="false"></mat-datepicker>
+          <mat-error *ngIf="date2.invalid && (date2.dirty || date2.touched)">
+            <div *ngIf="date2.errors?.required">
+              שדה התאריך הינו חובה.
+            </div>
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <textarea required name="title" matInput placeholder="{{actionHebrew[action]}} כותרת"
+          [(ngModel)]="newEvent.title" #title="ngModel"></textarea>
+          <mat-error *ngIf="title.invalid && (title.dirty || title.touched)">
+            <div *ngIf="title.errors?.required">
+              שדה זה הינו חובה.
+            </div>
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field>
+          <textarea name="description" matInput placeholder="{{actionHebrew[action]}} תיאור"
+          [(ngModel)]="newEvent.description" #description="ngModel"></textarea>
+        </mat-form-field>
         </ng-container>
       </ng-template>
 

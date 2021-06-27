@@ -70,7 +70,7 @@ export class AuthService {
   addtoFireStore(user: signinUser, collec: string) {
     // pass uid to prevent firestore to generate random id
     const ref: AngularFirestoreDocument<signinUser> = this.afs.collection(collec).doc(`${user.uid}`);
-    ref.set(user).catch(err=>{console.log(err)});
+    ref.set(user).catch(err=>{throw(err)});
   }
 
   reset(emailAddress: string) {

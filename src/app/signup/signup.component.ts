@@ -121,7 +121,6 @@ export class SignupComponent implements OnInit {
       this.collec = routeParams.userType ?? 'Volunteers'
       this.neighborhoods = jerNeighbs.map(neighb => neighb.id)
     // this.subs.add(this.dataProvider.getJerNeighborhoods().subscribe(jerNeighbs => {
-    // console.log(this.neighborhoods)
     if (this.collec === "Volunteers") {
       this.emailAndPassword = this.fb.group({
         email: ['', Validators.pattern("[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$")],
@@ -245,7 +244,6 @@ export class SignupComponent implements OnInit {
 
 
   createVolunteer() {
-    console.log(this.details)
     if (this.emailAndPassword.invalid || this.details.invalid || this.details2.invalid) {
       this.snackBar.open("נא להשלים כל מה שבאדום!", '', { duration: 3000, direction: 'rtl', panelClass: ['snacks'] });
       return;
@@ -274,19 +272,18 @@ export class SignupComponent implements OnInit {
           volType: this.details2.get('volTypes')?.get('volType')?.value,
           message: this.details2.get('message')?.value ?? null
         }).then(result => {
-          this.snackBar.open("התהליך סיים בהצלחה", '', { duration: 3000, direction: 'rtl', panelClass: ['snacks'] });
+          this.snackBar.open("התהליך הסתיים בהצלחה", '', { duration: 3000, direction: 'rtl', panelClass: ['snacks'] });
           this.router.navigate(['']);
         }).catch(err => {
           this.snackBar.open("קרתה שגיאה נא לנסות בזמן מאוחר יותר", '', { duration: 3000, direction: 'rtl', panelClass: ['snacks'] });
         })
       }
     }).catch(err => {
-      console.log('err from signup, auth func')
+      // console.log('err from signup, auth func')
     })
   }
 
   createElderly() {
-    console.log(this.details)
 
     this.afs.collection(this.collec).add({
       fName: this.details.get('fName')?.value,
@@ -302,7 +299,7 @@ export class SignupComponent implements OnInit {
       maritalStatus: this.details2.get('socials')?.value ?? null,
       message: this.details2.get('message')?.value ?? null
     }).then(result => {
-      this.snackBar.open("התהליך סיים בהצלחה", '', { duration: 3000, direction: 'rtl', panelClass: ['snacks'] });
+      this.snackBar.open("התהליך הסתיים בהצלחה", '', { duration: 3000, direction: 'rtl', panelClass: ['snacks'] });
       this.router.navigate(['']);
     }).catch(err => {
       this.snackBar.open("קרתה שגיאה נא לנסות בזמן מאוחר יותר", '', { duration: 3000, direction: 'rtl', panelClass: ['snacks'] });
