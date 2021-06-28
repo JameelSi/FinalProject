@@ -51,6 +51,15 @@ type clubCoord = {
 }
 
 type user = clubCoord | manager | areaCoord
+
+interface event {
+  title: string,
+  type?: string,
+  description?: string,
+  date?: any,
+  id?: string,
+  img? : string,
+}
 @Component({
   selector: 'app-dialog-box',
   templateUrl: './dialog-box.component.html',
@@ -66,9 +75,10 @@ export class DialogBoxComponent implements OnInit {
   newProj?: project;
   newNeighb?: neighborhood;
   newUser!: user;
+  newEvent!: event;
   // newManager?: manager;
   // newClubCoord?: clubCoord;
-  dialogType: 'project' | 'needs' | 'resetPass' | 'neighb' | 'areaCoord' | 'manager' | 'clubCoord';
+  dialogType: 'project' | 'needs' | 'resetPass' | 'neighb' | 'areaCoord' | 'manager' | 'clubCoord' | 'event'; 
   actionHebrew: { [key: string]: string } = { "Add": 'הוסף', "Update": 'עדכן', "Delete": 'מחק', "reset": 'שלח' };
   newEmail?: string;
   newPassword?: string;
@@ -91,10 +101,10 @@ export class DialogBoxComponent implements OnInit {
         comments: this.local_data.comments,
         clubCoordinatorId: this.local_data.clubCoordinatorId
       }
-    } else if (this.dialogType == "project") {
+    } else if (this.dialogType === "project") {
       this.newProj = { projectType: '', comments: '', date: moment(), clubCoordinatorId: '' }
     }
-    if (this.dialogType == 'neighb') {
+    if (this.dialogType === 'neighb') {
       this.newNeighb = {
         id: "",
         currentValue: false,
@@ -102,7 +112,7 @@ export class DialogBoxComponent implements OnInit {
         projects: []
       }
     }
-    else if (this.dialogType == 'areaCoord') {
+    else if (this.dialogType === 'areaCoord') {
       this.newUser = {
         name: "",
         email: "",
@@ -110,7 +120,7 @@ export class DialogBoxComponent implements OnInit {
         neighborhoods: [],
       }
     }
-    else if (this.dialogType == 'manager') {
+    else if (this.dialogType === 'manager') {
       this.newUser = {
         name: "",
         email: "",
@@ -118,13 +128,21 @@ export class DialogBoxComponent implements OnInit {
         neighborhoods: []
       }
     }
-    else if (this.dialogType == 'clubCoord') {
+    else if (this.dialogType === 'clubCoord') {
       this.newUser = {
         address: "",
         club: "",
         name: "",
         phone: "",
         coordPhone: undefined,
+      }
+    }
+    else if (this.dialogType==="event"){
+      this.newEvent={
+        date: moment(),
+        title: '',
+        description: '',
+        img: ''
       }
     }
     this.dialogTitle = this.local_data.dialogTitle;
@@ -139,12 +157,6 @@ export class DialogBoxComponent implements OnInit {
           this.dialogRef.close({
             event: this.action,
             data: this.local_data,
-            newNeighb: this.newNeighb,
-            newProj: {
-              ...this.newProj,
-              comments: this.newProj?.comments.length == 0 ? "אין" : this.newProj?.comments,
-              date: this.newProj?.date.toDate()
-            },
             newUser: this.newUser
           });
         }
@@ -155,12 +167,14 @@ export class DialogBoxComponent implements OnInit {
         event: this.action,
         data: this.local_data,
         newNeighb: this.newNeighb,
-        newProj: {
-          ...this.newProj,
-          comments: this.newProj?.comments.length == 0 ? "אין" : this.newProj?.comments,
-          date: this.newProj?.date.toDate()
-        },
-        newUser: this.newUser
+        newProj: this.newProj? {
+            ...this.newProj,
+            comments: this.newProj?.comments.length == 0 ? "אין" : this.newProj?.comments,
+            date: this.newProj?.date.toDate()
+          } 
+          : undefined,
+        newUser: this.newUser,
+        newEvent: this.newEvent
       });
     }
   }
@@ -204,7 +218,6 @@ export class DialogBoxComponent implements OnInit {
         else {
           this.invalidCreation = false;
           (this.newUser as areaCoord).uid = res.user?.uid
-          // console.log("User " + res.user?.uid + " created successfully!");
           //I don't know if the next statement is necessary 
           this.secondaryApp.auth().signOut();
         }

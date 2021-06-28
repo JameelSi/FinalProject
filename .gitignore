@@ -49,3 +49,9 @@ Thumbs.db
 src/environments
 .firebaserc
 firebase.json
+.firebase
+functions
+public
+firestore.indexes.json
+firestore.rules
+storage.rules

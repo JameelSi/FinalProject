@@ -225,8 +225,7 @@
         <div>
           <h3 class="checkTtile">האם התנדבת בעבר או מתנדב בהווה ?</h3>
           <h5>
-            <mat-error class="err" *ngIf="this.details2.get('pastVoulnteer')?.errors?.required"> שדה חובה
-            </mat-error>
+            <mat-error >שדה חובה</mat-error>
           </h5>
         </div>
         <mat-radio-group formControlName="pastVoulnteer" class="checBox" color="primary">
@@ -249,7 +248,7 @@
       <div *ngIf="collec==='Volunteers'" class="label">
         <mat-form-field appearance="outline" dir="rtl">
           <mat-label>תאריך פרישה</mat-label>
-          <input matInput placeholder="הקלד כאן.." formControlName="lastVolDate" required>
+          <input matInput placeholder="הקלד כאן.." formControlName="lastVolDate" >
           <mat-error>שדה חובה</mat-error>
         </mat-form-field>
       </div>

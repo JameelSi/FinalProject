@@ -124,7 +124,6 @@ export class SettingsComponent implements OnInit {
       element.managers = this.managers
     } else if (type === 'areaCoord' && action === "Add") {
       element.allNeighborhoods = this.allNeighborhoods
-      element.superAdmin = superAdmin
     } else if (type === 'manager' && action === "Add") {
       element.allNeighborhoods = this.allNeighborhoods
     }
@@ -137,7 +136,6 @@ export class SettingsComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      // console.log(result)
       if (result && result.event != 'Cancel') {
         if (result.data.action === "Add" && result.data.dialogType === "neighb") {
           // Create a reference to the cities collection
@@ -155,9 +153,10 @@ export class SettingsComponent implements OnInit {
               neighbsRef.set({
                 projects: result.newNeighb.projects,
                 managerId: result.newNeighb.managerId,
+                currentValue: false,
               })
                 .then(() => {
-                  this.snackBar.open("התהליך סיים בהצלחה", '', { duration: 3000, direction: 'rtl', panelClass: ['snacks'] });
+                  this.snackBar.open("התהליך הסתיים בהצלחה", '', { duration: 3000, direction: 'rtl', panelClass: ['snacks'] });
                 })
                 .catch((error) => {
                   this.snackBar.open("קרתה שגיאה נא לנסות בזמן מאוחר יותר", '', { duration: 3000, direction: 'rtl', panelClass: ['snacks'] });
@@ -170,7 +169,7 @@ export class SettingsComponent implements OnInit {
             ...result.newUser
           })
             .then((docRef) => {
-              this.snackBar.open("התהליך סיים בהצלחה", '', { duration: 3000, direction: 'rtl', panelClass: ['snacks'] });
+              this.snackBar.open("התהליך הסתיים בהצלחה", '', { duration: 3000, direction: 'rtl', panelClass: ['snacks'] });
             })
             .catch((error) => {
               this.snackBar.open("קרתה שגיאה נא לנסות בזמן מאוחר יותר", '', { duration: 3000, direction: 'rtl', panelClass: ['snacks'] });
@@ -179,28 +178,40 @@ export class SettingsComponent implements OnInit {
         else if (result.data.action === "Add" && result.data.dialogType === "areaCoord") {
 
           Promise.all(
-            [ this.db.collection(collec).doc(result.newUser.uid).set({
+            [this.db.collection(collec).doc(result.newUser.uid).set({
               ...result.newUser
             }),
             this.db.collection('Admin').doc(result.newUser.uid).set({
               type: collec,
               superAdmin: true,
-            }) ]
+            })]
           )
             .then((docRef: any) => {
-              this.snackBar.open("התהליך סיים בהצלחה", '', { duration: 3000, direction: 'rtl', panelClass: ['snacks'] });
+              this.snackBar.open("התהליך הסתיים בהצלחה", '', { duration: 3000, direction: 'rtl', panelClass: ['snacks'] });
             })
             .catch((error: any) => {
               this.snackBar.open("קרתה שגיאה נא לנסות בזמן מאוחר יותר", '', { duration: 3000, direction: 'rtl', panelClass: ['snacks'] });
             })
         }
         else if (result.data.action === "Delete") {
-          // console.log(collec, doc)
-          this.afs.collection(collec).doc(doc).delete().then(() => {
-            this.snackBar.open("התהליך סיים בהצלחה", '', { duration: 3000, direction: 'rtl', panelClass: ['snacks'] });
-          }).catch((error) => {
-            this.snackBar.open("קרתה שגיאה נא לנסות בזמן מאוחר יותר", '', { duration: 3000, direction: 'rtl', panelClass: ['snacks'] });
-          });
+          if (result.data.dialogType === "areaCoord") {
+            Promise.all(
+              [this.afs.collection('Admin').doc(doc).delete(),
+              this.afs.collection(collec).doc(doc).delete()]
+            )
+              .then(() => {
+                this.snackBar.open("התהליך הסתיים בהצלחה", '', { duration: 3000, direction: 'rtl', panelClass: ['snacks'] });
+              }).catch((error) => {
+                this.snackBar.open("קרתה שגיאה נא לנסות בזמן מאוחר יותר", '', { duration: 3000, direction: 'rtl', panelClass: ['snacks'] });
+              })
+          }
+          else {
+            this.afs.collection(collec).doc(doc).delete().then(() => {
+              this.snackBar.open("התהליך הסתיים בהצלחה", '', { duration: 3000, direction: 'rtl', panelClass: ['snacks'] });
+            }).catch((error) => {
+              this.snackBar.open("קרתה שגיאה נא לנסות בזמן מאוחר יותר", '', { duration: 3000, direction: 'rtl', panelClass: ['snacks'] });
+            });
+          };
         }
 
       }

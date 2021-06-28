@@ -119,7 +119,6 @@ export class SignupComponent implements OnInit {
       this.collec = routeParams.userType ?? 'Volunteers'
       this.neighborhoods = jerNeighbs.map(neighb => neighb.id)
     // this.subs.add(this.dataProvider.getJerNeighborhoods().subscribe(jerNeighbs => {
-    // console.log(this.neighborhoods)
     if (this.collec === "Volunteers") {
       this.emailAndPassword = this.fb.group({
         email: ['', Validators.pattern("[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$")],
@@ -303,14 +302,14 @@ export class SignupComponent implements OnInit {
           numOfHours:this.details2.get('numOfHours')?.value ?? null,
           bio:this.fourthFormGroup.get('bio')?.value ?? null,
         }).then(result => {
-          this.snackBar.open("התהליך סיים בהצלחה", '', { duration: 3000, direction: 'rtl', panelClass: ['snacks'] });
+          this.snackBar.open("התהליך הסתיים בהצלחה", '', { duration: 3000, direction: 'rtl', panelClass: ['snacks'] });
           this.router.navigate(['']);
         }).catch(err => {
           this.snackBar.open("קרתה שגיאה נא לנסות בזמן מאוחר יותר", '', { duration: 3000, direction: 'rtl', panelClass: ['snacks'] });
         })
       }
     }).catch(err => {
-      console.log('err from signup, auth func')
+      // console.log('err from signup, auth func')
     })
   }
 
@@ -335,7 +334,7 @@ export class SignupComponent implements OnInit {
       maritalStatus: this.details2.get('socials')?.value ?? null,
       bio: this.fourthFormGroup.get('bio')?.value ?? null
     }).then(result => {
-      this.snackBar.open("התהליך סיים בהצלחה", '', { duration: 3000, direction: 'rtl', panelClass: ['snacks'] });
+      this.snackBar.open("התהליך הסתיים בהצלחה", '', { duration: 3000, direction: 'rtl', panelClass: ['snacks'] });
       this.router.navigate(['']);
     }).catch(err => {
       this.snackBar.open("קרתה שגיאה נא לנסות בזמן מאוחר יותר", '', { duration: 3000, direction: 'rtl', panelClass: ['snacks'] });

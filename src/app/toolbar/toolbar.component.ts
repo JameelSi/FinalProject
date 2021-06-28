@@ -75,7 +75,6 @@ export class ToolbarComponent implements OnInit {
       requireLogIn: true,
       requireLogOut: false,
       showAll: false,
-      // superAdmin: true,
     },{
       label: "ריכוז הודעות",
       icon: "",
