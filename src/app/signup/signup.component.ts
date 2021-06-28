@@ -70,13 +70,13 @@ export class SignupComponent implements OnInit {
   fourthFormGroup!: FormGroup;
 
   invalidCreation = false;
-  showSteps = false;
-
+  
   // for volunteers
   hidePassword: boolean = true;
   neighborhoods: string[] = [];
   hobbiesArr: string[] = ['הרצאות', 'הדרכת מחשבים/ סמארטפונים', 'ביקורי בית', 'חבר טלפוני'];
   volTypeArr: string[] = ['כללי', 'סטודנט', 'חייל', 'תלמיד תיכון', 'תנועות נוער'];
+  education: string[] =  ["אקדמאית","על-תיכונית","תיכונית","מקצועית"]
   _volType!: string
 
   langsArr: string[] = ['עברית', 'אנגלית', 'ערבית', 'רוסית', 'אמהרית', 'צרפתית'];
@@ -99,8 +99,6 @@ export class SignupComponent implements OnInit {
     private route: ActivatedRoute,
   ) {
     this.ready = false;
-    
-   
   }
 
   ngAfterViewInit() {
@@ -133,8 +131,9 @@ export class SignupComponent implements OnInit {
         phone: ['', [Validators.maxLength(10), Validators.minLength(7)]],
         neighborhood: ['', containsValidator(this.neighborhoods)],
         street: [''],
-        age: ['', [Validators.min(10), Validators.max(100)]],
-        gender: ['']
+        age: ['', [Validators.min(10), Validators.max(120),Validators.required]],
+        gender: ['',Validators.required],
+        id: ['',Validators.required]
       });
 
       this.details2 = this.fb.group({
@@ -147,7 +146,15 @@ export class SignupComponent implements OnInit {
         volTypes: this.fb.group({
           volType: this.fb.array([], [Validators.required])
         }),
-        bio: ['']
+        educationGroup: this.fb.group({
+          education: this.fb.array([], [Validators.required])
+        }),
+        pastVoulnteer: ['', Validators.required],
+        enviroment: [''],
+        lastVolDate: [''],
+        expectations: [''],
+        numOfDays: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(7)] ],
+        numOfHours: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(8)] ],
       });
     }
     else if (this.collec === "Elderlies") {
@@ -158,7 +165,7 @@ export class SignupComponent implements OnInit {
         email: ['', Validators.email],
         neighborhood: ['', containsValidator(this.neighborhoods)],
         street: [''],
-        age: ['', [Validators.min(10), Validators.max(100)]],
+        age: ['', [Validators.min(10), Validators.max(100), Validators.required]],
         gender: ['']
       });
 
@@ -169,13 +176,12 @@ export class SignupComponent implements OnInit {
         langs: this.fb.group({
           lang: this.fb.array([], [Validators.required])
         }),
-        socials: ['', Validators.required],
-        bio: ['']
+        socials: ['', Validators.required]
       });
     }
 
     this.fourthFormGroup = this.fb.group({
-
+      bio: ['']
     });
     this.ready = true
     if (this.details.get('neighborhood') != null)
@@ -236,6 +242,21 @@ export class SignupComponent implements OnInit {
         return 'מספר טלפון לא תקין';
       return this.details.get('phone')?.hasError('minlength') ? 'מספר טלפון לא תקין' : '';
     }
+    else if (type == 4) {
+      if (this.details2.get('numOfDays')?.hasError('required'))
+        return 'שדה חובה';
+      return this.details2.get('numOfDays')?.hasError('minlength') || this.details2.get('numOfDays')?.hasError('maxlength') ? 'נא להכניס מספר בין 1-7' : '';
+    }
+    else if (type == 5) {
+      if (this.details2.get('numOfHours')?.hasError('required'))
+        return 'שדה חובה';
+      return this.details2.get('numOfHours')?.hasError('minlength') || this.details2.get('numOfDays')?.hasError('maxlength') ? 'נא להכניס מספר בין 1-8' : '';
+    }
+    else if (type == 5) {
+      if (this.details.get('age')?.hasError('required'))
+        return 'שדה חובה';
+      return this.details.get('age')?.hasError('minlength') || this.details2.get('numOfDays')?.hasError('maxlength') ? 'נא להכניס גיל תקין' : '';
+    }
     else {
       if (this.details.get('neighborhood')?.hasError('required'))
         return 'שדה חובה';
@@ -245,7 +266,6 @@ export class SignupComponent implements OnInit {
 
 
   createVolunteer() {
-    console.log(this.details)
     if (this.emailAndPassword.invalid || this.details.invalid || this.details2.invalid) {
       this.snackBar.open("נא להשלים כל מה שבאדום!", '', { duration: 3000, direction: 'rtl', panelClass: ['snacks'] });
       return;
@@ -267,12 +287,21 @@ export class SignupComponent implements OnInit {
           phone: this.details.get('phone')?.value,
           city: 'ירושלים',
           neighborhood: this.details.get('neighborhood')?.value,
-          street: this.details2.get('street')?.value ?? null,
+          street: this.details.get('street')?.value ?? null,
           age: this.details.get('age')?.value,
+          gender: this.details.get('gender')?.value,
+          id: this.details.get('id')?.value,
           hobbies: this.details2.get('hobbs')?.get('hobb')?.value,
           langs: this.details2.get('langs')?.get('lang')?.value,
           volType: this.details2.get('volTypes')?.get('volType')?.value,
-          message: this.details2.get('message')?.value ?? null
+          education: this.details2.get('educationGroup')?.get('education')?.value,
+          pastVoulnteer:this.details2.get('pastVoulnteer')?.value,
+          enviroment:this.details2.get('enviroment')?.value ?? null,
+          lastVolDate:this.details2.get('lastVolDate')?.value ?? null,
+          expectations:this.details2.get('expectations')?.value ?? null,
+          numOfDays:this.details2.get('numOfDays')?.value ?? null,
+          numOfHours:this.details2.get('numOfHours')?.value ?? null,
+          bio:this.fourthFormGroup.get('bio')?.value ?? null,
         }).then(result => {
           this.snackBar.open("התהליך סיים בהצלחה", '', { duration: 3000, direction: 'rtl', panelClass: ['snacks'] });
           this.router.navigate(['']);
@@ -286,21 +315,25 @@ export class SignupComponent implements OnInit {
   }
 
   createElderly() {
-    console.log(this.details)
 
+    if (this.details.invalid || this.details2.invalid) {
+      this.snackBar.open("נא להשלים כל מה שבאדום!", '', { duration: 3000, direction: 'rtl', panelClass: ['snacks'] });
+      return;
+    }
     this.afs.collection(this.collec).add({
       fName: this.details.get('fName')?.value,
       lName: this.details.get('lName')?.value,
       phone: this.details.get('phone')?.value,
-      email: this.details.get('email')?.value,
+      email: this.details.get('email')?.value ?? null,
       city: 'ירושלים',
       neighborhood: this.details.get('neighborhood')?.value,
-      street: this.details2.get('street')?.value ?? null,
-      age: this.details.get('age')?.value,
+      street: this.details.get('street')?.value ?? null,
+      age: this.details.get('age')?.value ,
+      gender: this.details.get('gender')?.value ?? null,
       needs: this.details2.get('needs')?.get('need')?.value,
       langs: this.details2.get('langs')?.get('lang')?.value,
       maritalStatus: this.details2.get('socials')?.value ?? null,
-      message: this.details2.get('message')?.value ?? null
+      bio: this.fourthFormGroup.get('bio')?.value ?? null
     }).then(result => {
       this.snackBar.open("התהליך סיים בהצלחה", '', { duration: 3000, direction: 'rtl', panelClass: ['snacks'] });
       this.router.navigate(['']);

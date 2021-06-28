@@ -62,6 +62,14 @@
         </mat-form-field>
       </div>
 
+      <div *ngIf="collec==='Volunteers'" class="label">
+        <mat-form-field appearance="outline" dir="rtl">
+          <mat-label>ת.ז.</mat-label>
+          <input matInput placeholder="הקלד כאן.." formControlName="id" required>
+          <mat-error>שדה חובה</mat-error>
+        </mat-form-field>
+      </div>
+
       <div class="label">
         <mat-form-field appearance="outline" dir="rtl">
           <mat-label>עיר מגורים</mat-label>
@@ -75,12 +83,10 @@
           <mat-label>שכונה</mat-label>
           <input type="text" matInput placeholder="הקלד כאן.." [matAutocomplete]="auto" formControlName="neighborhood"
             required>
-
           <button *ngIf="details.get('neighborhood')?.value" matSuffix mat-icon-button aria-label="נקה"
             (click)="details.get('neighborhood')?.setValue('')">
             <mat-icon>clear</mat-icon>
           </button>
-
           <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
             <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
               {{option}}
@@ -100,7 +106,7 @@
       <div *ngIf="collec==='Elderlies'" class="label">
         <mat-form-field appearance="outline" dir="rtl">
           <mat-label>מייל</mat-label>
-          <input matInput placeholder="הקלד כאן.." formControlName="email" required>
+          <input matInput placeholder="הקלד כאן.." formControlName="email" >
           <mat-error>{{getErrorMessage(1)}}</mat-error>
         </mat-form-field>
       </div>
@@ -109,13 +115,13 @@
         <mat-form-field appearance="outline" dir="rtl">
           <mat-label>גיל</mat-label>
           <input matInput placeholder="הקלד כאן.." formControlName="age" type="number" required>
-          <mat-error>שדה חובה</mat-error>
+          <mat-error>{{getErrorMessage(6)}}</mat-error>
         </mat-form-field>
       </div>
 
       <div class="label">
         <mat-form-field appearance="outline" dir="rtl">
-          <mat-label>מגדר</mat-label>
+          <mat-label>מין</mat-label>
           <mat-select formControlName="gender">
             <mat-option value="male">זכר</mat-option>
             <mat-option value="female">נקבה</mat-option>
@@ -132,7 +138,7 @@
 
       <form *ngIf="collec==='Volunteers'" class="form" formGroupName="hobbs" class="checksLabel">
         <div>
-          <h3 class="checkTtile">תחומי עיניין \ צרכים</h3>
+          <h3 class="checkTtile">באילו תחומי התנדבות יש לך עניין?</h3>
           <h5>
             <mat-error class="err" *ngIf="this.details2.get('hobbs')?.get('hobb')?.errors?.required">נא לסמן לפחות 1*
             </mat-error>
@@ -196,7 +202,80 @@
         </div>
       </form>
 
-      <div *ngIf="collec==='Elderlies'" class="checksLabel" >
+      <form *ngIf="collec==='Volunteers'" class="form" formGroupName="educationGroup" class="checksLabel">
+        <div>
+          <h3 class="checkTtile">השכלה</h3>
+          <h5>
+            <mat-error class="err" *ngIf="this.details2.get('educationGroup')?.get('education')?.errors?.required">
+              נא לסמן לפחות
+              1*
+            </mat-error>
+          </h5>
+        </div>
+        <div *ngFor="let data of education" class="checks">
+          <label>
+            <input class="checBox" type="checkbox" [value]="data"
+              (change)="onCheckboxChange($event,'educationGroup','education')" />
+            {{data}}
+          </label>
+        </div>
+      </form>
+
+      <div *ngIf="collec==='Volunteers'" class="checksLabel">
+        <div>
+          <h3 class="checkTtile">האם התנדבת בעבר או מתנדב בהווה ?</h3>
+          <h5>
+            <mat-error class="err" *ngIf="this.details2.get('pastVoulnteer')?.errors?.required"> שדה חובה
+            </mat-error>
+          </h5>
+        </div>
+        <mat-radio-group formControlName="pastVoulnteer" class="checBox" color="primary">
+          <mat-radio-button class="checks">
+            כן
+          </mat-radio-button>
+          <mat-radio-button class="checks">
+            לא
+          </mat-radio-button>
+        </mat-radio-group>
+      </div>
+
+      <div *ngIf="collec==='Volunteers'" class="label">
+        <mat-form-field appearance="outline" dir="rtl">
+          <mat-label>באיזו מסגרת ?</mat-label>
+          <input matInput placeholder="הקלד כאן.." formControlName="enviroment">
+        </mat-form-field>
+      </div>
+
+      <div *ngIf="collec==='Volunteers'" class="label">
+        <mat-form-field appearance="outline" dir="rtl">
+          <mat-label>תאריך פרישה</mat-label>
+          <input matInput placeholder="הקלד כאן.." formControlName="lastVolDate" required>
+          <mat-error>שדה חובה</mat-error>
+        </mat-form-field>
+      </div>
+
+      <div *ngIf="collec==='Volunteers'" class="label">
+        <h3> מהן צפויותך מההתדנדבות ?</h3>
+        <textarea formControlName="expectations" id="" cols="10" rows="5"></textarea>
+      </div>
+
+      <div *ngIf="collec==='Volunteers'" class="label">
+        <mat-form-field appearance="outline" dir="rtl">
+          <mat-label>כמה פעמים בשבוע תוכל להתנדב</mat-label>
+          <input matInput placeholder="הקלד כאן.." formControlName="numOfDays" required>
+          <mat-error>{{getErrorMessage(4)}}</mat-error>
+        </mat-form-field>
+      </div>
+
+      <div *ngIf="collec==='Volunteers'" class="label">
+        <mat-form-field appearance="outline" dir="rtl">
+          <mat-label>כמה שעות בכל פעם</mat-label>
+          <input matInput placeholder="הקלד כאן.." formControlName="numOfHours" required>
+          <mat-error>{{getErrorMessage(5)}}</mat-error>
+        </mat-form-field>
+      </div>
+
+      <div *ngIf="collec==='Elderlies'" class="checksLabel">
         <div>
           <h3 class="checkTtile">מצב משפחתי</h3>
           <h5>
@@ -205,22 +284,24 @@
           </h5>
         </div>
         <mat-radio-group formControlName="socials" class="checBox" color="primary">
-          <mat-radio-button class="checks" *ngFor="let data of statusArr; let i=index" [value]="data" >
+          <mat-radio-button class="checks" *ngFor="let data of statusArr; let i=index" [value]="data">
             {{data}}
           </mat-radio-button>
         </mat-radio-group>
-      </div>
-
-      <div class="label">
-        <h3> ספר לנו קצת על עצמך <mat-icon>sentiment_very_satisfied</mat-icon>
-        </h3>
-        <textarea formControlName="bio" id="" cols="30" rows="10"></textarea>
       </div>
 
     </form>
   </ng-template>
 
   <ng-template #stepFour>
+    <form class="form" [formGroup]="fourthFormGroup">
+      <div class="label">
+        <h3> ספר לנו קצת על עצמך <mat-icon>sentiment_very_satisfied</mat-icon>
+        </h3>
+        <textarea formControlName="bio" id="" cols="30" rows="10"></textarea>
+      </div>
+    </form>
+
     <p>הגעת לסוף הטופס ניתן לערוך פרטים או ללחוץ על שלח</p>
   </ng-template>
 

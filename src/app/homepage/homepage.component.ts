@@ -29,10 +29,14 @@ export class HomepageComponent implements OnInit {
   volunteeringOpps!: volunteeringOpp[];
   responsiveOptions: responsiveCarouselOption[]
   // profileUrl!: Observable<string | null>;
+  isAdmin!: boolean;
     constructor(
       private afs: AngularFirestore,
       private dataProvider: GetDataService,
       public authService:AuthService,) {
+      this.authService.authData$.subscribe(data=>{
+        this.isAdmin = data.admin
+      })
 
       this.responsiveOptions = [
         {

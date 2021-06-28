@@ -38,7 +38,7 @@
     <ng-template pTemplate="header">
         <div dir="rtl" class="vol-header">אירועים 
             <!-- *ngIf="authService.isLoggedIn && authService.type != '' && authService.isSuperAdmin" -->
-            <div class="addBtn"*ngIf="authService.isLoggedIn && authService.type != '' && authService.isSuperAdmin"  (click)="addDialog('Add',{},'collection')" >הוסף אירוע</div>
+            <div class="addBtn"*ngIf="authService.isLoggedIn && isAdmin"  (click)="addDialog('Add',{},'collection')" >הוסף אירוע</div>
         </div>
         
     </ng-template>
