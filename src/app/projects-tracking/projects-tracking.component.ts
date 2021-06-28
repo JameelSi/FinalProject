@@ -81,7 +81,6 @@ export class ProjectsTrackingComponent implements OnInit, OnDestroy {
   managers: manager[] = []
   displayedColumns: string[] = ['date', 'clubCoordinatorId', 'projectType', 'comments', 'action']
   projectsToDisplay!: MatTableDataSource<project>
-  defaultSelectedTab: number = -1
   currAreaCoord?: areaCoord
   currNeighborhood?: neighborhood
   spin: boolean = false;
@@ -182,7 +181,6 @@ export class ProjectsTrackingComponent implements OnInit, OnDestroy {
           this.areaCoords[0] = temp
           this.areaCoords[idx]= temp2
         }
-
       }
       this.allNeighborhoods.forEach(neighb => {
         neighb.managerInfo = this.managers.find(i => i.id.trim() == neighb.managerId.trim())
@@ -200,10 +198,6 @@ export class ProjectsTrackingComponent implements OnInit, OnDestroy {
       } else {
         this.currNeighborhood = this.currNeighborhoods[0]
         this.projectsToDisplay = new MatTableDataSource(this.currNeighborhoods?.[0]?.projects);
-      }
-      if (this.defaultSelectedTab == -1) {
-        // this.defaultSelectedTab = this.currNeighborhoods.length - 1;
-        this.defaultSelectedTab = 0
       }
       this.updateDatasourceProperties();
     }));
@@ -229,18 +223,17 @@ export class ProjectsTrackingComponent implements OnInit, OnDestroy {
       this.currNeighborhoods = this.allNeighborhoods
     } else {
       this.currAreaCoord = areaCoord
+      console.log(areaCoord)
       let neighbs = areaCoord.neighborhoods
+      console.log(neighbs)
       // filter neighborhoods to show according to area coordinator
       this.currNeighborhoods = this.allNeighborhoods.filter(i => neighbs.includes(i.id))
     }
     this.currNeighborhoods.sort()
-    this.defaultSelectedTab = 0
-    // this.defaultSelectedTab = this.currNeighborhoods.length - 1
     this.setProjects(this.currNeighborhoods[0].id)
   }
 
   setProjects(id: string) {
-    // this.defaultSelectedTab = $event.index;
     // let tmp = this.currNeighborhoods.find(i => i.id === id)
     // this.projectsToDisplay = new MatTableDataSource(tmp?.projects ?? []);
     this.currNeighborhood = this.currNeighborhoods.find(i => i.id === id)

@@ -153,6 +153,7 @@ export class SettingsComponent implements OnInit {
               neighbsRef.set({
                 projects: result.newNeighb.projects,
                 managerId: result.newNeighb.managerId,
+                currentValue: false,
               })
                 .then(() => {
                   this.snackBar.open("התהליך הסתיים בהצלחה", '', { duration: 3000, direction: 'rtl', panelClass: ['snacks'] });
