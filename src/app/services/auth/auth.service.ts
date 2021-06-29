@@ -59,7 +59,7 @@ export class AuthService {
         password,
         uid: result.user?.uid
       };
-      // this.addtoFireStore(user, collec)
+      this.addtoFireStore(user, collec)
       return user;
     }).catch(function (error) {
       return null

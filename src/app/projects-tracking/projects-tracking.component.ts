@@ -223,9 +223,7 @@ export class ProjectsTrackingComponent implements OnInit, OnDestroy {
       this.currNeighborhoods = this.allNeighborhoods
     } else {
       this.currAreaCoord = areaCoord
-      console.log(areaCoord)
       let neighbs = areaCoord.neighborhoods
-      console.log(neighbs)
       // filter neighborhoods to show according to area coordinator
       this.currNeighborhoods = this.allNeighborhoods.filter(i => neighbs.includes(i.id))
     }
