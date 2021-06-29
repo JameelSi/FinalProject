@@ -236,11 +236,12 @@
 
           <mat-label>{{actionHebrew[action]}} תמונה</mat-label>
           <input type="file" class="file-input" (change)="onFileSelected($event)" #fileUpload>
-          <div class="file-upload">
-            {{ uploadedFile?.name || "עדיין לא נבחרה תמונה"}}
-            <button mat-mini-fab color="primary" class="upload-btn" (click)="fileUpload.click()">
+          <div dir="rtl" class="file-upload">
+            <button class="mat-elevation-z1" mat-mini-fab color="primary" (click)="fileUpload.click()">
               <mat-icon>attach_file</mat-icon>
             </button>
+            &nbsp;
+            {{ uploadedFile?.name || "עדיין לא נבחרה תמונה"}}
           </div>
           <!-- <div class="progress">
             <mat-progress-bar class="progress-bar" mode="determinate"
