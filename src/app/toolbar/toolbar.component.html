@@ -2,7 +2,7 @@
 <div dir="rtl">
     <mat-toolbar fxLayout="row" class="fixed-toolbar">
         <span fxFlex routerLink="/" style="cursor: pointer;"><img class="logoImg" src="../assets/imgs/logo.png"></span>
-            <div routerLink={{item.route}} *ngFor="let item of menuItems" fxHide.lt-sm>
+            <div routerLink={{item.route}} *ngFor="let item of menuItems" fxHide.lt-sm fxHide.lt-md>
                 <ng-container
                     *ngIf="( !item.admin || (item.admin && authService.isLoggedIn && isAdmin ) ) 
                     && ((item.requireLogIn && authService.isLoggedIn) || (item.requireLogOut && !authService.isLoggedIn || item.showAll))">
@@ -19,7 +19,7 @@
             <mat-divider></mat-divider>
         </ng-container>
 
-        <button mat-icon-button [matMenuTriggerFor]="dropMenu" fxHide fxShow.lt-sm>
+        <button mat-icon-button [matMenuTriggerFor]="dropMenu" fxHide fxShow.lt-sm fxShow.lt-md>
             <mat-icon>more_vert</mat-icon>
         </button>
         <!-- add signin/sign out outside menu -->
