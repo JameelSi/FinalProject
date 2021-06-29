@@ -26,3 +26,9 @@ margin: 5px;
     background-color: red;
 }
 
+@media screen and (max-height: 640px) {
+    .logoImg{
+        width: 100px;
+        height: 30%;
+    }
+}
