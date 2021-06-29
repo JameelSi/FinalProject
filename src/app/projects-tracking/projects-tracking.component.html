@@ -67,8 +67,8 @@
 
 
         <!-------------------- NEIGHB MANAGER ------------------------------------------------------>
-        <mat-card dir="rtl" class="mngr-details-container" *ngIf="currNeighborhood?.managerInfo">
-            <mat-card-title > מידע על מנהל תחום</mat-card-title>
+        <mat-card class="mat-elevation-z0 outline" dir="rtl" class="mngr-details-container" *ngIf="currNeighborhood?.managerInfo">
+            <mat-card-title class="mngr-title"> מידע על מנהל תחום</mat-card-title>
             <mat-card-content class="mngr-details">
                 <section>
                     שם: {{currNeighborhood?.managerInfo?.name}} 
