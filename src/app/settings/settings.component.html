@@ -19,6 +19,7 @@
                         <div>{{content.email}}</div>
                         <div>{{content.phone}}</div>
                         <div>{{content.club}}</div>
+                        <div *ngIf="item.type==='clubCoord'">{{content.address}}</div>
                         
                     </div>
                     <!-- <mat-icon (click)="openDialog('Update', {}, item.collec, content.id, item.type)">edit</mat-icon> -->

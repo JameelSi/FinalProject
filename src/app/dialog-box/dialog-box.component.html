@@ -33,7 +33,7 @@
           </mat-form-field>
 
           <mat-label><b>{{actionHebrew[action]}} מועדון </b>*</mat-label>
-          <mat-radio-group required name="clubCoordinatorId" [(ngModel)]="newProj.clubCoordinatorId">
+          <mat-radio-group class="radio_group" required name="clubCoordinatorId" [(ngModel)]="newProj.clubCoordinatorId">
             <mat-radio-button *ngFor="let clubCoord of local_data.clubs" [value]="clubCoord.id">
               {{clubCoord.name}}<br>{{clubCoord.club}}<br>{{clubCoord.address}}
             </mat-radio-button>
