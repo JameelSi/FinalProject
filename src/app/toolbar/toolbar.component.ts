@@ -79,10 +79,18 @@ export class ToolbarComponent implements OnInit {
       label: "ריכוז הודעות",
       icon: "",
       route: "/messages",
-      admin: false,
-      requireLogIn: false,
+      admin: true,
+      requireLogIn: true,
       requireLogOut: false,
-      showAll: true,
+      showAll: false,
+    },{
+      label: "איזור אישי",
+      icon: "",
+      route: "/",
+      admin: false,
+      requireLogIn: true,
+      requireLogOut: false,
+      showAll: false,
     }
     
   ]

@@ -20,6 +20,31 @@ function containsValidator(validOptions: Array<string>) {
     return { 'contains': true }
   }
 }
+function legalValidator() {
+  return (control: FormControl): { [key: string]: any } | null => {
+
+    let temp = 0;
+    let ID = new String(control.value)
+    while (ID.length < 9)
+      ID = "0" + ID;
+    for (var i = 0; i < 8; i++) {
+      let y;
+      let x = (((i % 2) + 1) * Number(ID.charAt(i)));
+
+      if (x > 9) {
+        y = String(x)
+        x = Number(y.charAt(0)) + Number(y.charAt(1))
+      }
+      temp += x;
+    }
+
+    if ((temp + Number(ID.charAt(8))) % 10 == 0) {
+      // id is ok
+      return null
+    }
+    return { 'legal': true }
+  }
+}
 
 interface Elderly {
   fName: string,
@@ -70,13 +95,13 @@ export class SignupComponent implements OnInit {
   fourthFormGroup!: FormGroup;
 
   invalidCreation = false;
-  showSteps = false;
 
   // for volunteers
   hidePassword: boolean = true;
   neighborhoods: string[] = [];
   hobbiesArr: string[] = ['הרצאות', 'הדרכת מחשבים/ סמארטפונים', 'ביקורי בית', 'חבר טלפוני'];
   volTypeArr: string[] = ['כללי', 'סטודנט', 'חייל', 'תלמיד תיכון', 'תנועות נוער'];
+  education: string[] = ["אקדמאית", "על-תיכונית", "תיכונית", "מקצועית"]
   _volType!: string
 
   langsArr: string[] = ['עברית', 'אנגלית', 'ערבית', 'רוסית', 'אמהרית', 'צרפתית'];
@@ -99,8 +124,6 @@ export class SignupComponent implements OnInit {
     private route: ActivatedRoute,
   ) {
     this.ready = false;
-    
-   
   }
 
   ngAfterViewInit() {
@@ -120,68 +143,72 @@ export class SignupComponent implements OnInit {
     this.subs.add(combineLatest([this.route.params, this.dataProvider.getJerNeighborhoods()]).subscribe(([routeParams, jerNeighbs]) => {
       this.collec = routeParams.userType ?? 'Volunteers'
       this.neighborhoods = jerNeighbs.map(neighb => neighb.id)
-    // this.subs.add(this.dataProvider.getJerNeighborhoods().subscribe(jerNeighbs => {
-    if (this.collec === "Volunteers") {
-      this.emailAndPassword = this.fb.group({
-        email: ['', Validators.pattern("[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$")],
-        password: ['', Validators.minLength(6)]
-      });
-      this.details = this.fb.group({
-        fName: [''],
-        lName: [''],
-        phone: ['', [Validators.maxLength(10), Validators.minLength(7)]],
-        neighborhood: ['', containsValidator(this.neighborhoods)],
-        street: [''],
-        age: ['', [Validators.min(10), Validators.max(100)]],
-        gender: ['']
-      });
+      // this.subs.add(this.dataProvider.getJerNeighborhoods().subscribe(jerNeighbs => {
+      if (this.collec === "Volunteers") {
+        this.emailAndPassword = this.fb.group({
+          email: ['', Validators.pattern("[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$")],
+          password: ['', Validators.minLength(6)]
+        });
+        this.details = this.fb.group({
+          fName: [''],
+          lName: [''],
+          phone: ['', [Validators.maxLength(10), Validators.minLength(7)]],
+          neighborhood: ['', containsValidator(this.neighborhoods)],
+          street: [''],
+          age: ['', [Validators.min(10), Validators.max(120), Validators.required]],
+          gender: ['', Validators.required],
+          id: ['', [Validators.required, legalValidator()]]
+        });
 
-      this.details2 = this.fb.group({
-        hobbs: this.fb.group({
-          hobb: this.fb.array([], [Validators.required])
-        }),
-        langs: this.fb.group({
-          lang: this.fb.array([], [Validators.required])
-        }),
-        volTypes: this.fb.group({
-          volType: this.fb.array([], [Validators.required])
-        }),
+        this.details2 = this.fb.group({
+          hobbs: this.fb.group({
+            hobb: this.fb.array([], [Validators.required])
+          }),
+          langs: this.fb.group({
+            lang: this.fb.array([], [Validators.required])
+          }),
+          volType: ['', [Validators.required]],
+          education: ['', [Validators.required]],
+          pastVoulnteer: ['', Validators.required],
+          enviroment: [''],
+          lastVolDate: [''],
+          expectations: [''],
+          numOfDays: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(7)]],
+          numOfHours: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(8)]],
+        });
+      }
+      else if (this.collec === "Elderlies") {
+        this.details = this.fb.group({
+          fName: [''],
+          lName: [''],
+          phone: ['', [Validators.maxLength(10), Validators.minLength(7)]],
+          email: ['', Validators.email],
+          neighborhood: ['', containsValidator(this.neighborhoods)],
+          street: [''],
+          age: ['', [Validators.min(55), Validators.max(120), Validators.required]],
+          gender: ['']
+        });
+
+        this.details2 = this.fb.group({
+          needs: this.fb.group({
+            need: this.fb.array([], [Validators.required])
+          }),
+          langs: this.fb.group({
+            lang: this.fb.array([], [Validators.required])
+          }),
+          socials: ['', Validators.required]
+        });
+      }
+
+      this.fourthFormGroup = this.fb.group({
         bio: ['']
       });
-    }
-    else if (this.collec === "Elderlies") {
-      this.details = this.fb.group({
-        fName: [''],
-        lName: [''],
-        phone: ['', [Validators.maxLength(10), Validators.minLength(7)]],
-        email: ['', Validators.email],
-        neighborhood: ['', containsValidator(this.neighborhoods)],
-        street: [''],
-        age: ['', [Validators.min(10), Validators.max(100)]],
-        gender: ['']
-      });
-
-      this.details2 = this.fb.group({
-        needs: this.fb.group({
-          need: this.fb.array([], [Validators.required])
-        }),
-        langs: this.fb.group({
-          lang: this.fb.array([], [Validators.required])
-        }),
-        socials: ['', Validators.required],
-        bio: ['']
-      });
-    }
-
-    this.fourthFormGroup = this.fb.group({
-
-    });
-    this.ready = true
-    if (this.details.get('neighborhood') != null)
-      this.filteredOptions = this.details.get('neighborhood')!.valueChanges.pipe(
-        startWith(''),
-        map(value => this._filter(value))
-      );
+      this.ready = true
+      if (this.details.get('neighborhood') != null)
+        this.filteredOptions = this.details.get('neighborhood')!.valueChanges.pipe(
+          startWith(''),
+          map(value => this._filter(value))
+        );
     }));
 
     // }))
@@ -235,6 +262,26 @@ export class SignupComponent implements OnInit {
         return 'מספר טלפון לא תקין';
       return this.details.get('phone')?.hasError('minlength') ? 'מספר טלפון לא תקין' : '';
     }
+    else if (type == 4) {
+      if (this.details2.get('numOfDays')?.hasError('required'))
+        return 'שדה חובה';
+      return this.details2.get('numOfDays')?.hasError('minlength') || this.details2.get('numOfDays')?.hasError('maxlength') ? 'נא להכניס מספר בין 1-7' : '';
+    }
+    else if (type == 5) {
+      if (this.details2.get('numOfHours')?.hasError('required'))
+        return 'שדה חובה';
+      return this.details2.get('numOfHours')?.hasError('minlength') || this.details2.get('numOfDays')?.hasError('maxlength') ? 'נא להכניס מספר בין 1-8' : '';
+    }
+    else if (type == 6) {
+      if (this.details.get('age')?.hasError('required'))
+        return 'שדה חובה';
+      return this.details.get('age')?.hasError('minlength') || this.details2.get('numOfDays')?.hasError('maxlength') ? 'נא להכניס גיל תקין' : '';
+    }
+    else if (type == 7) {
+      if (this.details.get('id')?.hasError('required'))
+        return 'שדה חובה';
+      return this.details.get('id')?.hasError('legal') ? 'נא להכניס ת.ז תקינה' : '';
+    }
     else {
       if (this.details.get('neighborhood')?.hasError('required'))
         return 'שדה חובה';
@@ -250,54 +297,72 @@ export class SignupComponent implements OnInit {
     }
     //try creating a new user 
     this.authService.signUp(this.emailAndPassword.get('email')?.value, this.emailAndPassword.get('password')?.value, this.collec)
-    .then(result => {
-      // if the email already exists return and show an error 
-      if (!result)
-        this.invalidCreation = true;
-      // user created
-      else {
-        this.invalidCreation = false;
-
-        this.afs.collection(this.collec).doc(`${result.uid}`).update({
-          fName: this.details.get('fName')?.value,
-          lName: this.details.get('lName')?.value,
-          email: result.email,
-          phone: this.details.get('phone')?.value,
-          city: 'ירושלים',
-          neighborhood: this.details.get('neighborhood')?.value,
-          street: this.details2.get('street')?.value ?? null,
-          age: this.details.get('age')?.value,
-          hobbies: this.details2.get('hobbs')?.get('hobb')?.value,
-          langs: this.details2.get('langs')?.get('lang')?.value,
-          volType: this.details2.get('volTypes')?.get('volType')?.value,
-          message: this.details2.get('message')?.value ?? null
-        }).then(result => {
-          this.snackBar.open("התהליך הסתיים בהצלחה", '', { duration: 3000, direction: 'rtl', panelClass: ['snacks'] });
-          this.router.navigate(['']);
-        }).catch(err => {
-          this.snackBar.open("קרתה שגיאה נא לנסות בזמן מאוחר יותר", '', { duration: 3000, direction: 'rtl', panelClass: ['snacks'] });
-        })
-      }
-    }).catch(err => {
-      // console.log('err from signup, auth func')
-    })
+      .then(result => {
+        // if the email already exists return and show an error 
+        if (!result)
+          this.invalidCreation = true;
+        // user created
+        else {
+          this.invalidCreation = false;
+          if (this.details2.get('pastVoulnteer')?.value == "לא") {
+            this.details2.get('enviroment')?.setValue(null)
+            this.details2.get('expectations')?.setValue(null)
+          }
+          this.afs.collection(this.collec).doc(`${result.uid}`).set({
+            fName: this.details.get('fName')?.value,
+            lName: this.details.get('lName')?.value,
+            email: result.email,
+            phone: this.details.get('phone')?.value,
+            city: 'ירושלים',
+            neighborhood: this.details.get('neighborhood')?.value,
+            street: this.details.get('street')?.value ?? null,
+            age: this.details.get('age')?.value,
+            gender: this.details.get('gender')?.value,
+            id: this.details.get('id')?.value,
+            hobbies: this.details2.get('hobbs')?.get('hobb')?.value,
+            langs: this.details2.get('langs')?.get('lang')?.value,
+            volType: this.details2.get('volType')?.value,
+            education: this.details2.get('education')?.value,
+            pastVoulnteer: this.details2.get('pastVoulnteer')?.value,
+            enviroment: this.details2.get('enviroment')?.value ?? null,
+            lastVolDate: this.details2.get('lastVolDate')?.value ?? null,
+            expectations: this.details2.get('expectations')?.value ?? null,
+            numOfDays: this.details2.get('numOfDays')?.value ?? null,
+            numOfHours: this.details2.get('numOfHours')?.value ?? null,
+            bio: this.fourthFormGroup.get('bio')?.value ?? null,
+          }).then(result => {
+            this.snackBar.open("התהליך הסתיים בהצלחה", '', { duration: 3000, direction: 'rtl', panelClass: ['snacks'] });
+            this.router.navigate(['']);
+          }).catch(err => {
+            console.log(err)
+            this.snackBar.open("קרתה שגיאה נא לנסות בזמן מאוחר יותר", '', { duration: 3000, direction: 'rtl', panelClass: ['snacks'] });
+          })
+        }
+      }).catch(err => {
+        // console.log('err from signup, auth func')
+      })
   }
 
   createElderly() {
 
+    if (this.details.invalid || this.details2.invalid) {
+      this.snackBar.open("נא להשלים כל מה שבאדום!", '', { duration: 3000, direction: 'rtl', panelClass: ['snacks'] });
+      return;
+    }
     this.afs.collection(this.collec).add({
       fName: this.details.get('fName')?.value,
       lName: this.details.get('lName')?.value,
       phone: this.details.get('phone')?.value,
-      email: this.details.get('email')?.value,
+      email: this.details.get('email')?.value ?? null,
       city: 'ירושלים',
       neighborhood: this.details.get('neighborhood')?.value,
-      street: this.details2.get('street')?.value ?? null,
+      street: this.details.get('street')?.value ?? null,
       age: this.details.get('age')?.value,
+      gender: this.details.get('gender')?.value ?? null,
       needs: this.details2.get('needs')?.get('need')?.value,
       langs: this.details2.get('langs')?.get('lang')?.value,
       maritalStatus: this.details2.get('socials')?.value ?? null,
-      message: this.details2.get('message')?.value ?? null
+      bio: this.fourthFormGroup.get('bio')?.value ?? null
     }).then(result => {
       this.snackBar.open("התהליך הסתיים בהצלחה", '', { duration: 3000, direction: 'rtl', panelClass: ['snacks'] });
       this.router.navigate(['']);
