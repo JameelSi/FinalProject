@@ -69,7 +69,7 @@ export class ToolbarComponent implements OnInit {
       showAll: true,
     }, {
       label: "הגדרות",
-      icon: "",
+      icon: "settings",
       route: "/settings",
       admin: true,
       requireLogIn: true,
@@ -77,7 +77,7 @@ export class ToolbarComponent implements OnInit {
       showAll: false,
     },{
       label: "ריכוז הודעות",
-      icon: "",
+      icon: "message",
       route: "/messages",
       admin: true,
       requireLogIn: true,
@@ -85,7 +85,7 @@ export class ToolbarComponent implements OnInit {
       showAll: false,
     },{
       label: "איזור אישי",
-      icon: "",
+      icon: "account_circle",
       route: "/",
       admin: false,
       requireLogIn: true,

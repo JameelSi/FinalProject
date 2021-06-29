@@ -36,10 +36,11 @@
 
 <p-carousel [value]="events" [numVisible]="3" [numScroll]="1" [responsiveOptions]="responsiveOptions">
     <ng-template pTemplate="header">
-        <div dir="rtl" class="vol-header">אירועים 
-            <div class="addBtn"*ngIf="authService.isLoggedIn && isAdmin" (click)="openDialog('Add',{}, undefined)" >הוסף אירוע</div>
+        <div dir="rtl" class="vol-header">אירועים
+            <div class="addBtn" *ngIf="authService.isLoggedIn && isAdmin" (click)="openDialog('Add',{}, undefined)">הוסף
+                אירוע</div>
         </div>
-        
+
     </ng-template>
 
     <ng-template let-currEvent pTemplate="item">
@@ -53,6 +54,13 @@
                     <h4 class="p-mb-1">{{currEvent.name}}</h4>
                     <h6 class="p-mt-0 p-mb-3">{{currEvent.description}}</h6>
                     <h6 class="p-mt-0 p-mb-3">click for more info</h6>
+                    <mat-icon *ngIf="authService.isLoggedIn && isAdmin" (click)="openDialog('Delete',{}, currEvent.id)"
+                        style="color:red; cursor: pointer;">
+                        delete
+                    </mat-icon>
+                    <!-- <div class="addBtn" *ngIf="authService.isLoggedIn && isAdmin"
+                        (click)="openDialog('Add',{}, currEvent.id)">הוסף אירוע</div> -->
+
                 </div>
             </div>
         </div>

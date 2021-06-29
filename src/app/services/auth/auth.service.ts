@@ -59,7 +59,6 @@ export class AuthService {
         password,
         uid: result.user?.uid
       };
-      // this.addtoFireStore(user, collec)
       return user;
     }).catch(function (error) {
       return null
@@ -67,11 +66,11 @@ export class AuthService {
     return temp;
   }
 
-  addtoFireStore(user: signinUser, collec: string) {
-    // pass uid to prevent firestore to generate random id
-    const ref: AngularFirestoreDocument<signinUser> = this.afs.collection(collec).doc(`${user.uid}`);
-    ref.set(user).catch(err=>{throw(err)});
-  }
+  // addtoFireStore(user: signinUser, collec: string) {
+  //   // pass uid to prevent firestore to generate random id
+  //   const ref: AngularFirestoreDocument<signinUser> = this.afs.collection(collec).doc(`${user.uid}`);
+  //   ref.set(user).catch(err=>{throw(err)});
+  // }
 
   reset(emailAddress: string) {
     let temp = this.afa.sendPasswordResetEmail(emailAddress).then(function () {

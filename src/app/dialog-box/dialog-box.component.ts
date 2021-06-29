@@ -58,7 +58,7 @@ interface event {
   description?: string,
   date?: any,
   id?: string,
-  img? : string,
+  img?: string,
 }
 @Component({
   selector: 'app-dialog-box',
@@ -78,12 +78,13 @@ export class DialogBoxComponent implements OnInit {
   newEvent!: event;
   // newManager?: manager;
   // newClubCoord?: clubCoord;
-  dialogType: 'project' | 'needs' | 'resetPass' | 'neighb' | 'areaCoord' | 'manager' | 'clubCoord' | 'event'; 
+  dialogType: 'project' | 'needs' | 'resetPass' | 'neighb' | 'areaCoord' | 'manager' | 'clubCoord' | 'event';
   actionHebrew: { [key: string]: string } = { "Add": 'הוסף', "Update": 'עדכן', "Delete": 'מחק', "reset": 'שלח' };
   newEmail?: string;
   newPassword?: string;
   invalidCreation: boolean = false;
   secondaryApp!: any
+  uploadedFile!: any
 
   constructor(public dialogRef: MatDialogRef<DialogBoxComponent>,
     private afs: AngularFirestore,
@@ -137,8 +138,8 @@ export class DialogBoxComponent implements OnInit {
         coordPhone: undefined,
       }
     }
-    else if (this.dialogType==="event"){
-      this.newEvent={
+    else if (this.dialogType === "event") {
+      this.newEvent = {
         date: moment(),
         title: '',
         description: '',
@@ -162,19 +163,28 @@ export class DialogBoxComponent implements OnInit {
         }
       })
     }
+    else if (this.dialogType === 'event' && this.action != "Delete") {
+      this.updateImgURL().then(()=>{
+        this.dialogRef.close({
+          event: this.action,
+          data: this.local_data,
+          newEvent: this.newEvent ? { ...this.newEvent, date: this.newEvent?.date.toDate() } : undefined
+        });
+      })
+    }
     else if (!this.invalidCreation) {
       this.dialogRef.close({
         event: this.action,
         data: this.local_data,
         newNeighb: this.newNeighb,
-        newProj: this.newProj? {
-            ...this.newProj,
-            comments: this.newProj?.comments.length == 0 ? "אין" : this.newProj?.comments,
-            date: this.newProj?.date.toDate()
-          } 
+        newProj: this.newProj ? {
+          ...this.newProj,
+          comments: this.newProj?.comments.length == 0 ? "אין" : this.newProj?.comments,
+          date: this.newProj?.date.toDate()
+        }
           : undefined,
         newUser: this.newUser,
-        newEvent: this.newEvent
+        newEvent: this.newEvent ? { ...this.newEvent, date: this.newEvent?.date.toDate() } : undefined
       });
     }
   }
@@ -196,7 +206,7 @@ export class DialogBoxComponent implements OnInit {
 
   async createUser() {
     if ((this.newUser as areaCoord).email && this.newPassword) {
-      //try creating a new user 
+      //create and init new app reference (to prevent user from logging in)
       const config = {
         apiKey: "AIzaSyDlr_TVnprFbrWL557dAC-1OdTMyNvxqTk",
         authDomain: "simhatv2test.firebaseapp.com",
@@ -206,7 +216,7 @@ export class DialogBoxComponent implements OnInit {
         appId: "1:186409866492:web:3e40efbd9ba31d4cc63379",
         measurementId: "G-JQX7RBYSQC"
       };
-      if(firebase.apps.length === 1)
+      if (firebase.apps.length === 1)
         this.secondaryApp = firebase.initializeApp(config, "Secondary");
       else
         this.secondaryApp = firebase.apps[1]
@@ -227,6 +237,29 @@ export class DialogBoxComponent implements OnInit {
           this.snackBar.open(err, '', { duration: 3000, direction: 'rtl', panelClass: ['snacks'] });
         })
     }
+  }
+
+  onFileSelected(event: any) {
+    const file: File = event.target.files[0];
+    if (file) {
+      this.uploadedFile = file
+    }
+  }
+
+  async updateImgURL() {
+    // create ref to storage
+    let storage = firebase.storage();
+    let storageRef = storage.ref()
+    let imgRef = storageRef.child(`events/${this.uploadedFile.name}`);
+    let snapshot_: any
+    // upload image file to storage
+    await imgRef.put(this.uploadedFile).then((snapshot) => {
+      // get image's download url and keep in newEvent doc
+      snapshot_ = snapshot
+    })
+    await snapshot_.ref.getDownloadURL().then((url: any) => {
+      this.newEvent.img = url
+    });
   }
 
 }

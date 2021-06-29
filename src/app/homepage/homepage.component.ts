@@ -69,7 +69,8 @@ export class HomepageComponent implements OnInit {
 
   openDialog(action: 'Delete' | 'Add', element: any, doc: string | undefined) {
     let collec = 'Events'
-    element.dialogTitle = 'הוסף את פרטי האירוע החדש'
+    if(action==='Add') element.dialogTitle = 'הוסף את פרטי האירוע החדש'
+    else if(action==='Delete') element.dialogTitle = 'בטוח למחוק את האירוע?'
     element.action = action;
     element.dialogType = 'event';
     const dialogRef = this.dialog.open(DialogBoxComponent, {

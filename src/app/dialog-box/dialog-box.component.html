@@ -33,7 +33,7 @@
           </mat-form-field>
 
           <mat-label><b>{{actionHebrew[action]}} מועדון </b>*</mat-label>
-          <mat-radio-group required name="clubCoordinatorId" [(ngModel)]="newProj.clubCoordinatorId">
+          <mat-radio-group class="radio_group" required name="clubCoordinatorId" [(ngModel)]="newProj.clubCoordinatorId">
             <mat-radio-button *ngFor="let clubCoord of local_data.clubs" [value]="clubCoord.id">
               {{clubCoord.name}}<br>{{clubCoord.club}}<br>{{clubCoord.address}}
             </mat-radio-button>
@@ -162,28 +162,28 @@
           </ng-container>
 
           <ng-container *ngIf="dialogType === 'areaCoord'">
-          <mat-form-field>
-            <input name="phone" matInput placeholder="{{actionHebrew[action]}} מספר טלפון"
-              [(ngModel)]="newUser.phone" #phone="ngModel" />
-            <mat-error *ngIf="phone.invalid && (phone.dirty || phone.touched)">
-              <div *ngIf="phone.errors?.required">
-                שדה זה הינו חובה.
-              </div>
-            </mat-error>
-          </mat-form-field>
-        </ng-container>
+            <mat-form-field>
+              <input name="phone" matInput placeholder="{{actionHebrew[action]}} מספר טלפון" [(ngModel)]="newUser.phone"
+                #phone="ngModel" />
+              <mat-error *ngIf="phone.invalid && (phone.dirty || phone.touched)">
+                <div *ngIf="phone.errors?.required">
+                  שדה זה הינו חובה.
+                </div>
+              </mat-error>
+            </mat-form-field>
+          </ng-container>
 
-        <ng-container *ngIf="dialogType === 'manager' || dialogType === 'clubCoord'">
-          <mat-form-field>
-            <input required="dialogType==='manager'" name="phone" matInput placeholder="{{actionHebrew[action]}} מספר טלפון"
-              [(ngModel)]="newUser.phone" #phone="ngModel" />
-            <mat-error *ngIf="phone.invalid && (phone.dirty || phone.touched)">
-              <div *ngIf="phone.errors?.required">
-                שדה זה הינו חובה.
-              </div>
-            </mat-error>
-          </mat-form-field>
-        </ng-container>
+          <ng-container *ngIf="dialogType === 'manager' || dialogType === 'clubCoord'">
+            <mat-form-field>
+              <input required="dialogType==='manager'" name="phone" matInput
+                placeholder="{{actionHebrew[action]}} מספר טלפון" [(ngModel)]="newUser.phone" #phone="ngModel" />
+              <mat-error *ngIf="phone.invalid && (phone.dirty || phone.touched)">
+                <div *ngIf="phone.errors?.required">
+                  שדה זה הינו חובה.
+                </div>
+              </mat-error>
+            </mat-form-field>
+          </ng-container>
 
           <!-- neighborhoods checkboxes -->
           <ng-container *ngIf="(dialogType === 'areaCoord' || dialogType === 'manager') ">
@@ -206,33 +206,50 @@
       </ng-template>
 
       <ng-template #eventsTemplate>
-        <ng-container *ngIf="dialogType === 'event'; else elseTemplate ">
-        <mat-form-field appearance="fill">
-          <mat-label>{{actionHebrew[action]}} תאריך</mat-label>
-          <input matInput required id="date2" name="date2" [matDatepicker]="picker2" [(ngModel)]="newEvent.date"
-            #date2="ngModel">
-          <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
-          <mat-datepicker #picker2 disabled="false"></mat-datepicker>
-          <mat-error *ngIf="date2.invalid && (date2.dirty || date2.touched)">
-            <div *ngIf="date2.errors?.required">
-              שדה התאריך הינו חובה.
-            </div>
-          </mat-error>
-        </mat-form-field>
-        <mat-form-field>
-          <textarea required name="title" matInput placeholder="{{actionHebrew[action]}} כותרת"
-          [(ngModel)]="newEvent.title" #title="ngModel"></textarea>
-          <mat-error *ngIf="title.invalid && (title.dirty || title.touched)">
-            <div *ngIf="title.errors?.required">
-              שדה זה הינו חובה.
-            </div>
-          </mat-error>
-        </mat-form-field>
+        <ng-container *ngIf="dialogType === 'event' && action != 'Delete'; else elseTemplate ">
+          <mat-form-field appearance="fill">
+            <mat-label>{{actionHebrew[action]}} תאריך</mat-label>
+            <input matInput required id="date2" name="date2" [matDatepicker]="picker2" [(ngModel)]="newEvent.date"
+              #date2="ngModel">
+            <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+            <mat-datepicker #picker2 disabled="false"></mat-datepicker>
+            <mat-error *ngIf="date2.invalid && (date2.dirty || date2.touched)">
+              <div *ngIf="date2.errors?.required">
+                שדה התאריך הינו חובה.
+              </div>
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field>
+            <textarea required name="title" matInput placeholder="{{actionHebrew[action]}} כותרת"
+              [(ngModel)]="newEvent.title" #title="ngModel"></textarea>
+            <mat-error *ngIf="title.invalid && (title.dirty || title.touched)">
+              <div *ngIf="title.errors?.required">
+                שדה זה הינו חובה.
+              </div>
+            </mat-error>
+          </mat-form-field>
 
-        <mat-form-field>
-          <textarea name="description" matInput placeholder="{{actionHebrew[action]}} תיאור"
-          [(ngModel)]="newEvent.description" #description="ngModel"></textarea>
-        </mat-form-field>
+          <mat-form-field>
+            <textarea name="description" matInput placeholder="{{actionHebrew[action]}} תיאור"
+              [(ngModel)]="newEvent.description" #description="ngModel"></textarea>
+          </mat-form-field>
+
+          <mat-label>{{actionHebrew[action]}} תמונה</mat-label>
+          <input type="file" class="file-input" (change)="onFileSelected($event)" #fileUpload>
+          <div class="file-upload">
+            {{ uploadedFile?.name || "עדיין לא נבחרה תמונה"}}
+            <button mat-mini-fab color="primary" class="upload-btn" (click)="fileUpload.click()">
+              <mat-icon>attach_file</mat-icon>
+            </button>
+          </div>
+          <!-- <div class="progress">
+            <mat-progress-bar class="progress-bar" mode="determinate"
+                              [value]="uploadProgress" *ngIf="uploadProgress">
+            </mat-progress-bar>
+            <mat-icon class="cancel-upload" (click)="cancelUpload()" 
+                      *ngIf="uploadProgress">delete_forever</mat-icon>
+          </div> -->
+
         </ng-container>
       </ng-template>
 
