@@ -3,19 +3,7 @@ import { ScrollDispatcher } from '@angular/cdk/scrolling';
 import { Component, NgZone, OnInit, ViewChild } from '@angular/core';
 import { MatToolbar } from '@angular/material/toolbar';
 import { AuthService } from '../services/auth/auth.service';
-
-export interface MenuItem {
-  label: string;
-  icon: string;
-  route: string;
-  admin: boolean;
-  requireLogIn: boolean;
-  requireLogOut? : boolean;
-  showAll?: boolean;
-  // showOnMobile: boolean;
-  // showOnTablet: boolean;
-  // showOnDesktop: boolean;
-}
+import { MenuItem } from '../types/customTypes';
 
 @Component({
   selector: 'app-toolbar',

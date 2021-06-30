@@ -13,49 +13,8 @@ import { DialogBoxComponent } from '../dialog-box/dialog-box.component';
 import { GetDataService } from '../services/get-data/get-data.service';
 import { ProgressSpinnerOverlayService } from '../services/progressSpinerOverlay/progress-spinner-overlay.service';
 import { AuthService } from '../services/auth/auth.service';
-
+import { areaCoord, neighborhood, project, manager, clubCoord } from '../types/customTypes';
 import firebase from 'firebase/app';
-
-interface areaCoord {
-  id: string,
-  name: string,
-  email: string,
-  phone: string,
-  neighborhoods: string[]
-}
-
-interface neighborhood {
-  id: string,
-  currentValue: boolean,
-  managerId: string,
-  projects: project[],
-  managerInfo?: manager
-}
-
-interface project {
-  projectType: string,
-  comments: string,
-  date: Date,
-  clubCoordinatorId: string,
-  clubInfo?: clubCoord,
-}
-
-interface manager {
-  id: string,
-  name: string,
-  email: string,
-  phone: string,
-  neighborhoods: string[]
-}
-
-interface clubCoord {
-  id: string,
-  address: string,
-  club: string,
-  name: string,
-  phone: string,
-  coordPhone: string | undefined,
-}
 
 @Component({
   selector: 'app-projects-tracking',
@@ -171,7 +130,7 @@ export class ProjectsTrackingComponent implements OnInit, OnDestroy {
         let uid = auth.uid
         let temp
         if (auth.type === "AreaCoordinators")
-          temp = this.areaCoords.find(i => (i.id.trim() == uid))
+          temp = this.areaCoords.find(i => (i.id?.trim() == uid))
         // else if (auth.type === "Managers")
         //   temp = this.managers[0]
         if (temp) {
@@ -185,7 +144,7 @@ export class ProjectsTrackingComponent implements OnInit, OnDestroy {
       this.allNeighborhoods.forEach(neighb => {
         neighb.managerInfo = this.managers.find(i => i.id.trim() == neighb.managerId.trim())
         neighb.projects.forEach(proj => {
-          proj.clubInfo = this.clubCoords.find(i => i.id.trim() == proj.clubCoordinatorId.trim())
+          proj.clubInfo = this.clubCoords.find(i => i.id?.trim() == proj.clubCoordinatorId.trim())
         })
       })
       if (!this.currNeighborhoods) {

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth'
 import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
-import { signinUser } from 'src/app/types/user';
+import { signinUser } from 'src/app/types/customTypes';
 import { Router } from '@angular/router';
 import firebase from 'firebase/app';
 import { defer, from, Observable, Subject } from 'rxjs';

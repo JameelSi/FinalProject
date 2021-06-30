@@ -6,47 +6,7 @@ import { DialogBoxComponent } from '../dialog-box/dialog-box.component';
 import { GetDataService } from '../services/get-data/get-data.service';
 import firebase from 'firebase/app';
 import { MatSnackBar } from '@angular/material/snack-bar';
-
-interface areaCoord {
-  id: string,
-  name: string,
-  email: string,
-  phone: string,
-  neighborhoods: string[]
-}
-
-interface neighborhood {
-  id: string,
-  currentValue: boolean,
-  managerId: string,
-  projects: project[],
-  managerInfo?: manager
-}
-
-interface project {
-  projectType: string,
-  comments: string,
-  date: Date,
-  clubCoordinatorId: string,
-  clubInfo?: clubCoord,
-}
-
-interface manager {
-  id: string,
-  name: string,
-  email: string,
-  phone: string,
-  neighborhoods: string[]
-}
-
-interface clubCoord {
-  id: string,
-  address: string,
-  club: string,
-  name: string,
-  phone: string,
-  coordPhone: string | undefined
-}
+import { areaCoord, neighborhood, manager, clubCoord } from '../types/customTypes';
 
 @Component({
   selector: 'app-settings',

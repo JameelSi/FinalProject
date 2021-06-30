@@ -7,59 +7,13 @@ import * as moment from 'moment';
 import { AuthService } from '../services/auth/auth.service';
 import firebase from 'firebase/app';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { project, areaCoord, neighborhood, manager, clubCoord, event } from '../types/customTypes';
+import { Moment } from 'moment';
 
-interface project {
-  projectType: any,
-  comments: string,
-  date: any,
-  clubCoordinatorId: any
-}
-
-type areaCoord = {
-  id?: string,
-  name: string,
-  email: string,
-  phone: string,
-  neighborhoods: string[],
-  password?: string,
-  uid?: string
-}
-
-type neighborhood = {
-  id: string,
-  currentValue: boolean,
-  managerId: string,
-  projects: project[],
-  managerInfo?: manager
-}
-
-type manager = {
-  id?: string,
-  name: string,
-  email: string,
-  phone: string,
-  neighborhoods: string[]
-}
-
-type clubCoord = {
-  id?: string,
-  address: string,
-  club: string,
-  name: string,
-  phone: string,
-  coordPhone: string | undefined
-}
 
 type user = clubCoord | manager | areaCoord
 
-interface event {
-  title: string,
-  type?: string,
-  description?: string,
-  date?: any,
-  id?: string,
-  img?: string,
-}
+
 @Component({
   selector: 'app-dialog-box',
   templateUrl: './dialog-box.component.html',
@@ -168,7 +122,7 @@ export class DialogBoxComponent implements OnInit {
         this.dialogRef.close({
           event: this.action,
           data: this.local_data,
-          newEvent: this.newEvent ? { ...this.newEvent, date: this.newEvent?.date.toDate() } : undefined
+          newEvent: this.newEvent ? { ...this.newEvent, date: (this.newEvent?.date as Moment).toDate() } : undefined
         });
       })
     }
@@ -180,11 +134,11 @@ export class DialogBoxComponent implements OnInit {
         newProj: this.newProj ? {
           ...this.newProj,
           comments: this.newProj?.comments.length == 0 ? "אין" : this.newProj?.comments,
-          date: this.newProj?.date.toDate()
+          date: (this.newProj?.date as Moment).toDate() //TOCHECK
         }
           : undefined,
         newUser: this.newUser,
-        newEvent: this.newEvent ? { ...this.newEvent, date: this.newEvent?.date.toDate() } : undefined
+        newEvent: this.newEvent ? { ...this.newEvent, date: (this.newEvent?.date as Moment).toDate() } : undefined
       });
     }
   }
