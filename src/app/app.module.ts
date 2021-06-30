@@ -52,6 +52,7 @@ import { CarouselModule } from 'primeng/carousel';
 import {ButtonModule} from 'primeng/button';
 import { SettingsComponent } from './settings/settings.component';
 import { MessagesComponent } from './messages/messages.component';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
 @NgModule({
   declarations: [
@@ -64,7 +65,8 @@ import { MessagesComponent } from './messages/messages.component';
     SignupComponent,
     SigninComponent,
     SettingsComponent,
-    MessagesComponent
+    MessagesComponent,
+    PageNotFoundComponent
     ],
   imports: [
     BrowserModule,
