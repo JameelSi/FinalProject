@@ -1,0 +1,47 @@
+
+.spacer {
+    flex: 1 1 auto;
+}
+
+mat-divider {
+    margin-top: 16px;
+    margin-bottom: 16px;
+    background-color: rgba(255, 255, 255, 0.5);
+    // padding-top: 12vh;
+}
+
+mat-drawer {
+    // margin: 16px;
+    width: 200px;
+    border-right: none;
+    // background: $drawer-bkg-color;
+    margin-top: 12vh;
+    text-align: center;
+}
+.mainContent{
+    background-color: white;
+    height: 95%;
+    width: 95%;
+    margin:auto;
+    border-radius: 10px;
+}
+mat-drawer-container{
+    height:100vh;
+    padding-top:7%;
+}
+
+mat-accordion{
+    display: flex;
+    flex-direction: column;
+}
+
+.sideBtn{
+    margin-top: 7px;
+    height: 70px;
+    font-weight: bold;
+}
+
+@media screen and (max-width: 800px) {
+
+}
+

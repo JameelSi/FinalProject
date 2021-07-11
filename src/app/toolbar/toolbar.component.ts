@@ -76,6 +76,14 @@ export class ToolbarComponent implements OnInit {
       requireLogOut: false,
       showAll: false,
     },{
+      label: "מאגר נרשמים",
+      icon: "groups",
+      route: "/registereduser",
+      admin: true,
+      requireLogIn: true,
+      requireLogOut: false,
+      showAll: false,
+    },{
       label: "ריכוז הודעות",
       icon: "message",
       route: "/messages",
@@ -86,7 +94,7 @@ export class ToolbarComponent implements OnInit {
     },{
       label: "איזור אישי",
       icon: "account_circle",
-      route: "/",
+      route: "/profile",
       admin: false,
       requireLogIn: true,
       requireLogOut: false,
