@@ -4,12 +4,13 @@ import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@ang
 import { combineLatest, Observable, Subscription } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
-import { signupUser } from '../types/user'
+import { signupUser } from '../types/customTypes'
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthService } from '../services/auth/auth.service';
 import { AngularFirestore } from '@angular/fire/firestore'
 import { ActivatedRoute, Router } from '@angular/router';
 import { GetDataService } from '../services/get-data/get-data.service';
+import { Elderly, Volunteer } from '../types/customTypes';
 
 // for AutoComplete - validate that user picks from the list
 function containsValidator(validOptions: Array<string>) {
@@ -46,34 +47,6 @@ function legalValidator() {
   }
 }
 
-interface Elderly {
-  fName: string,
-  lName: string,
-  phone: string,
-  email: string,
-  city: 'ירושלים',
-  neighborhood: string,
-  street: string,
-  age: number,
-  needs: string[],
-  langs: string[],
-  maritalStatus: string,
-  message: string
-}
-interface Volunteer {
-  fName: string,
-  lName: string,
-  phone: string,
-  email: string,
-  city: 'ירושלים',
-  neighborhood: string,
-  street: string,
-  age: number,
-  hobbies: string[],
-  langs: string[],
-  volType: string,
-  message: string
-}
 @Component({
   selector: 'app-signup',
   templateUrl: './signup.component.html',

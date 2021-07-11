@@ -54,6 +54,7 @@ import { SettingsComponent } from './settings/settings.component';
 import { MessagesComponent } from './messages/messages.component';
 import { ProfileComponent } from './profile/profile.component';
 import { RegisteredUsersComponent } from './registered-users/registered-users.component';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
 @NgModule({
   declarations: [
@@ -68,7 +69,8 @@ import { RegisteredUsersComponent } from './registered-users/registered-users.co
     SettingsComponent,
     MessagesComponent,
     ProfileComponent,
-    RegisteredUsersComponent
+    RegisteredUsersComponent,
+    PageNotFoundComponent
     ],
   imports: [
     BrowserModule,

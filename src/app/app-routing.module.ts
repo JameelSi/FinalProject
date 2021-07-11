@@ -9,18 +9,21 @@ import { SettingsComponent } from './settings/settings.component';
 import { MessagesComponent } from './messages/messages.component';
 import { ProfileComponent } from './profile/profile.component';
 import { RegisteredUsersComponent } from './registered-users/registered-users.component';
+import { AuthGuard } from './guards/auth.guard';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
 const routes: Routes = [
-  { path: 'projectsTracking', component: ProjectsTrackingComponent },
+  { path: 'projectsTracking', component: ProjectsTrackingComponent, canActivate: [AuthGuard]},
   { path: 'needs', component: NeedsComponent },
   { path: 'home', component: HomepageComponent },
   { path: 'signup/:userType', component: SignupComponent },
   { path: 'signin', component: SigninComponent },
-  { path: 'settings', component: SettingsComponent },
+  { path: 'settings', component: SettingsComponent, canActivate: [AuthGuard]},
   { path: 'messages', component: MessagesComponent },
   { path: 'profile', component: ProfileComponent },
-  { path: 'registereduser', component: RegisteredUsersComponent },
+  { path: 'registereduser', component: RegisteredUsersComponent,canActivate: [AuthGuard] },
   { path: '', redirectTo: '/home', pathMatch: 'full' },
+  { path: '**', component: PageNotFoundComponent },
 ];
 
 const routerOptions: ExtraOptions = {
