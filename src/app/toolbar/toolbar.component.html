@@ -1,7 +1,7 @@
 <!--breakpoints: https://github.com/angular/flex-layout/issues/821 -->
 <div dir="rtl">
     <mat-toolbar fxLayout="row" class="fixed-toolbar">
-        <span fxFlex routerLink="/" style="cursor: pointer;"><img class="logoImg" src="../assets/imgs/logo.png"></span>
+        <span fxFlex routerLink="/" style="cursor: pointer;"><img class="logoImg" src="https://firebasestorage.googleapis.com/v0/b/simhatv2test.appspot.com/o/images%2Flogo.png?alt=media&token=720cee42-c9a0-4d4e-bbc8-3daafe8bd835"></span>
             <div routerLink={{item.route}} *ngFor="let item of menuItems" fxHide.lt-sm fxHide.lt-md>
                 <ng-container
                     *ngIf="( !item.admin || (item.admin && authService.isLoggedIn && isAdmin ) ) 

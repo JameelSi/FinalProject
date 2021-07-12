@@ -1,7 +1,17 @@
 <main *ngIf="ready">
-  <h1 class="title">
-    הפרטים ישארו חסויים במיזם
-  </h1>
+  <div *ngIf="collec==='Elderlies'">
+    <h1 class="title">
+      טופס הרשמה לקשיש
+    </h1>
+    <h3 class="subtitle"> לטופס הרשמת מתנדבים לחץ <a routerLink="/signup/Volunteers">כאן</a></h3>
+  </div>
+  <div *ngIf="collec==='Volunteers'">
+    <h1 class="title">
+      טופס הרשמה למתנדב
+    </h1>
+    <h3 class="subtitle"> לטופס הרשמת קשישים לחץ <a routerLink="/signup/Elderlies">כאן</a></h3>
+  </div>
+
 
   <ng-template #stepOne>
 
@@ -106,7 +116,7 @@
       <div *ngIf="collec==='Elderlies'" class="label">
         <mat-form-field appearance="outline" dir="rtl">
           <mat-label>מייל</mat-label>
-          <input matInput placeholder="הקלד כאן.." formControlName="email" >
+          <input matInput placeholder="הקלד כאן.." formControlName="email">
           <mat-error>{{getErrorMessage(1)}}</mat-error>
         </mat-form-field>
       </div>
@@ -221,7 +231,7 @@
         <div>
           <h3 class="checkTtile">האם התנדבת בעבר או מתנדב בהווה ?</h3>
           <h5>
-            <mat-error class="err" *ngIf="this.details2.get('pastVoulnteer')?.errors?.required" >שדה חובה</mat-error>
+            <mat-error class="err" *ngIf="this.details2.get('pastVoulnteer')?.errors?.required">שדה חובה</mat-error>
           </h5>
         </div>
         <mat-radio-group formControlName="pastVoulnteer" class="checBox" color="primary">
@@ -237,14 +247,14 @@
       <div *ngIf="collec==='Volunteers' && this.details2.get('pastVoulnteer')?.value=='כן'" class="label">
         <mat-form-field appearance="outline" dir="rtl">
           <mat-label>באיזו מסגרת ?</mat-label>
-          <input matInput placeholder="הקלד כאן.." formControlName="enviroment" >
+          <input matInput placeholder="הקלד כאן.." formControlName="enviroment">
         </mat-form-field>
       </div>
       <!--  expire -->
       <div *ngIf="collec==='Volunteers'&& this.details2.get('pastVoulnteer')?.value=='כן'" class="label">
         <mat-form-field appearance="outline" dir="rtl">
           <mat-label>תאריך פרישה</mat-label>
-          <input matInput placeholder="הקלד כאן.." formControlName="lastVolDate" >
+          <input matInput placeholder="הקלד כאן.." formControlName="lastVolDate">
           <mat-error>שדה חובה</mat-error>
         </mat-form-field>
       </div>
@@ -284,7 +294,7 @@
         <h3> מהן צפויותך מההתדנדבות ?</h3>
         <textarea formControlName="expectations" id="" cols="10" rows="5"></textarea>
       </div>
-      
+
     </form>
   </ng-template>
 
