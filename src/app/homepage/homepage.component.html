@@ -23,8 +23,8 @@
                 <img fxHide fxShow.lt-md src="../../assets/imgs/prev.png">
                 <div class="spacer"></div>
                 <div class="btn-wrapper">
-                    <button class="main-btn" mat-raised-button color="accent">להרשמה</button>
-                    <button class="main-btn" mat-raised-button color="accent">שלח הודעה</button>
+                    <button routerLink='/signup/Elderlies' class="main-btn" mat-raised-button color="accent">להרשמה</button>
+                    <button routerLink='/contactus' class="main-btn" mat-raised-button color="accent">שלח הודעה</button>
                 </div>
             </div>
         </div>
@@ -77,9 +77,21 @@
             <mat-icon>instagram</mat-icon>
         </div> -->
     <div class="footer-links-wrapper">
-        <a href class="footer-links">קצת עלינו</a>
-        <a href class="footer-links">צור קשר</a>
-        <a href class="footer-links">פניה להנהלת האתר</a>
+        <a href>קצת עלינו</a>
+        <div class="contact-info">
+            <a href>צור קשר</a>
+            <div style="display: flex; flex-direction: column;">
+                <span>גיתית כהן</span>
+                <span>טל: 050-8216625</span>
+                <span>מייל: gitit_co@jerusalem.muni.il</span>
+            </div>
+            <div style="display: flex; flex-direction: column;">
+                <span>אילנה</span>
+                <span>טל: 050-8216625</span>
+                <span>מייל: gitit_co@jerusalem.muni.il</span>
+            </div>
+        </div>
+        <!-- <a href>פניה להנהלת האתר</a> -->
     </div>
     <img class="footer-img" src="../../assets/imgs/people_transparent.png">
 

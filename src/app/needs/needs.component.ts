@@ -87,7 +87,7 @@ export class NeedsComponent implements OnInit, OnDestroy {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if (result) {
+      if (result && result.event!='Cancel') {
         if (result.event == 'Add' && type == 'collection') {
           // Create a reference to the cities collection
           let servicesRef = firebase.firestore().collection("Services");

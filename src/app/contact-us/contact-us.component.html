@@ -1,0 +1,97 @@
+<body>
+    <div class="custom-shape-divider-bottom-1625768382">
+        <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+            <path
+                d="M985.66,92.83C906.67,72,823.78,31,743.84,14.19c-82.26-17.34-168.06-16.33-250.45.39-57.84,11.73-114,31.07-172,41.86A600.21,600.21,0,0,1,0,27.35V120H1200V95.8C1132.19,118.92,1055.71,111.31,985.66,92.83Z"
+                class="shape-fill"></path>
+        </svg>
+    </div>
+
+    <!-- make wave color lighter, start it further up, make fields not transparent, (maybe)change button color -->
+
+    <div dir="rtl" class="mat-elevation-z8" class="horiz_wrapper">
+        <div class="box">
+            <div class="vert_wrapper">
+                <div class="title">
+                    <h1><b>יש לכם שאלות? <br> השאירו לנו הודעה!</b></h1>
+                </div>
+
+                <mat-divider></mat-divider>
+
+                <div class="content">
+
+                    <form [formGroup]="messageForm" (ngSubmit)="onSubmit(formDirective)" #formDirective="ngForm">
+
+                        <mat-form-field appearance="outline">
+                            <input matInput placeholder="שם מלא" formControlName="name" required>
+                            <mat-error *ngIf="name?.errors?.required">שדה חובה</mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline">
+                            <input type="text" pattern="\d*" matInput placeholder="פלאפון" formControlName="phone"
+                                required>
+                            <mat-error>
+                                <div *ngIf="phone?.errors?.required">
+                                    שדה חובה
+                                </div>
+                                <div *ngIf="phone?.errors?.minlength || phone?.errors?.maxlength">
+                                    מספר טלפון חייב להיות או 7 או 10 ספרות
+                                </div>
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline">
+                            <input matInput placeholder="מייל" formControlName="email" required>
+                            <mat-error>
+                                <div *ngIf="email?.errors?.required">
+                                    שדה חובה
+                                </div>
+                                <div *ngIf="email?.errors?.email">
+                                    המייל שהוכס אינו תקין
+                                </div>
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline">
+                            <!-- <h3> מהן צפויותך מההתדנדבות ?</h3> -->
+                            <textarea matInput placeholder="כתבו את ההודעה..." formControlName="content" rows="4"
+                                required></textarea>
+                            <mat-error *ngIf="content?.errors?.required"> שדה חובה</mat-error>
+                        </mat-form-field>
+
+                        <button class="submit" type="submit" mat-raised-button color="primary">
+                            שלח
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <img class="envelope"
+            src="https://firebasestorage.googleapis.com/v0/b/simhatv2test.appspot.com/o/images%2Fenvelope1.png?alt=media&token=334dd04e-d4de-4017-930c-638af808bf7f"
+            width="350vh" height="270vh">
+        <!--25% 20%-->
+    </div>
+</body>
+
+<!-- <div class="filler"></div> -->
+
+<div class="footer" dir="rtl">
+    <div class="footer-links-wrapper">
+        <a href>קצת עלינו</a>
+        <div style="display: flex; flex-direction: row;">
+            <a href>צור קשר</a>
+            <div style="display: flex; flex-direction: column;">
+                <span>גיתית כהן</span>
+                <span>טל: 050-8216625</span>
+                <span>מייל: gitit_co@jerusalem.muni.il</span>
+            </div>
+            <div style="display: flex; flex-direction: column;">
+                <span>אילנה</span>
+                <span>טל: 050-8216625</span>
+                <span>מייל: gitit_co@jerusalem.muni.il</span>
+            </div>
+        </div>
+        <!-- <a href>פניה להנהלת האתר</a> -->
+    </div>
+    <img class="footer-img" src="../../assets/imgs/people_transparent.png">
+</div>

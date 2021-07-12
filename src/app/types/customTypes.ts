@@ -1,3 +1,4 @@
+import * as moment from "moment";
 import { Moment } from "moment";
 
 export interface signinUser{
@@ -112,4 +113,14 @@ export interface event {
     // showOnMobile: boolean;
     // showOnTablet: boolean;
     // showOnDesktop: boolean;
+  }
+
+  export interface message {
+    name: string,
+    content: string,
+    phone?: string,
+    email?: string,
+    date: Moment,
+    read?: boolean,
+    id?: string,
   }

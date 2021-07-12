@@ -53,6 +53,7 @@ import {ButtonModule} from 'primeng/button';
 import { SettingsComponent } from './settings/settings.component';
 import { MessagesComponent } from './messages/messages.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { ContactUsComponent } from './contact-us/contact-us.component';
 
 @NgModule({
   declarations: [
@@ -66,7 +67,8 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
     SigninComponent,
     SettingsComponent,
     MessagesComponent,
-    PageNotFoundComponent
+    PageNotFoundComponent,
+    ContactUsComponent
     ],
   imports: [
     BrowserModule,

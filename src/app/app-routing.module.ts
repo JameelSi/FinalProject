@@ -9,6 +9,7 @@ import { SettingsComponent } from './settings/settings.component';
 import { MessagesComponent } from './messages/messages.component';
 import { AuthGuard } from './guards/auth.guard';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { ContactUsComponent } from './contact-us/contact-us.component';
 
 const routes: Routes = [
   { path: 'projectsTracking', component: ProjectsTrackingComponent, canActivate: [AuthGuard]},
@@ -18,6 +19,8 @@ const routes: Routes = [
   { path: 'signin', component: SigninComponent},
   { path: 'settings', component: SettingsComponent, canActivate: [AuthGuard]},
   { path: 'messages', component: MessagesComponent},
+  // , canActivate: [AuthGuard]},
+  { path: 'contactus', component: ContactUsComponent},
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: '**', component: PageNotFoundComponent },
 ];
