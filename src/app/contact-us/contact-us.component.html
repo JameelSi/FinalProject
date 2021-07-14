@@ -12,10 +12,14 @@
     <div dir="rtl" class="mat-elevation-z8" class="horiz_wrapper">
         <div class="box">
             <div class="vert_wrapper">
-                <div class="title">
-                    <h1><b>יש לכם שאלות? <br> השאירו לנו הודעה!</b></h1>
+                <div class="sm-title">
+                    <div class="title">
+                        <h1><b>יש לכם שאלות? <br> השאירו לנו הודעה!</b></h1>
+                    </div>
+                    <img class="envelope" fxHide fxShow.lt-sm
+                        src="https://firebasestorage.googleapis.com/v0/b/simhatv2test.appspot.com/o/images%2Fenvelope1.png?alt=media&token=334dd04e-d4de-4017-930c-638af808bf7f"
+                        width="350vh" height="270vh">
                 </div>
-
                 <mat-divider></mat-divider>
 
                 <div class="content">
@@ -66,7 +70,7 @@
                 </div>
             </div>
         </div>
-        <img class="envelope"
+        <img class="envelope" fxHide.lt-sm
             src="https://firebasestorage.googleapis.com/v0/b/simhatv2test.appspot.com/o/images%2Fenvelope1.png?alt=media&token=334dd04e-d4de-4017-930c-638af808bf7f"
             width="350vh" height="270vh">
         <!--25% 20%-->
@@ -75,17 +79,17 @@
 
 <!-- <div class="filler"></div> -->
 
-<div class="footer" dir="rtl">
+<footer dir="rtl">
     <div class="footer-links-wrapper">
         <a href>קצת עלינו</a>
-        <div style="display: flex; flex-direction: row;">
-            <a href>צור קשר</a>
-            <div style="display: flex; flex-direction: column;">
+        <div class="footer-contact-us">
+            <a href routerLink="/contactus">צור קשר</a>
+            <div class="contact-us-info">
                 <span>גיתית כהן</span>
                 <span>טל: 050-8216625</span>
                 <span>מייל: gitit_co@jerusalem.muni.il</span>
             </div>
-            <div style="display: flex; flex-direction: column;">
+            <div class="contact-us-info">
                 <span>אילנה</span>
                 <span>טל: 050-8216625</span>
                 <span>מייל: gitit_co@jerusalem.muni.il</span>
@@ -93,5 +97,6 @@
         </div>
         <!-- <a href>פניה להנהלת האתר</a> -->
     </div>
-    <img class="footer-img" src="https://firebasestorage.googleapis.com/v0/b/simhatv2test.appspot.com/o/images%2Fpeople_transparent.png?alt=media&token=289fd20c-3aaf-4768-a5e7-8f54e26862e3">
-</div>
+    <img class="footer-img"
+        src="https://firebasestorage.googleapis.com/v0/b/simhatv2test.appspot.com/o/images%2Fpeople_transparent.png?alt=media&token=289fd20c-3aaf-4768-a5e7-8f54e26862e3">
+</footer>

@@ -38,11 +38,6 @@ body{
 }
 
 .box{
-    // width: 100vh; 
-    // top: 30%;
-    // left: 50%;
-    // transform: translate(-50%, -50%);
-    // height: 500px;
     width: 30%;
     z-index: 9999;
 }
@@ -78,12 +73,13 @@ form{
 .submit{
     // width: 30%;
     border-radius: 20px;
+    opacity: 80%; // ?
 }
 
 .envelope{
     margin-right: 5%;
     margin-top: 10%;
-    z-index: 9999;
+    // z-index: 9999;
 }
 
 .filler{
@@ -94,7 +90,7 @@ form{
     height: 100px;
 }
 
-.footer{
+footer{
     background-color: $wave_color;
     // top: calc(99vh + 99px);
     top: 99vh;
@@ -117,6 +113,14 @@ form{
       color: $dark_blue;
       font-size: medium;
     }
+    .footer-contact-us{
+        display: flex;
+        flex-direction: row;
+    }
+    .contact-us-info{
+        display: flex; 
+        flex-direction: column;
+    }
     span{
       margin-bottom: 5px;
       margin-left: 2vh;
@@ -125,4 +129,76 @@ form{
     }
 }
 
+// md
+@media screen and (max-width: 959px) {
+    .envelope{
+        width: auto;
+        height: 25vh;
+        margin-top: 15vh;
+    }
+    .box{
+        width: 40%;
+    }
+}
+// md
+@media screen and (min-width:599px) and (max-width: 700px) {
+    .envelope{
+        width: auto;
+        height: 20vh;
+        margin-top: 20vh;
+    }
+    .box{
+        width: 40%;
+    }
+    // footer{
+    //     height: auto;
+    //     flex-direction: column;
+    // }
+    // .footer-links-wrapper{
+    //     display: flex;
+    //     align-items: flex-start;
+    //     margin-right: 25%;
+    //     .footer-contact-us{
+    //         display: flex;
+    //         flex-direction: column;
+    //     }
+    //     .contact-us-info{
+    //         padding-bottom: 2vh;
+    //     }
+    // }
+}
 
+// sm
+@media screen and (max-width: 599px) {
+    .envelope{
+        width: 15vh;
+        height: 15vh;
+        padding-bottom: 3vh;
+        margin-top: 10%;
+    }
+    .sm-title{
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+    }
+    .box{
+        width: 80%;
+    }
+    footer{
+        height: auto;
+        flex-direction: column;
+    }
+    .footer-links-wrapper{
+        display: flex;
+        align-items: flex-start;
+        margin-right: 25%;
+        .footer-contact-us{
+            display: flex;
+            flex-direction: column;
+        }
+        .contact-us-info{
+            padding-bottom: 2vh;
+        }
+    }
+}

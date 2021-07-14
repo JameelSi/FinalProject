@@ -32,8 +32,8 @@
                 </mat-card-header>
 
                 <mat-card-content>
-                    <p>
-                        {{msg.content}}
+                    <p [innerHTML]="msg.content | prettyPrint">
+                        <!-- {{msg.content | prettyprint}} -->
                     </p>
                     <div class="contact">
                         מס' טלפון: {{msg.phone}} 

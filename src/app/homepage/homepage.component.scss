@@ -113,9 +113,13 @@ footer{
     color: white;
     font-size: medium;
   }
-  .contact-info{
+  .footer-contact-us{
     display: flex; 
     flex-direction: row;
+  }
+  .contact-us-info{
+    display: flex; 
+    flex-direction: column;
   }
 }
 
@@ -190,12 +194,16 @@ footer{
   }
   .footer-links-wrapper{
     justify-content: center;
-    .contact-info{
+    .footer-contact-us{
       display: flex;
       flex-direction: column;
       div{
         margin-bottom: 1vh;
       }
+    }
+    .contact-us-info{
+      display: flex; 
+      flex-direction: column;
     }
   }
 }

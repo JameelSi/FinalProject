@@ -54,6 +54,7 @@ import { SettingsComponent } from './settings/settings.component';
 import { MessagesComponent } from './messages/messages.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { ContactUsComponent } from './contact-us/contact-us.component';
+import { PrettyPrintPipe } from './prettyPrint/pretty-print.pipe';
 
 @NgModule({
   declarations: [
@@ -68,7 +69,8 @@ import { ContactUsComponent } from './contact-us/contact-us.component';
     SettingsComponent,
     MessagesComponent,
     PageNotFoundComponent,
-    ContactUsComponent
+    ContactUsComponent,
+    PrettyPrintPipe
     ],
   imports: [
     BrowserModule,

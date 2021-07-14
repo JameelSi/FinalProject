@@ -25,6 +25,7 @@ export class ContactUsComponent implements OnInit {
   }
 
   onSubmit(formDirective: FormGroupDirective) {
+    // content: JSON.stringify(this.messageForm.controls.content.value),
     if (this.messageForm.valid) {
       this.afs.collection('Messages').add({
         name: this.messageForm.controls.name.value,
