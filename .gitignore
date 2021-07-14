@@ -51,7 +51,6 @@ src/environments
 firebase.json
 .firebase
 functions
-public
 firestore.indexes.json
 firestore.rules
 storage.rules

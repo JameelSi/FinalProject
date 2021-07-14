@@ -1,0 +1,83 @@
+<div class="menu-header" *ngIf="sidenav.mode == 'over'">
+    <span class="spacer"></span>
+    <div style="display: flex; flex-direction: row; align-items:baseline;">
+        <h4 class="title">מרכזי אזור</h4>
+        <button mat-icon-button (click)="sidenav.toggle()">
+            <mat-icon *ngIf="!sidenav.opened">
+                menu
+            </mat-icon>
+            <mat-icon *ngIf="sidenav.opened">
+                close
+            </mat-icon>
+        </button>
+    </div>
+</div>
+
+<!-------------------- SIDENAV DRAWER ------------------------------------------------------>
+<mat-drawer-container>
+    <mat-drawer #sidenav mode="side" position="end">
+
+        <mat-accordion #accordion>
+
+            <mat-divider *ngIf="sidenav.mode == 'side'"></mat-divider>
+            <button class="sideBtn" mat-raised-button> מתנדבים</button>
+            <button class="sideBtn" mat-raised-button> קשישים</button>
+            <!-- <h4 class="title" *ngIf="sidenav.mode == 'side'">מרכזי אזור</h4>
+            <mat-divider *ngIf="sidenav.mode == 'side'"></mat-divider>
+            <h4 class="title" *ngIf="sidenav.mode == 'side'">מרכזי אזור</h4>
+            <mat-divider *ngIf="sidenav.mode == 'side'"></mat-divider>
+            <h4 class="title" *ngIf="sidenav.mode == 'side'">מרכזי אזור</h4>
+            <mat-divider *ngIf="sidenav.mode == 'side'"></mat-divider>
+            <h4 class="title" *ngIf="sidenav.mode == 'side'">מרכזי אזור</h4>
+            <mat-divider *ngIf="sidenav.mode == 'side'"></mat-divider> -->
+        </mat-accordion>
+
+    </mat-drawer>
+
+    <!-------------------- MAIN CONTENT ------------------------------------------------------>
+    <mat-drawer-content>
+        <div class="mainContent">
+            <mat-table dir="rtl" [dataSource]="volunteers" matSort>
+
+                <ng-container matColumnDef="fName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>שם פרטי</mat-header-cell>
+                    <mat-cell class="description-cell" *matCellDef="let volunteer">
+                        {{volunteer.fName}}
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="lName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>שם משפחה</mat-header-cell>
+                    <mat-cell class="description-cell" *matCellDef="let volunteer">
+                        {{volunteer.lName}}
+                    </mat-cell>
+                </ng-container>
+
+
+                <!-- Action Column -->
+                <!-- <ng-container matColumnDef="action">
+                    <mat-header-cell *matHeaderCellDef> פעולה </mat-header-cell>
+                    <mat-cell *matCellDef="let element" class="action-link">
+                        <div>
+                            <mat-icon class="tableBtn"
+                                (click)="openDialog('Update', element, undefined, currNeighborhood?.id?.trim(), 'project')">
+                                edit</mat-icon>
+                            <mat-icon class="tableBtn && delBtn"
+                                (click)="openDialog('Delete', element, undefined, currNeighborhood?.id?.trim(), 'project')">
+                                delete</mat-icon>
+                        </div>
+                    </mat-cell>
+                </ng-container> -->
+
+                <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+
+                <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+
+            </mat-table>
+
+        </div>
+
+    </mat-drawer-content>
+</mat-drawer-container>
+
+<!-------------------- SPINNER ------------------------------------------------------>

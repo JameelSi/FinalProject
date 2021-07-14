@@ -52,6 +52,8 @@ import { CarouselModule } from 'primeng/carousel';
 import {ButtonModule} from 'primeng/button';
 import { SettingsComponent } from './settings/settings.component';
 import { MessagesComponent } from './messages/messages.component';
+import { ProfileComponent } from './profile/profile.component';
+import { RegisteredUsersComponent } from './registered-users/registered-users.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { ContactUsComponent } from './contact-us/contact-us.component';
 import { PrettyPrintPipe } from './prettyPrint/pretty-print.pipe';
@@ -70,7 +72,9 @@ import { PrettyPrintPipe } from './prettyPrint/pretty-print.pipe';
     MessagesComponent,
     PageNotFoundComponent,
     ContactUsComponent,
-    PrettyPrintPipe
+    PrettyPrintPipe,
+    ProfileComponent,
+    RegisteredUsersComponent,
     ],
   imports: [
     BrowserModule,

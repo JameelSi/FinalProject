@@ -7,6 +7,8 @@ import { SignupComponent } from './signup/signup.component';
 import { SigninComponent } from './signin/signin.component';
 import { SettingsComponent } from './settings/settings.component';
 import { MessagesComponent } from './messages/messages.component';
+import { ProfileComponent } from './profile/profile.component';
+import { RegisteredUsersComponent } from './registered-users/registered-users.component';
 import { AuthGuard } from './guards/auth.guard';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { ContactUsComponent } from './contact-us/contact-us.component';
@@ -15,12 +17,14 @@ const routes: Routes = [
   { path: 'projectsTracking', component: ProjectsTrackingComponent, canActivate: [AuthGuard]},
   { path: 'needs', component: NeedsComponent },
   { path: 'home', component: HomepageComponent },
-  { path: 'signup/:userType', component: SignupComponent},
-  { path: 'signin', component: SigninComponent},
+  { path: 'signup/:userType', component: SignupComponent },
+  { path: 'signin', component: SigninComponent },
   { path: 'settings', component: SettingsComponent, canActivate: [AuthGuard]},
   { path: 'messages', component: MessagesComponent},
   // , canActivate: [AuthGuard]},
   { path: 'contactus', component: ContactUsComponent},
+  { path: 'profile', component: ProfileComponent },
+  { path: 'registereduser', component: RegisteredUsersComponent },
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: '**', component: PageNotFoundComponent },
 ];
