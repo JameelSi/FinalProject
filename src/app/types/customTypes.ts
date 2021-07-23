@@ -6,21 +6,6 @@ export interface signinUser{
     password: string,
 }
 
-export interface signupUser{
-    fName: string,
-    lName: string,
-    phone: string,
-    city: string,
-    neighborhood: string,
-    street: string,
-    age: string,
-    hobbies:Array<string>,
-    langs:Array<string>,
-    type:Array<string>,
-    status:Array<string>,
-    message: string,
-    admin:boolean
-}
 
 export interface Elderly {
     fName: string,
@@ -45,10 +30,19 @@ export interface Elderly {
     neighborhood: string,
     street: string,
     age: number,
+    gender:string,
+    id:string,
     hobbies: string[],
     langs: string[],
     volType: string,
-    message: string
+    education: string,
+    pastVoulnteer: boolean,
+    enviroment: string,
+    lastVolDate: string,
+    expectations: string,
+    numOfDays: number,
+    numOfHours: number,
+    bio: string
   }
 
 export interface event {

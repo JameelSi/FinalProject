@@ -1,0 +1,47 @@
+.body{
+    padding:50px;
+    padding-top: 15vh;
+    // width: 100vh;
+    // height: 100vh;
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: stretch
+}
+.rightDiv{
+    flex: 1;
+    margin: 10px;
+    height: 700px;
+}
+.firstCard{
+}
+.secondCard{
+    width: 80%;
+}
+
+.thirdCard{
+    width: 80%;
+}
+
+.leftDiv{
+    flex: 1;
+    margin: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.profileImg{
+    text-align: center;
+}
+mat-card-content{
+    margin-top: 15px;
+}
+mat-card-title{
+    color: gray;
+}
+.fields{
+    display: flex;
+    justify-content:space-between;
+    font-size: medium;
+    font-weight: bold;
+}
