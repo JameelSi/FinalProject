@@ -132,7 +132,7 @@
 
           <ng-container *ngIf="dialogType === 'clubCoord'">
             <mat-form-field>
-              <input name="coordPhone" matInput placeholder="{{actionHebrew[action]}} מספר טלפון של הרכז"
+              <input type="text" pattern="\d*" name="coordPhone" matInput placeholder="{{actionHebrew[action]}} מספר טלפון של הרכז"
                 [(ngModel)]="$any(newUser).coordPhone" #coordPhone="ngModel" />
             </mat-form-field>
           </ng-container>
@@ -163,7 +163,7 @@
 
           <ng-container *ngIf="dialogType === 'areaCoord'">
             <mat-form-field>
-              <input name="phone" matInput placeholder="{{actionHebrew[action]}} מספר טלפון" [(ngModel)]="newUser.phone"
+              <input type="text" pattern="\d*" name="phone" matInput placeholder="{{actionHebrew[action]}} מספר טלפון" [(ngModel)]="newUser.phone"
                 #phone="ngModel" />
               <mat-error *ngIf="phone.invalid && (phone.dirty || phone.touched)">
                 <div *ngIf="phone.errors?.required">
@@ -175,7 +175,7 @@
 
           <ng-container *ngIf="dialogType === 'manager' || dialogType === 'clubCoord'">
             <mat-form-field>
-              <input required="dialogType==='manager'" name="phone" matInput
+              <input type="text" pattern="\d*" required="dialogType==='manager'" name="phone" matInput
                 placeholder="{{actionHebrew[action]}} מספר טלפון" [(ngModel)]="newUser.phone" #phone="ngModel" />
               <mat-error *ngIf="phone.invalid && (phone.dirty || phone.touched)">
                 <div *ngIf="phone.errors?.required">

@@ -3,53 +3,7 @@ import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/fire
 import { combineLatest, Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
 // import { map, catchError } from 'rxjs/operators';
-
-export interface areaCoord {
-  id: string,
-  name: string,
-  email: string,
-  phone: string,
-  neighborhoods: string[]
-}
-
-export interface neighborhood {
-  id: string,
-  currentValue: boolean,
-  managerId: string,
-  projects: project[],
-}
-
-export interface project {
-  projectType: string,
-  comments: string,
-  date: Date,
-  clubCoordinatorId: string
-}
-
-export interface manager {
-  id: string,
-  name: string,
-  email: string,
-  phone: string,
-  neighborhoods: string[]
-}
-
-export interface clubCoord {
-  id: string,
-  address: string,
-  club: string,
-  name: string,
-  phone: string,
-  coordPhone: string | undefined,
-}
-
-interface event {
-  title: string,
-  type: string,
-  description: string,
-  date: Date,
-  id: string,
-}
+import { areaCoord, neighborhood, manager, clubCoord, event, message} from '../../types/customTypes';
 
 @Injectable({
   providedIn: 'root'
@@ -60,7 +14,9 @@ export class GetDataService {
   neighbsRef: AngularFirestoreCollection<neighborhood>
   managersRef: AngularFirestoreCollection<manager>
   clubCoordsRef: AngularFirestoreCollection<clubCoord>
-  eventsRef: AngularFirestoreCollection<event>;
+  eventsRef: AngularFirestoreCollection<event>
+  readMessagesRef: AngularFirestoreCollection<message>
+  unreadMessagesRef: AngularFirestoreCollection<message>
 
   constructor(private store: AngularFirestore) {
     this.areaCoordsRef = this.store.collection("AreaCoordinators")
@@ -70,6 +26,8 @@ export class GetDataService {
     this.eventsRef = this.store.collection("Events", ref => {
       return ref.orderBy("date")
     })
+    this.readMessagesRef = this.store.collection('Messages', (ref: any) => {return ref.where('read', '==', true).orderBy('date', "desc")})
+    this.unreadMessagesRef = this.store.collection('Messages', (ref: any) => { return ref.where('read', '==', false).orderBy('date', "desc")})
   }
 
   // get data for projects tracking page
@@ -79,7 +37,6 @@ export class GetDataService {
     const managers = this.managersRef.valueChanges({ idField: 'id' })
     const clubCoords = this.clubCoordsRef.valueChanges({ idField: 'id' })
     return combineLatest([areaCoords, allNeighborhoods, managers, clubCoords]);
-
   }
 
   getProjectVolOppsData(){
@@ -92,6 +49,14 @@ export class GetDataService {
     let neighborhoods: Observable<neighborhood[]>
     neighborhoods = this.neighbsRef.valueChanges({ idField: 'id' });
     return neighborhoods
+  }
+
+  getMessages(){
+    let readMsgs: Observable<message[]>
+    let unreadMsgs: Observable<message[]>
+    readMsgs = this.readMessagesRef.valueChanges({ idField: 'id' });
+    unreadMsgs = this.unreadMessagesRef.valueChanges({ idField: 'id' });
+    return combineLatest([readMsgs, unreadMsgs])
   }
 
 }

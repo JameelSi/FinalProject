@@ -5,7 +5,7 @@ import { AuthService } from '../services/auth/auth.service';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogBoxComponent } from '../dialog-box/dialog-box.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import {event} from '../types/customTypes';
+import { event } from '../types/customTypes';
 interface responsiveCarouselOption {
   breakpoint: string,
   numVisible: number,

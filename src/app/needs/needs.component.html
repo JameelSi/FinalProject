@@ -32,9 +32,10 @@
               <mat-icon *ngIf="authService.isLoggedIn && isAdmin" class="answersDelete" (click)="addDialog('Delete',item,'doc',content)">do_not_disturb_on
               </mat-icon>
               <div class="answersContent"
-                [ngClass]="{ 'first': i%4===0,'second' : i%4===1,'third':i%4===2,'fourth':i%4==3}">
+                [ngClass]="{ 'first': i%4===0,'second' : i%4===1,'third':i%4===2,'fourth':i%4==3}"
+                [innerHTML]="content | prettyPrint">
                 {{content}}
-                <mat-icon *ngIf="authService.isLoggedIn && isAdmin" class="sss" (click)="addDialog('Update',item,'doc',content)">edit</mat-icon>
+                <mat-icon *ngIf="authService.isLoggedIn && isAdmin" (click)="addDialog('Update',item,'doc',content)">edit</mat-icon>
               </div>
             </div>
           </div>

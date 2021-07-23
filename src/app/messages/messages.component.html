@@ -24,26 +24,26 @@
         <mat-tab>
             <ng-template mat-tab-label><strong>הודעות שלא נקראו</strong></ng-template>
             <ng-container *ngTemplateOutlet="filter1"></ng-container>
-            <mat-card dir="rtl" *ngFor="let msg of readMsgs">
+            <mat-card dir="rtl" *ngFor="let msg of unreadMsgs">
                 <mat-card-header>
                     <div mat-card-avatar class="example-header-image"></div>
-                    <mat-card-title>{{msg.from}}</mat-card-title>
-                    <mat-card-subtitle>{{msg.date}}</mat-card-subtitle>
+                    <mat-card-title>{{msg.name}}</mat-card-title>
+                    <mat-card-subtitle>{{msg.date.toDate() | date: 'dd/MM/yy'}}</mat-card-subtitle>
                 </mat-card-header>
 
                 <mat-card-content>
-                    <p>
-                        The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog from Japan.
-                        A small, agile dog that copes very well with mountainous terrain, the Shiba Inu was originally
-                        bred for hunting.
+                    <p [innerHTML]="msg.content | prettyPrint">
+                        <!-- {{msg.content | prettyprint}} -->
                     </p>
                     <div class="contact">
-                        מס' טלפון\אימייל : {{msg.contact}}
+                        מס' טלפון: {{msg.phone}} 
+                        <br>
+                        אימייל: {{msg.email}}
                     </div>
                 </mat-card-content>
                 <mat-card-actions>
-                    <button mat-stroked-button>סמן כנקרא</button>
-                    <button mat-stroked-button (click)="deleteDialog({})">מחק הודעה</button>
+                    <button mat-stroked-button (click)="move(msg, true)">סמן כנקרא</button>
+                    <button mat-stroked-button (click)="deleteDialog({}, msg)">מחק הודעה</button>
                 </mat-card-actions>
             </mat-card>
         </mat-tab>
@@ -53,23 +53,23 @@
             <mat-card dir="rtl" *ngFor="let msg of readMsgs">
                 <mat-card-header>
                     <div mat-card-avatar class="example-header-image"></div>
-                    <mat-card-title>{{msg.from}}</mat-card-title>
-                    <mat-card-subtitle>{{msg.date}}</mat-card-subtitle>
+                    <mat-card-title>{{msg.name}}</mat-card-title>
+                    <mat-card-subtitle>{{msg.date.toDate() | date: 'dd/MM/yy'}}</mat-card-subtitle>
                 </mat-card-header>
 
                 <mat-card-content>
                     <p>
-                        The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog from Japan.
-                        A small, agile dog that copes very well with mountainous terrain, the Shiba Inu was originally
-                        bred for hunting.
+                        {{msg.content}}
                     </p>
                     <div class="contact">
-                        מס' טלפון\אימייל : {{msg.contact}}
+                        מס' טלפון: {{msg.phone}} 
+                        <br>
+                        אימייל: {{msg.email}}
                     </div>
                 </mat-card-content>
                 <mat-card-actions>
-                    <button mat-stroked-button (click)="move()">סמן כנקרא</button>
-                    <button mat-stroked-button (click)="deleteDialog({})">מחק הודעה</button>
+                    <button mat-stroked-button (click)="move(msg, false)">סמן כלא נקרא</button>
+                    <button mat-stroked-button (click)="deleteDialog({}, msg)">מחק הודעה</button>
                 </mat-card-actions>
             </mat-card>
         </mat-tab>
