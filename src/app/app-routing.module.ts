@@ -13,8 +13,10 @@ import { AuthGuard } from './guards/auth.guard';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { ContactUsComponent } from './contact-us/contact-us.component';
 import { TasksComponent } from './tasks/tasks.component';
+import { LoggedInGuard } from './guards/logged-in.guard';
 
-// auth guard -> admins
+// AuthGuard -> admins
+// LoggedInGuard -> any logged in user
 
 const routes: Routes = [
   { path: 'projectsTracking', component: ProjectsTrackingComponent, canActivate: [AuthGuard]},
@@ -25,7 +27,7 @@ const routes: Routes = [
   { path: 'settings', component: SettingsComponent, canActivate: [AuthGuard]},
   { path: 'messages', component: MessagesComponent, canActivate: [AuthGuard]},
   { path: 'contactus', component: ContactUsComponent},
-  { path: 'profile', component: ProfileComponent },
+  { path: 'profile', component: ProfileComponent, canActivate: [LoggedInGuard] },
   { path: 'registereduser', component: RegisteredUsersComponent, canActivate: [AuthGuard]},
   { path: 'tasks', component: TasksComponent, canActivate: [AuthGuard] },
   { path: '', redirectTo: '/home', pathMatch: 'full' },
