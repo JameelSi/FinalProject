@@ -14,6 +14,8 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
 import { ContactUsComponent } from './contact-us/contact-us.component';
 import { TasksComponent } from './tasks/tasks.component';
 
+// auth guard -> admins
+
 const routes: Routes = [
   { path: 'projectsTracking', component: ProjectsTrackingComponent, canActivate: [AuthGuard]},
   { path: 'needs', component: NeedsComponent },
@@ -21,12 +23,11 @@ const routes: Routes = [
   { path: 'signup/:userType', component: SignupComponent },
   { path: 'signin', component: SigninComponent },
   { path: 'settings', component: SettingsComponent, canActivate: [AuthGuard]},
-  { path: 'messages', component: MessagesComponent},
-  // , canActivate: [AuthGuard]},
+  { path: 'messages', component: MessagesComponent, canActivate: [AuthGuard]},
   { path: 'contactus', component: ContactUsComponent},
   { path: 'profile', component: ProfileComponent },
-  { path: 'registereduser', component: RegisteredUsersComponent },
-  { path: 'tasks', component: TasksComponent },
+  { path: 'registereduser', component: RegisteredUsersComponent, canActivate: [AuthGuard]},
+  { path: 'tasks', component: TasksComponent, canActivate: [AuthGuard] },
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: '**', component: PageNotFoundComponent },
 ];
