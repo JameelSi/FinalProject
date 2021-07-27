@@ -27,7 +27,7 @@ export class GetDataService {
       return ref.orderBy("date")
     })
     this.readMessagesRef = this.store.collection('Messages', (ref: any) => {return ref.where('read', '==', true).orderBy('date', "desc")})
-    this.unreadMessagesRef = this.store.collection('Messages', (ref: any) => { return ref.where('read', '==', false).orderBy('date', "desc")})
+    this.unreadMessagesRef = this.store.collection('Messages', (ref: any) => { return ref.where('read', '==', false).orderBy('date', "desc")})  
   }
 
   // get data for projects tracking page
@@ -58,5 +58,23 @@ export class GetDataService {
     unreadMsgs = this.unreadMessagesRef.valueChanges({ idField: 'id' });
     return combineLatest([readMsgs, unreadMsgs])
   }
+
+  getManagers(){
+    let orderedManagersRef: AngularFirestoreCollection<manager>
+    orderedManagersRef = this.store.collection("Managers", ref => { return ref.orderBy("name") })
+    return orderedManagersRef.valueChanges({ idField: 'id' })
+  }
+
+  // getManagersOver(num: number){
+  //   let managersOverRef: AngularFirestoreCollection<manager>
+  //   managersOverRef = this.store.collection("Managers", ref => { return ref.where('progress', '>=', num) })
+  //   return managersOverRef.valueChanges({ idField: 'id' })
+  // }
+
+  // getManagersUnder(num: number){
+  //   let managersUnderRef: AngularFirestoreCollection<manager>
+  //   managersUnderRef = this.store.collection("Managers", ref => { return ref.where('progress', '<', num) })
+  //   return managersUnderRef.valueChanges({ idField: 'id' })
+  // }
 
 }

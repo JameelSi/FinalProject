@@ -57,6 +57,8 @@ import { RegisteredUsersComponent } from './registered-users/registered-users.co
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { ContactUsComponent } from './contact-us/contact-us.component';
 import { PrettyPrintPipe } from './prettyPrint/pretty-print.pipe';
+import { TasksComponent } from './tasks/tasks.component';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
 
 @NgModule({
   declarations: [
@@ -75,6 +77,7 @@ import { PrettyPrintPipe } from './prettyPrint/pretty-print.pipe';
     PrettyPrintPipe,
     ProfileComponent,
     RegisteredUsersComponent,
+    TasksComponent,
     ],
   imports: [
     BrowserModule,
@@ -116,7 +119,8 @@ import { PrettyPrintPipe } from './prettyPrint/pretty-print.pipe';
     FlexLayoutModule,
     ScrollingModule,
     ButtonModule,
-    AngularFireStorageModule
+    AngularFireStorageModule,
+    MatProgressBarModule
   ],
   providers: [ScrollDispatcher],
   bootstrap: [AppComponent],

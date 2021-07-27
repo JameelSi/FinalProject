@@ -90,7 +90,9 @@ export interface event {
     name: string,
     email: string,
     phone: string,
-    neighborhoods: string[]
+    neighborhoods: string[],
+    tasks: task[],
+    tasksProgress?: number,
   }
   
   export interface clubCoord {
@@ -123,4 +125,11 @@ export interface event {
     date: Moment,
     read?: boolean,
     id?: string,
+  }
+
+  export interface task {
+    id?: string,
+    description: string,
+    date?: Date | Moment,
+    completed: boolean,
   }

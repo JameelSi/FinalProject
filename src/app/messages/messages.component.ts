@@ -9,12 +9,6 @@ import { promise } from 'protractor';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AngularFirestore } from '@angular/fire/firestore';
 
-// interface msg {
-//   from: string,
-//   date: string,
-//   content: string,
-//   contact?: string
-// }
 @Component({
   selector: 'app-messages',
   templateUrl: './messages.component.html',
@@ -24,10 +18,7 @@ export class MessagesComponent implements OnInit {
 
   db = firebase.firestore()
   readMsgs!: message[]
-  // = [{ from: "user1", date: "01-12-1995", content: "hey here", contact: '050555' }, { from: "user3", date: "01-12-2019", content: "hey there" }];
   unreadMsgs!: message[]
-  // = [{ from: "user2", date: "07-09-2020", content: "hio there", contact: '0547865' }, { from: "user4", date: "01-12-2021", content: "bye there" }];
-  // temparr:msg[]=[{ from: "user1", date: "01-12-1995", content: "hey there", contact: '050555' }, { from: "user2", date: "01-12-1996", content: "hello there" }];
   private subs = new Subscription()
 
   constructor(public dialog: MatDialog, private dataProvider: GetDataService, readonly snackBar: MatSnackBar, private afs: AngularFirestore) { }
@@ -46,7 +37,6 @@ export class MessagesComponent implements OnInit {
   applyFilter(event: Event, arr: string) {
     const filterValue = (event.target as HTMLInputElement).value;
     let filter = filterValue.trim().toLowerCase();
-    // this.temparr=this.readMsgs.filter(t=>t.content ===filter || t.date ===filter || t.from ===filter);
   }
 
   deleteDialog(element: any, doc: message) {

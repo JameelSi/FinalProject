@@ -1,0 +1,138 @@
+body{
+    padding-top: 12vh;
+}
+  
+ol, ul {
+  list-style: none;
+}
+
+.title{
+  padding: 5vh 10vh 0;
+  // padding-right: 5vh;
+  font-size:xx-large;
+  font-weight: bolder;
+}
+
+.main{
+  padding: 0 10vh;
+}
+
+.menu-container{
+  padding: 5vh 0;
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  button{
+    margin-left: 5vh;
+    margin-bottom: 2vh;
+    background-color:#B8DFD8;
+    // #F0EBCC
+    // #F5A962
+    // #B6C9F0
+    // #CDC7BE
+  }
+  
+}
+
+// ::ng-deep.cdk-overlay-pane{
+//   // transform: translate(0px, 190px);
+  // margin-top: 190px;
+// }
+
+.progress{
+  display: flex;
+  flex-direction: row;
+  mat-progress-bar{
+    align-self: center;
+  }
+  span{
+    align-self: center;
+    padding-right: 2vh;
+    font-size: large;
+  }
+}
+
+.todo-app {
+  padding: 30px 30px 15px;
+  border: 1px solid;
+  border-color: #dfdcdc #d9d6d6 #ccc;
+  border-radius: 1px;
+  margin: 5vh 0vh;
+  margin-bottom: 15vh;
+}
+  
+.new-task{
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  button {
+    margin-top: 20px;
+    height: fit-content;
+  }
+  mat-form-field {
+    padding: 0 15px;
+  }
+}
+ 
+.todo-item {
+  padding: 10px 0;
+  border-top: solid 1px #ddd;
+  min-height: 30px;
+  line-height: 30px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.todo-checkbox {
+  flex-shrink: 0;
+  margin: auto 1ex auto 2ex;
+  vertical-align: middle;
+}
+input.todo-checkbox{
+  width: 20px;
+  height: 20px;
+}
+  
+.todo-title {
+  flex-grow: 1;
+  padding-left: 11px;
+  font-size: 16px;
+  vertical-align: middle;
+}
+
+.todo-complete {
+  text-decoration: line-through;
+}
+
+.bar{
+  width: 300px;
+}
+
+// md
+@media screen and (max-width: 959px) {
+  .main{
+    padding: 0 7vh;
+  }
+  .title{
+    padding: 5vh 7vh 0;
+  }
+}
+
+// sm
+@media screen and (max-width: 599px) {
+  .main{
+    padding: 0 2vh;
+  }
+  .title{
+    padding: 5vh 2vh 0;
+  }
+  .todo-checkbox {
+    flex-shrink: 0;
+    margin: auto 0 auto 0;
+    vertical-align: middle;
+  }
+  .todo-app {
+    margin: 5vh 0vh;
+    margin-bottom: 10vh;
+  }
+}

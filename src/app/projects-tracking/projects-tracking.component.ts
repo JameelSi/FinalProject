@@ -162,16 +162,16 @@ export class ProjectsTrackingComponent implements OnInit, OnDestroy {
     }));
   }
 
-  sortObjectByKeys(obj: any) {
-    let ordered = Object.keys(obj).sort().reverse().reduce(
-      (tmp: any, key) => {
-        tmp[key] = obj[key];
-        return tmp;
-      }
-      , {}
-    );
-    return ordered
-  }
+  // sortObjectByKeys(obj: any) {
+  //   let ordered = Object.keys(obj).sort().reverse().reduce(
+  //     (tmp: any, key) => {
+  //       tmp[key] = obj[key];
+  //       return tmp;
+  //     }
+  //     , {}
+  //   );
+  //   return ordered
+  // }
 
 
   getAreaCoordsData(areaCoord: areaCoord | 'all') {
@@ -200,14 +200,6 @@ export class ProjectsTrackingComponent implements OnInit, OnDestroy {
 
   openDialog(action: 'Update' | 'Delete' | 'Add', element: any, collec: string = 'ירושלים', doc: string | undefined,
     type: 'neighb' | 'project') {
-    // if (action === 'Delete' && type == 'neighb') {
-    //   element.dialogTitle = 'בטוח למחוק את השכונה וכל נתוניה?'
-    // }
-    // // when neighborhod is not specified, the button is add new neighborhood 
-    // else if (action === 'Add' && type == 'neighb') {
-    //   element.dialogTitle = 'הוספת שכונה חדשה לרכז/ת'
-    // }
-    // else 
     if (action === 'Add' && type == 'project') {
       element.dialogTitle = 'נא להכניס את הנתונים החדשים'
       element.dialogType = 'project'
@@ -231,28 +223,22 @@ export class ProjectsTrackingComponent implements OnInit, OnDestroy {
       if (result && result.event != 'Cancel') {
         this.progressSpinner.show()
         let updateDocRef = doc ? this.afs.collection(collec).doc(doc) : undefined
-        // if (result.event == 'Add' && type == 'neighb') {
-        //   // this.afs.collection('Services').doc(result.data.id).add({...})
-        // } else if (result.event == 'Delete' && type == 'neighb') {
-        //   // this.afs.collection('Services').doc(result.data.id).delete()
-        // } else if (result.event == 'Update' && type == 'neighb') {
-        //   // this.afs.doc(`Services/${result.data.id}`).update({ title: result.data.name })
-        // }
-        // else
         if (result.event == 'Add' && type == 'project') {
           if (updateDocRef)
             this.addProject(updateDocRef, result.newProj).then(() => this.progressSpinner.hide())
         } else if (result.event == 'Delete' && type == 'project') {
           if (updateDocRef)
             this.deleteProject(updateDocRef, {
-              date: result.data.date, projectType: result.data.projectType,
+              date: result.data.date, 
+              projectType: result.data.projectType,
               comments: result.data.comments,
               clubCoordinatorId: result.data.clubCoordinatorId
             }).then(() => this.progressSpinner.hide())
         } else if (result.event == 'Update' && type == 'project') {
           if (updateDocRef)
             this.editProject(updateDocRef, {
-              date: result.data.date, projectType: result.data.projectType,
+              date: result.data.date, 
+              projectType: result.data.projectType,
               comments: result.data.comments,
               clubCoordinatorId: result.data.clubCoordinatorId
             }, result.newProj).then(() => this.progressSpinner.hide())

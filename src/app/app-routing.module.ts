@@ -12,6 +12,7 @@ import { RegisteredUsersComponent } from './registered-users/registered-users.co
 import { AuthGuard } from './guards/auth.guard';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { ContactUsComponent } from './contact-us/contact-us.component';
+import { TasksComponent } from './tasks/tasks.component';
 
 const routes: Routes = [
   { path: 'projectsTracking', component: ProjectsTrackingComponent, canActivate: [AuthGuard]},
@@ -25,6 +26,7 @@ const routes: Routes = [
   { path: 'contactus', component: ContactUsComponent},
   { path: 'profile', component: ProfileComponent },
   { path: 'registereduser', component: RegisteredUsersComponent },
+  { path: 'tasks', component: TasksComponent },
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: '**', component: PageNotFoundComponent },
 ];
