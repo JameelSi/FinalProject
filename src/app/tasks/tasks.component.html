@@ -9,8 +9,8 @@
         <!-- menu for managers  -->
         <div class="menu-container">
             <button class="mngrs-menu-btn" mat-raised-button [matMenuTriggerFor]="menu">
-                מנהלי גיל שלישי
-                <mat-icon>expand_more</mat-icon>
+                <mat-icon>person</mat-icon>
+                מנהלי תחום
                 <!--unfold_more/expand_more/menu-->
             </button>
             <mat-menu class="mngrs-menu" xPosition="after" yPosition="below" #menu="matMenu">
@@ -21,8 +21,8 @@
 
             <!-- menu for neighborhoods  -->
             <button class="progress-menu-btn" mat-raised-button [matMenuTriggerFor]="menu2">
+                <mat-icon>place</mat-icon>
                 שכונות
-                <mat-icon>expand_more</mat-icon>
             </button>
             <mat-menu xPosition="after" yPosition="below" #menu2="matMenu">
                 <button mat-menu-item (click)="setTasks('all')"> הכל </button>
@@ -33,8 +33,8 @@
 
             <!-- menu for progress  -->
             <button class="progress-menu-btn" mat-raised-button [matMenuTriggerFor]="menu3">
+                <mat-icon>donut_large</mat-icon>
                 התקדמות
-                <mat-icon>expand_more</mat-icon>
             </button>
             <mat-menu xPosition="after" yPosition="below" #menu3="matMenu">
                 <button mat-menu-item (click)="setTasks('all')"> הכל </button>
