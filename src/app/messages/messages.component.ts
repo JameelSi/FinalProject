@@ -34,6 +34,10 @@ export class MessagesComponent implements OnInit {
         }))
   }
 
+  ngOnDestroy(){
+    this.subs.unsubscribe()
+  }
+
   applyFilter(event: Event, arr: string) {
     const filterValue = (event.target as HTMLInputElement).value;
     let filter = filterValue.trim().toLowerCase();

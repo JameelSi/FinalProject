@@ -9,6 +9,7 @@ import firebase from 'firebase/app';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { project, areaCoord, neighborhood, manager, clubCoord, event } from '../types/customTypes';
 import { Moment } from 'moment';
+import { ThrowStmt } from '@angular/compiler';
 
 
 type user = clubCoord | manager | areaCoord
@@ -32,7 +33,7 @@ export class DialogBoxComponent implements OnInit {
   newEvent!: event;
   // newManager?: manager;
   // newClubCoord?: clubCoord;
-  dialogType: 'project' | 'needs' | 'resetPass' | 'neighb' | 'areaCoord' | 'manager' | 'clubCoord' | 'event';
+  dialogType: 'project' | 'needs' | 'resetPass' | 'neighb' | 'areaCoord' | 'manager' | 'clubCoord' | 'editEvent' | 'displayEvent';
   actionHebrew: { [key: string]: string } = { "Add": 'הוסף', "Update": 'עדכן', "Delete": 'מחק', "reset": 'שלח' };
   newEmail?: string;
   newPassword?: string;
@@ -47,6 +48,7 @@ export class DialogBoxComponent implements OnInit {
     //@Optional() is used to prevent error if no data is passed
     @Optional() @Inject(MAT_DIALOG_DATA) public data: any) {
     this.local_data = { ...data };
+    if(this.local_data.clubs && this.local_data.clubs[0].id!=0) this.local_data.clubs?.unshift({name:'כללי', id:'0'}) // TODO test all cases
     this.dialogType = this.local_data.dialogType
     this.action = this.local_data.action;
     if (this.action === 'Update' && this.dialogType == "project") {
@@ -57,7 +59,7 @@ export class DialogBoxComponent implements OnInit {
         clubCoordinatorId: this.local_data.clubCoordinatorId
       }
     } else if (this.dialogType === "project") {
-      this.newProj = { projectType: '', comments: '', date: moment(), clubCoordinatorId: '' }
+      this.newProj = { projectType: '', comments: '', date: moment(), clubCoordinatorId: [] }
     }
     if (this.dialogType === 'neighb') {
       this.newNeighb = {
@@ -94,7 +96,7 @@ export class DialogBoxComponent implements OnInit {
         coordPhone: undefined,
       }
     }
-    else if (this.dialogType === "event") {
+    else if (this.dialogType === "editEvent") {
       this.newEvent = {
         date: moment(),
         title: '',
@@ -106,8 +108,10 @@ export class DialogBoxComponent implements OnInit {
   }
 
   doAction() {
-    if ((this.dialogType === 'areaCoord' || this.dialogType === 'manager') && this.action != "Delete")
+    if ((this.dialogType === 'areaCoord' || this.dialogType === 'manager') && this.action != "Delete"){
       this.updateNeighbs()
+      this.updateClubs()
+    }
     if (this.dialogType === 'areaCoord') {
       this.createUser().then(() => {
         if (!this.invalidCreation) {
@@ -119,7 +123,7 @@ export class DialogBoxComponent implements OnInit {
         }
       })
     }
-    else if (this.dialogType === 'event' && this.action != "Delete") {
+    else if (this.dialogType === 'editEvent' && this.action != "Delete") {
       this.updateImgURL().then(()=>{
         this.dialogRef.close({
           event: this.action,
@@ -136,7 +140,7 @@ export class DialogBoxComponent implements OnInit {
         newProj: this.newProj ? {
           ...this.newProj,
           comments: this.newProj?.comments.length == 0 ? "אין" : this.newProj?.comments,
-          date: (this.newProj?.date as Moment).toDate() //TOCHECK
+          date: (this.newProj?.date as Moment).toDate()
         }
           : undefined,
         newUser: this.newUser,
@@ -156,6 +160,15 @@ export class DialogBoxComponent implements OnInit {
     this.local_data.allNeighborhoods.forEach((neighb: neighborhood) => {
       if (neighb.currentValue) {
         (this.newUser as areaCoord).neighborhoods.push(neighb.id)
+      }
+    });
+  }
+
+  updateClubs() { // TODO test all cases
+    this.local_data.clubs.forEach((club: clubCoord) => {
+      if (club.currentValue) {
+        if(club.id)
+        this.newProj?.clubCoordinatorId.push(club.id)
       }
     });
   }

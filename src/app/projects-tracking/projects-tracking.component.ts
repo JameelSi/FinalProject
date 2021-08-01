@@ -138,13 +138,28 @@ export class ProjectsTrackingComponent implements OnInit, OnDestroy {
           let idx = this.areaCoords.indexOf(temp)
           let temp2 = this.areaCoords[0]
           this.areaCoords[0] = temp
-          this.areaCoords[idx]= temp2
+          this.areaCoords[idx] = temp2
         }
       }
       this.allNeighborhoods.forEach(neighb => {
         neighb.managerInfo = this.managers.find(i => i.id.trim() == neighb.managerId.trim())
         neighb.projects.forEach(proj => {
-          proj.clubInfo = this.clubCoords.find(i => i.id?.trim() == proj.clubCoordinatorId.trim())
+          // for the variables that are arrays
+          if (proj.clubCoordinatorId.constructor === Array) { //TODO test all cases
+            proj.clubInfo = []
+            proj.clubCoordinatorId.forEach(id => {
+              if(id==='0'){
+                if (proj.clubInfo) proj.clubInfo.push({name: 'כללי', address:'', club:'', phone:'', coordPhone:''})
+              }else{
+                let tempInfo = this.clubCoords.find(i => i.id?.trim() == id.trim())
+                if (proj.clubInfo && tempInfo) proj.clubInfo.push(tempInfo)
+              }
+            })
+          }
+          else{ // for the variables in the database that are still strings
+            let tempInfo = this.clubCoords.find(i => i.id?.trim() == (proj.clubCoordinatorId as unknown as string).trim())
+            if (tempInfo) proj.clubInfo = [tempInfo]
+          }
         })
       })
       if (!this.currNeighborhoods) {
@@ -229,7 +244,7 @@ export class ProjectsTrackingComponent implements OnInit, OnDestroy {
         } else if (result.event == 'Delete' && type == 'project') {
           if (updateDocRef)
             this.deleteProject(updateDocRef, {
-              date: result.data.date, 
+              date: result.data.date,
               projectType: result.data.projectType,
               comments: result.data.comments,
               clubCoordinatorId: result.data.clubCoordinatorId
@@ -237,7 +252,7 @@ export class ProjectsTrackingComponent implements OnInit, OnDestroy {
         } else if (result.event == 'Update' && type == 'project') {
           if (updateDocRef)
             this.editProject(updateDocRef, {
-              date: result.data.date, 
+              date: result.data.date,
               projectType: result.data.projectType,
               comments: result.data.comments,
               clubCoordinatorId: result.data.clubCoordinatorId
