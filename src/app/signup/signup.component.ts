@@ -290,7 +290,7 @@ export class SignupComponent implements OnInit {
             street: this.details.get('street')?.value ?? null,
             age: this.details.get('age')?.value,
             gender: this.details.get('gender')?.value,
-            id: this.details.get('id')?.value,
+            personal_id: this.details.get('id')?.value,
             hobbies: this.details2.get('hobbs')?.get('hobb')?.value,
             langs: this.details2.get('langs')?.get('lang')?.value,
             volType: this.details2.get('volType')?.value,

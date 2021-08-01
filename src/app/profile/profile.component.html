@@ -1,33 +1,65 @@
-<div class="body">
+<div class="body" *ngIf="userInfo">
 
     <div class="rightDiv">
         <mat-card class="firstCard" dir="rtl">
-            <div class="profileImg">
-                <img width="auto" height="auto" src="../../assets/imgs/profile.jpg">
+            <div style="display:flex; flex-direction: row; justify-content: space-around;">
+                <button mat-button>save changes</button>
+                <div class="profileImg">
+                    <img width="auto" height="auto" src="../../assets/imgs/profile.jpg">
+                </div>
+                <button mat-button>delete acc</button>
             </div>
             <mat-card-header>
                 <mat-card-title>פרופיל</mat-card-title>
             </mat-card-header>
             <mat-card-content>
                 <div class="fields">
-                    <p> שם: </p>
-                    <p> אמאני נאשף</p>
-                </div>
-
-                <!-- <div class="fields">
-                    <p> אימייל: </p>
-                    <p> gasgsagsa@gsa.com</p>
+                    <p class="title"> שם: </p>
+                    <p class="info">{{userInfo?.fName}}</p>
                 </div>
 
                 <div class="fields">
-                    <p> טלפון: </p>
-                    <p> 052154214</p>
+                    <p class="title"> שם: </p>
+                    <p class="info">{{userInfo?.lName}}</p>
                 </div>
 
                 <div class="fields">
-                    <p> כתובת: </p>
-                    <p> gasgsagsa@gsa.com</p>
-                </div> -->
+                    <p class="title"> אימייל: </p>
+                    <!-- <mat-form-field class="example-form-field" appearance="standard">
+                        <input matInput type="text" name="name" value={{userInfo?.email}}
+                            style="width: fit-content; box-decoration-break: none;" />
+                    </mat-form-field> -->
+                    <p class="info"> {{userInfo?.email}}</p>
+                </div>
+
+                <div class="fields">
+                    <p class="title"> טלפון: </p>
+                    <!-- <mat-form-field class="example-form-field" appearance="standard">
+                        <input class="info" matInput type="text" name="name" value={{userInfo?.phone}}
+                        [(ngModel)]="userInfo.phone" />
+                    </mat-form-field> -->
+                    <p class="info"> {{userInfo?.phone}}</p>
+
+                </div>
+
+                <div class="fields">
+                    <p class="title"> רחוב: </p>
+                    <!-- <mat-form-field class="example-form-field" appearance="standard">
+                        <input class="info" matInput type="text" name="name" value={{userInfo?.street}}
+                            style="width: fit-content;" />
+                    </mat-form-field> -->
+                    <p class="info"> {{userInfo?.street}} </p>
+                </div>
+
+                <div class="fields">
+                    <p class="title"> שכונה: </p>
+                    <p class="info"> {{userInfo?.neighborhood}} </p>
+                </div>
+
+                <div class="fields">
+                    <p class="title"> עיר: </p>
+                    <p class="info"> {{userInfo?.city}} </p>
+                </div>
             </mat-card-content>
         </mat-card>
     </div>
@@ -39,26 +71,27 @@
             </mat-card-header>
             <mat-card-content>
                 <div class="fields">
-                    <p> גיל: </p>
-                    <p> 19</p>
+                    <p class="title"> גיל: </p>
+                    <p class="info"> {{userInfo?.age}}</p>
+                    <mat-icon>edit</mat-icon>
                 </div>
-<!-- 
+
                 <div class="fields">
-                    <p> מין: </p>
-                    <p> לא רלוונטי</p>
-                </div>
-                <div class="fields">
-                    <p> מס' ימיים התנדבות בשהוע: </p>
-                    <p> 2</p>
+                    <p class="title"> מין: </p>
+                    <p class="info"> {{userInfo?.gender}} </p>
                 </div>
                 <div class="fields">
-                    <p> כמות שעות התנדבות ביום: </p>
-                    <p> 6</p>
+                    <p class="title"> מס' ימיים התנדבות בשבוע: </p>
+                    <p class="info"> {{userInfo?.numOfDays}}</p>
                 </div>
                 <div class="fields">
-                    <p> מוגדר כ: </p>
-                    <p> סטודנט</p>
-                </div> -->
+                    <p class="title"> כמות שעות התנדבות ביום: </p>
+                    <p class="info"> {{userInfo?.numOfHours}}</p>
+                </div>
+                <div class="fields">
+                    <p class="title"> מוגדר כ: </p>
+                    <p class="info"> {{userInfo?.volType}}</p>
+                </div>
             </mat-card-content>
         </mat-card>
 
@@ -68,13 +101,13 @@
             </mat-card-header>
             <mat-card-content>
                 <div class="fields">
-                    <p> מעוניין ב: </p>
-                    <p> הרצאות,חבר טלפוני</p>
+                    <p class="title"> מעוניין ב: </p>
+                    <p class="info"> {{userInfo?.hobbies}}</p>
                 </div>
-                <!-- <div class="fields">
-                    <p> שפות: </p>
-                    <p> ערבית, אנגלית,רוסית</p>
-                </div> -->
+                <div class="fields">
+                    <p class="title"> שפות: </p>
+                    <p class="info"> {{userInfo?.langs}}</p>
+                </div>
             </mat-card-content>
         </mat-card>
     </div>

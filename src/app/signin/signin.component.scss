@@ -21,6 +21,11 @@ mat-card {
     width: 40vh;
   }
 }
+@media screen and (max-width: 400px) {
+  mat-card{
+    width: 100%;
+  }
+}
 
 mat-card-content{
   margin-top: 40px;

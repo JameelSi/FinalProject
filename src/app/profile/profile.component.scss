@@ -1,35 +1,26 @@
 .body{
     padding:50px;
     padding-top: 15vh;
-    // width: 100vh;
-    // height: 100vh;
     display: flex;
     flex-direction: row-reverse;
-    align-items: stretch
+    justify-content: center;
 }
-.rightDiv{
+.rightDiv,.leftDiv{
     flex: 1;
-    margin: 10px;
-    height: 700px;
 }
 .firstCard{
+    height: 70vh;
 }
 .secondCard{
-    width: 80%;
+    width: 95%;
+    height: 38vh;
 }
 
 .thirdCard{
-    width: 80%;
+    margin-top: 2%;
+    height: 30vh;
+    width: 95%;
 }
-
-.leftDiv{
-    flex: 1;
-    margin: 10px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-}
-
 .profileImg{
     text-align: center;
 }
@@ -39,9 +30,49 @@ mat-card-content{
 mat-card-title{
     color: gray;
 }
+
 .fields{
     display: flex;
-    justify-content:space-between;
+    // justify-content:space-between;
     font-size: medium;
     font-weight: bold;
+
+    mat-icon{
+        flex-grow: 0;
+        font-size: medium;
+        margin-left: 2vh;
+        color: #48BF92;
+    }
+    .title{
+        flex-grow: 2;
+    }
+    .info{
+        flex-grow: 0;
+    }
+}
+
+@media screen and (max-width: 800px) {
+    .body{
+        flex-direction: column;
+        padding:50px;
+        padding-top: 15vh;
+        display: flex;
+    }
+    .firstCard,.secondCard, .thirdCard{
+        margin-top: 2%;
+        height: auto;
+    }
+}
+
+@media screen and (max-height: 565px) {
+    .body{
+        flex-direction: column;
+        padding:50px;
+        padding-top: 15vh;
+        display: flex;
+    }
+    .firstCard,.secondCard, .thirdCard{
+        margin-top: 2%;
+        height: auto;
+    }
 }

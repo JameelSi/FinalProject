@@ -1,8 +1,5 @@
 
-<div class="menu-header" *ngIf="sidenav.mode == 'over'" >
-    <span class="spacer"></span>
-    <div style="display: flex; flex-direction: row; align-items:baseline;">
-    <h4 class="title">מרכזי אזור</h4>
+<div class="menu-header" *ngIf="sidenav.mode == 'over'">
     <button mat-icon-button (click)="sidenav.toggle()">
         <mat-icon *ngIf="!sidenav.opened">
             menu
@@ -11,14 +8,13 @@
             close
         </mat-icon>
     </button>
-    </div>
+    <h4 class="title">מרכזי אזור</h4>
 </div>
-
 <!-------------------- SIDENAV DRAWER ------------------------------------------------------>
 <mat-drawer-container>
     <mat-drawer #sidenav mode="side" position="end">
-        
-       <mat-accordion #accordion> 
+
+        <mat-accordion #accordion>
             <!-- <mat-expansion-panel class="menu-button" hideToggle (click)="getAreaCoordsData('all')" expanded> 
                 <mat-expansion-panel-header>
                     <mat-panel-title class="exp-title">
@@ -27,7 +23,7 @@
                 </mat-expansion-panel-header>
             </mat-expansion-panel> -->
 
-            <button class="mat-elevation-z2 && allBtn"  (click)="getAreaCoordsData('all')">כל השכונות</button>
+            <button class="mat-elevation-z2 && allBtn" (click)="getAreaCoordsData('all')">כל השכונות</button>
 
             <h4 class="title" *ngIf="sidenav.mode == 'side'">מרכזי אזור</h4>
             <mat-divider *ngIf="sidenav.mode == 'side'"></mat-divider>
@@ -50,99 +46,105 @@
     <!-------------------- MAIN CONTENT ------------------------------------------------------>
     <mat-drawer-content>
         <!-------------------- NEIGHB MENU ------------------------------------------------------>
-    <div class="firstLine"> 
-        <div dir="rtl" class="menu-container">
-            <button *ngIf="currNeighborhoods && currNeighborhoods.length>1" class="neighbs-menu-btn" mat-raised-button [matMenuTriggerFor]="menu"
-                menuData="currNeighborhoods">
-                <mat-icon class=''>expand_more</mat-icon> <!--unfold_more/expand_more/menu-->
-                שכונות
-            </button>
-            
-            <mat-menu #menu="matMenu">
-                <button mat-menu-item *ngFor='let neighb of currNeighborhoods' (click)="setProjects(neighb.id)">
-                    {{neighb.id}}</button>
-            </mat-menu>
-            <section class="neighb-name">{{currNeighborhood?.id}}</section>
+        <div class="firstLine">
+            <div dir="rtl" class="menu-container">
+                <button *ngIf="currNeighborhoods && currNeighborhoods.length>1" class="neighbs-menu-btn"
+                    mat-raised-button [matMenuTriggerFor]="menu" menuData="currNeighborhoods">
+                    <mat-icon class=''>expand_more</mat-icon>
+                    <!--unfold_more/expand_more/menu-->
+                    שכונות
+                </button>
+
+                <mat-menu #menu="matMenu">
+                    <button mat-menu-item *ngFor='let neighb of currNeighborhoods' (click)="setProjects(neighb.id)">
+                        {{neighb.id}}</button>
+                </mat-menu>
+                <section class="neighb-name">{{currNeighborhood?.id}}</section>
+            </div>
+
+
+            <!-------------------- NEIGHB MANAGER ------------------------------------------------------>
+            <mat-card class="mat-elevation-z0 outline" dir="rtl" class="mngr-details-container"
+                *ngIf="currNeighborhood?.managerInfo">
+                <mat-card-title class="mngr-title"> מידע על מנהל תחום</mat-card-title>
+                <mat-card-content class="mngr-details">
+                    <section>
+                        שם: {{currNeighborhood?.managerInfo?.name}}
+                    </section>
+                    <section>
+                        מייל: {{currNeighborhood?.managerInfo?.email}}
+                    </section>
+                    <section>
+                        פלאפון: {{currNeighborhood?.managerInfo?.phone}}
+                    </section>
+                </mat-card-content>
+            </mat-card>
         </div>
 
-
-        <!-------------------- NEIGHB MANAGER ------------------------------------------------------>
-        <mat-card class="mat-elevation-z0 outline" dir="rtl" class="mngr-details-container" *ngIf="currNeighborhood?.managerInfo">
-            <mat-card-title class="mngr-title"> מידע על מנהל תחום</mat-card-title>
-            <mat-card-content class="mngr-details">
-                <section>
-                    שם: {{currNeighborhood?.managerInfo?.name}} 
-                </section>
-                <section>
-                    מייל: {{currNeighborhood?.managerInfo?.email}}
-                </section>
-                <section>
-                    פלאפון: {{currNeighborhood?.managerInfo?.phone}}
-                </section>
-            </mat-card-content>
-        </mat-card>
-    </div>
-        
-    <div  dir="rtl">
-        <mat-form-field class="filter"  >
-            <mat-label >סינון</mat-label>
-            <input matInput (keyup)="applyFilter($event)"  #input>
-            <mat-icon matSuffix>filter_alt</mat-icon>
-            <mat-hint>לדוגמה: מועדון וותיקים </mat-hint>
-        </mat-form-field>
-    </div>
+        <div dir="rtl">
+            <mat-form-field class="filter">
+                <mat-label>סינון</mat-label>
+                <input matInput (keyup)="applyFilter($event)" #input>
+                <mat-icon matSuffix>filter_alt</mat-icon>
+                <mat-hint>לדוגמה: מועדון וותיקים </mat-hint>
+            </mat-form-field>
+        </div>
 
         <!-------------------- TABLE ------------------------------------------------------>
-    <mat-table dir="rtl" [dataSource]="projectsToDisplay" matSort>
+        <mat-table dir="rtl" [dataSource]="projectsToDisplay" matSort>
 
-        <ng-container matColumnDef="date">
-            <mat-header-cell *matHeaderCellDef mat-sort-header>תאריך</mat-header-cell>
-            <mat-cell *matCellDef="let project" >{{project.date.toDate() | date: 'dd/MM/yy'}}
-            </mat-cell>
-        </ng-container>
+            <ng-container matColumnDef="date">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>תאריך</mat-header-cell>
+                <mat-cell *matCellDef="let project">{{project.date.toDate() | date: 'dd/MM/yy'}}
+                </mat-cell>
+            </ng-container>
 
-        <ng-container matColumnDef="clubCoordinatorId">
-            <mat-header-cell *matHeaderCellDef mat-sort-header>מעדון</mat-header-cell>
-            <mat-cell class="description-cell" *matCellDef="let project">
-                {{project.clubInfo?.club}}, {{project.clubInfo?.address}}
-                <br>
-                {{project.clubInfo?.name}}, {{project.clubInfo?.phone}} 
-            </mat-cell>
+            <ng-container matColumnDef="clubCoordinatorId">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>מעדון</mat-header-cell>
+                <mat-cell class="description-cell" *matCellDef="let project">
+                    {{project.clubInfo?.club}}, {{project.clubInfo?.address}}
+                    <br>
+                    {{project.clubInfo?.name}}, {{project.clubInfo?.phone}}
+                </mat-cell>
 
-        </ng-container>
+            </ng-container>
 
-        <ng-container matColumnDef="projectType">
-            <mat-header-cell *matHeaderCellDef>סוג מיזם</mat-header-cell>
-            <mat-cell class="duration-cell" *matCellDef="let project">{{project.projectType}}
-            </mat-cell>
-        </ng-container>
+            <ng-container matColumnDef="projectType">
+                <mat-header-cell *matHeaderCellDef>סוג מיזם</mat-header-cell>
+                <mat-cell class="duration-cell" *matCellDef="let project">{{project.projectType}}
+                </mat-cell>
+            </ng-container>
 
-        <ng-container matColumnDef="comments">
-            <mat-header-cell *matHeaderCellDef>הערות</mat-header-cell>
-            <mat-cell class="duration-cell" *matCellDef="let project">{{project.comments}}
-            </mat-cell>
-        </ng-container>
+            <ng-container matColumnDef="comments">
+                <mat-header-cell *matHeaderCellDef>הערות</mat-header-cell>
+                <mat-cell class="duration-cell" *matCellDef="let project">{{project.comments}}
+                </mat-cell>
+            </ng-container>
 
-        <!-- Action Column -->
-        <ng-container matColumnDef="action">
-            <mat-header-cell *matHeaderCellDef> פעולה </mat-header-cell>
-            <mat-cell *matCellDef="let element" class="action-link">
-                <div>
-                    <mat-icon class="tableBtn" (click)="openDialog('Update', element, undefined, currNeighborhood?.id?.trim(), 'project')" >edit</mat-icon>
-                    <mat-icon class="tableBtn && delBtn" (click)="openDialog('Delete', element, undefined, currNeighborhood?.id?.trim(), 'project')">delete</mat-icon>
-                </div>
-            </mat-cell>
-        </ng-container>
+            <!-- Action Column -->
+            <ng-container matColumnDef="action">
+                <mat-header-cell *matHeaderCellDef> פעולה </mat-header-cell>
+                <mat-cell *matCellDef="let element" class="action-link">
+                    <div>
+                        <mat-icon class="tableBtn"
+                            (click)="openDialog('Update', element, undefined, currNeighborhood?.id?.trim(), 'project')">
+                            edit</mat-icon>
+                        <mat-icon class="tableBtn && delBtn"
+                            (click)="openDialog('Delete', element, undefined, currNeighborhood?.id?.trim(), 'project')">
+                            delete</mat-icon>
+                    </div>
+                </mat-cell>
+            </ng-container>
 
-        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
 
-        <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
 
-    </mat-table>
-    <button class="answersAdd" height="50px" width="50px"
-    (click)="openDialog('Add', currNeighborhood, undefined, currNeighborhood?.id?.trim(), 'project' )"
-    >הוסף שורה</button>
-    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+        </mat-table>
+        <button class="answersAdd" height="50px" width="50px"
+            (click)="openDialog('Add', currNeighborhood, undefined, currNeighborhood?.id?.trim(), 'project' )">הוסף
+            שורה</button>
+        <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
 
     </mat-drawer-content>
 </mat-drawer-container>

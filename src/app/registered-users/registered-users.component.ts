@@ -2,38 +2,48 @@ import { BreakpointObserver } from '@angular/cdk/layout';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDrawer } from '@angular/material/sidenav';
 import { Subscription } from 'rxjs';
-import { MatTableDataSource } from '@angular/material/table';
-
-interface Volunteer {
-  projectType: string,
-  comments: string,
-  date: Date,
-  clubCoordinatorId: string,
-}
-interface Elderly {
-  projectType: string,
-  comments: string,
-  date: Date,
-  clubCoordinatorId: string,
-}
+import { Volunteer, Elderly } from '../types/customTypes';
+import { animate, state, style, transition, trigger } from '@angular/animations';
+import { GetDataService } from '../services/get-data/get-data.service';
 
 @Component({
   selector: 'app-registered-users',
   templateUrl: './registered-users.component.html',
-  styleUrls: ['./registered-users.component.scss']
+  styleUrls: ['./registered-users.component.scss'],
+  animations: [
+    trigger('detailExpand', [
+      state('collapsed', style({ height: '0px', minHeight: '0' })),
+      state('expanded', style({ height: '*' })),
+      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+    ]),
+  ],
 })
 
 
 export class RegisteredUsersComponent implements OnInit {
+  columnsToDisplay = ['name', 'neighborhood', 'phone', 'email'];
+  expandedElement?: Volunteer | null;
+
   @ViewChild(MatDrawer) sidenav!: MatDrawer;
   private subs = new Subscription();
-  volunteers!: MatTableDataSource<Volunteer>
-  elderlies!: MatTableDataSource<Elderly>
-  displayedColumns: string[] = ['fName', 'lName']
-
-  constructor(private observer: BreakpointObserver) { }
+  elderlies: Elderly[] = []
+  volunteers: Volunteer[] = []
+  dataSource: any[] = [];
+  constructor(private observer: BreakpointObserver, private dataProvider: GetDataService) { }
 
   ngOnInit(): void {
+
+    this.dataProvider.getVolunteers().subscribe((res) => {
+      this.volunteers = res
+      this.dataSource = this.volunteers
+    })
+
+    this.dataProvider.getElderlies().subscribe((res) => {
+      this.elderlies = res
+    })
+
+    // this.dataSource = this.volunteers
+    // console.log(this.volunteers)
   }
 
   ngAfterViewInit() {
@@ -52,7 +62,15 @@ export class RegisteredUsersComponent implements OnInit {
       );
     });
   }
+  changeType(type: number) {
+    if (type == 1)
+      this.dataSource = this.volunteers
+    else
+      this.dataSource = this.elderlies
+  }
   ngOnDestroy(): void {
     this.subs.unsubscribe();
   }
 }
+
+

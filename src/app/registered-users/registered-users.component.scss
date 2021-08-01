@@ -2,12 +2,20 @@
 .spacer {
     flex: 1 1 auto;
 }
-
+.menu-header{
+    display: flex;
+    flex-direction: row-reverse;
+    align-items:baseline;
+    padding-top: 12vh;
+    background-color:mintcream ;
+}
+.title{
+    font-weight: bold;
+}
 mat-divider {
     margin-top: 16px;
     margin-bottom: 16px;
     background-color: rgba(255, 255, 255, 0.5);
-    // padding-top: 12vh;
 }
 
 mat-drawer {
@@ -31,6 +39,7 @@ mat-drawer-container{
 }
 
 mat-accordion{
+    padding-top: 8%;
     display: flex;
     flex-direction: column;
 }
@@ -42,6 +51,75 @@ mat-accordion{
 }
 
 @media screen and (max-width: 800px) {
-
+    mat-drawer-container{
+        padding-top: 0;
+    }
+    .mainContent{
+        width: auto;
+    }
 }
 
+
+tr.example-detail-row {
+    height: 0;
+  }
+  
+  tr.example-element-row:not(.example-expanded-row):hover {
+    background: whitesmoke;
+  }
+  
+  tr.example-element-row:not(.example-expanded-row):active {
+    background: #efefef;
+  }
+  
+  .example-element-row td {
+    border-bottom-width: 0;
+  }
+  
+  .example-element-detail {
+    overflow: hidden;
+    display: flex;
+  }
+
+  table {
+    width: 100%;
+  }
+  th{
+      font-weight: bold;
+      color: black;
+  }
+  td{
+    word-break: break-word;
+  }
+  
+  tr.example-detail-row {
+    height: 0;
+  }
+  
+  tr.example-element-row:not(.example-expanded-row):hover {
+    background: whitesmoke;
+  }
+  
+  tr.example-element-row:not(.example-expanded-row):active {
+    background: #efefef;
+  }
+  
+  .example-element-row td {
+    border-bottom-width: 0;
+  }
+
+  .expandedDetails{
+    padding-top: 5px;
+    display: flex;
+    flex-wrap: wrap;
+    // justify-content: space-evenly;
+  }
+  .dets{
+    margin: 15px;
+    width: 20%;
+  }
+  .box{
+    border: solid; 
+    border-width: 1px; 
+    border-color: gainsboro;
+  }

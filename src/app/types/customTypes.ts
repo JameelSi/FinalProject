@@ -1,6 +1,4 @@
-import * as moment from "moment";
 import { Moment } from "moment";
-
 export interface signinUser{
     uid?:string
     email: string,
@@ -23,6 +21,7 @@ export interface Elderly {
     message: string
   }
   export interface Volunteer {
+    id?: string,
     fName: string,
     lName: string,
     phone: string,
@@ -32,7 +31,7 @@ export interface Elderly {
     street: string,
     age: number,
     gender:string,
-    id:string,
+    personal_id:string,
     hobbies: string[],
     langs: string[],
     volType: string,

@@ -1,83 +1,90 @@
 <div class="menu-header" *ngIf="sidenav.mode == 'over'">
-    <span class="spacer"></span>
-    <div style="display: flex; flex-direction: row; align-items:baseline;">
-        <h4 class="title">מרכזי אזור</h4>
-        <button mat-icon-button (click)="sidenav.toggle()">
-            <mat-icon *ngIf="!sidenav.opened">
-                menu
-            </mat-icon>
-            <mat-icon *ngIf="sidenav.opened">
-                close
-            </mat-icon>
-        </button>
-    </div>
+    <button mat-icon-button (click)="sidenav.toggle()">
+        <mat-icon *ngIf="!sidenav.opened">
+            menu
+        </mat-icon>
+        <mat-icon *ngIf="sidenav.opened">
+            close
+        </mat-icon>
+    </button>
+    <h2 class="title">סוג</h2>
 </div>
-
 <!-------------------- SIDENAV DRAWER ------------------------------------------------------>
 <mat-drawer-container>
+
     <mat-drawer #sidenav mode="side" position="end">
-
         <mat-accordion #accordion>
-
-            <mat-divider *ngIf="sidenav.mode == 'side'"></mat-divider>
-            <button class="sideBtn" mat-raised-button> מתנדבים</button>
-            <button class="sideBtn" mat-raised-button> קשישים</button>
-            <!-- <h4 class="title" *ngIf="sidenav.mode == 'side'">מרכזי אזור</h4>
-            <mat-divider *ngIf="sidenav.mode == 'side'"></mat-divider>
-            <h4 class="title" *ngIf="sidenav.mode == 'side'">מרכזי אזור</h4>
-            <mat-divider *ngIf="sidenav.mode == 'side'"></mat-divider>
-            <h4 class="title" *ngIf="sidenav.mode == 'side'">מרכזי אזור</h4>
-            <mat-divider *ngIf="sidenav.mode == 'side'"></mat-divider>
-            <h4 class="title" *ngIf="sidenav.mode == 'side'">מרכזי אזור</h4>
-            <mat-divider *ngIf="sidenav.mode == 'side'"></mat-divider> -->
+            <button class="sideBtn" (click)="changeType(1)" mat-raised-button> מתנדבים</button>
+            <button class="sideBtn" (click)="changeType(2)" mat-raised-button> קשישים</button>
         </mat-accordion>
-
     </mat-drawer>
 
     <!-------------------- MAIN CONTENT ------------------------------------------------------>
     <mat-drawer-content>
         <div class="mainContent">
-            <mat-table dir="rtl" [dataSource]="volunteers" matSort>
 
-                <ng-container matColumnDef="fName">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>שם פרטי</mat-header-cell>
-                    <mat-cell class="description-cell" *matCellDef="let volunteer">
-                        {{volunteer.fName}}
-                    </mat-cell>
+            <table dir="rtl" mat-table [dataSource]="dataSource" multiTemplateDataRows class="mat-elevation-z8">
+                <!----------------------------------  headers ---------------------------------->
+                <ng-container matColumnDef="name">
+                    <th mat-header-cell *matHeaderCellDef> שם</th>
+                    <td mat-cell *matCellDef="let element"> {{element.fName}} {{element.lName}} </td>
                 </ng-container>
 
-                <ng-container matColumnDef="lName">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>שם משפחה</mat-header-cell>
-                    <mat-cell class="description-cell" *matCellDef="let volunteer">
-                        {{volunteer.lName}}
-                    </mat-cell>
+                <ng-container matColumnDef="neighborhood">
+                    <th mat-header-cell *matHeaderCellDef> שכונה </th>
+                    <td mat-cell *matCellDef="let element"> {{element.neighborhood}} </td>
                 </ng-container>
 
+                <ng-container matColumnDef="phone">
+                    <th mat-header-cell *matHeaderCellDef> טלפון </th>
+                    <td mat-cell *matCellDef="let element"> {{element.phone}} </td>
+                </ng-container>
 
-                <!-- Action Column -->
-                <!-- <ng-container matColumnDef="action">
-                    <mat-header-cell *matHeaderCellDef> פעולה </mat-header-cell>
-                    <mat-cell *matCellDef="let element" class="action-link">
-                        <div>
-                            <mat-icon class="tableBtn"
-                                (click)="openDialog('Update', element, undefined, currNeighborhood?.id?.trim(), 'project')">
-                                edit</mat-icon>
-                            <mat-icon class="tableBtn && delBtn"
-                                (click)="openDialog('Delete', element, undefined, currNeighborhood?.id?.trim(), 'project')">
-                                delete</mat-icon>
+                <ng-container matColumnDef="email">
+                    <th mat-header-cell *matHeaderCellDef> מייל </th>
+                    <td mat-cell *matCellDef="let element"> {{element.email}} </td>
+                </ng-container>
+
+                <!------------------------------------------------------------------------------>
+
+                <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+                <ng-container matColumnDef="expandedDetail">
+                    <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplay.length">
+
+                        <div class="example-element-detail"
+                            [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+                            <div class="expandedDetails">
+                                <div class="dets"> <strong>גיל: </strong>{{element.age}} </div>
+                                <div class="dets" *ngIf="element.gender"> <strong>מין: </strong>{{element.gender}} </div>
+                                <div class="dets"> <strong>שפות: </strong> {{element.langs}} </div>
+                                <div class="dets"*ngIf="element.personal_id"> <strong>מס' זהות : </strong> {{element.personal_id}} </div>   
+                                <div class="dets" *ngIf="element.hobbies"> <strong>תחומי התנדבות: </strong> {{element.hobbies}} </div>
+                                <div class="dets" *ngIf="element.needs"> <strong>צרכים : </strong> {{element.needs}} </div>
+                                <div class="dets" *ngIf="element.maritalStatus"> <strong> מצב משפחתי: </strong> {{element.maritalStatus}} </div>
+
+                                <div class="dets" *ngIf="element.education"> <strong>השכלה: </strong> {{element.education}} </div>
+                                <div class="dets" *ngIf="element.volType"> <strong>סוג: </strong> {{element.volType}} </div>
+                                <div class="dets box" *ngIf="element.expectations"> <strong>צפויות: </strong> {{element.expectations}} </div>
+                                <div class="dets box" *ngIf="element.bio"> <strong>קצת עליי: </strong> {{element.bio}} </div>
+                                <div class="dets" *ngIf="element.enviroment"> <strong>התנדבתי בעבר ב: </strong> {{element.enviroment}} </div>
+                                <div class="dets" *ngIf="element.numOfDays"> <strong>ימים בשבוע: </strong> {{element.numOfDays}} </div>
+                                <div class="dets" *ngIf="element.numOfHours"> <strong>שעות ביום: </strong> {{element.numOfHours}} </div>
+                            </div>
                         </div>
-                    </mat-cell>
-                </ng-container> -->
 
-                <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                    </td>
+                </ng-container>
 
-                <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+                <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+                <tr mat-row *matRowDef="let element; columns: columnsToDisplay;" class="example-element-row"
+                    [class.example-expanded-row]="expandedElement === element"
+                    (click)="expandedElement = expandedElement === element ? null : element">
+                </tr>
+                <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+            </table>
 
-            </mat-table>
 
         </div>
 
     </mat-drawer-content>
 </mat-drawer-container>
-
-<!-------------------- SPINNER ------------------------------------------------------>
