@@ -80,7 +80,9 @@ export class DialogBoxComponent implements OnInit {
         name: "",
         email: "",
         phone: "",
-        neighborhoods: []
+        neighborhoods: [],
+        tasks: [],
+        tasksProgress: 0
       }
     }
     else if (this.dialogType === 'clubCoord') {

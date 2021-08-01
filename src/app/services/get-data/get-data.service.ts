@@ -78,4 +78,22 @@ export class GetDataService {
     return elds
   }
 
+  getManagers(){
+    let orderedManagersRef: AngularFirestoreCollection<manager>
+    orderedManagersRef = this.store.collection("Managers", ref => { return ref.orderBy("name") })
+    return orderedManagersRef.valueChanges({ idField: 'id' })
+  }
+
+  // getManagersOver(num: number){
+  //   let managersOverRef: AngularFirestoreCollection<manager>
+  //   managersOverRef = this.store.collection("Managers", ref => { return ref.where('progress', '>=', num) })
+  //   return managersOverRef.valueChanges({ idField: 'id' })
+  // }
+
+  // getManagersUnder(num: number){
+  //   let managersUnderRef: AngularFirestoreCollection<manager>
+  //   managersUnderRef = this.store.collection("Managers", ref => { return ref.where('progress', '<', num) })
+  //   return managersUnderRef.valueChanges({ idField: 'id' })
+  // }
+
 }

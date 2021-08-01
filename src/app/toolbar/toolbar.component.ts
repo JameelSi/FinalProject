@@ -87,6 +87,14 @@ export class ToolbarComponent implements OnInit {
       requireLogIn: true,
       requireLogOut: false,
       showAll: false,
+    },{
+      label: "מעקב משימות",
+      icon: "task_alt", 
+      route: "/tasks",
+      admin: true,
+      requireLogIn: true, 
+      requireLogOut: false,
+      showAll: false,
     }
     
   ]

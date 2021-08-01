@@ -1,0 +1,104 @@
+<body dir="rtl">
+
+    <h1 class="title">מעקב משישמות</h1>
+
+    <!-- tabs with calendar -->
+
+    <div class="main">
+        <!-- filters -->
+        <!-- menu for managers  -->
+        <div class="menu-container">
+            <button class="mngrs-menu-btn" mat-raised-button [matMenuTriggerFor]="menu">
+                <mat-icon>person</mat-icon>
+                מנהלי תחום
+                <!--unfold_more/expand_more/menu-->
+            </button>
+            <mat-menu class="mngrs-menu" xPosition="after" yPosition="below" #menu="matMenu">
+                <button mat-menu-item (click)="setTasks('all')">הכל</button>
+                <button mat-menu-item *ngFor='let mngr of managers' (click)="setTasks(mngr)">
+                    {{mngr.name}}- {{mngr.neighborhoods}}</button>
+            </mat-menu>
+
+            <!-- menu for neighborhoods  -->
+            <button class="progress-menu-btn" mat-raised-button [matMenuTriggerFor]="menu2">
+                <mat-icon>place</mat-icon>
+                שכונות
+            </button>
+            <mat-menu xPosition="after" yPosition="below" #menu2="matMenu">
+                <button mat-menu-item (click)="setTasks('all')"> הכל </button>
+                <button mat-menu-item *ngFor='let neighb of neighborhoods'
+                    (click)="setTasks(undefined, undefined, neighb)">
+                    {{neighb.id}}</button>
+            </mat-menu>
+
+            <!-- menu for progress  -->
+            <button class="progress-menu-btn" mat-raised-button [matMenuTriggerFor]="menu3">
+                <mat-icon>donut_large</mat-icon>
+                התקדמות
+            </button>
+            <mat-menu xPosition="after" yPosition="below" #menu3="matMenu">
+                <button mat-menu-item (click)="setTasks('all')"> הכל </button>
+                <button mat-menu-item (click)="setTasks('under', 50)"> פחות מ- 50% </button>
+                <button mat-menu-item (click)="setTasks('over', 50)"> יותר מ- 50%</button>
+            </mat-menu>
+        </div>
+
+        <!-- manager name and progress -->
+        <div *ngIf="managersToDisplay && managersToDisplay.length == 0"><h1>לא נמצא מידע</h1></div>
+        <div *ngFor="let manager of managersToDisplay; index as i">
+            <h1 class="mngr-name">
+                {{ manager.name }}- {{manager.neighborhoods}}
+            </h1>
+            <div class="progress">
+                <mat-progress-bar class="bar" color="primary" mode="determinate" [value]="manager.tasksProgress">
+                </mat-progress-bar>
+                <span>
+                    {{ manager.tasksProgress }}%
+                </span>
+            </div>
+
+            <div class="todo-app">
+                <!-- add new task -->
+                <div class="new-task">
+                    <mat-form-field appearance="standard">
+                        <input matInput placeholder="משימה חדשה" class="todo-input" #inputElementRef>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="standard">
+                        <input placeholder="תאריך" matInput id="{{'date'+i}}" name="{{'date'+i}}"
+                            [matDatepicker]="picker" [(ngModel)]="newDate" #date+{{i}}="ngModel">
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker disabled="false"></mat-datepicker>
+                    </mat-form-field>
+
+                    <button mat-raised-button color="primary"
+                        (click)="addTask(inputElementRef.value, manager.id, manager)">
+                         הוסף
+                    </button>
+                </div>
+                <!-- tasks -->
+                <ul>
+                    <li *ngFor="let task of manager.tasks">
+                        <div class="todo-item">
+                            <div>
+                                <input type="checkbox" class="todo-checkbox"
+                                    (click)="completeTask(task, manager.id, manager)" [checked]="task.completed" />
+                                <span class="todo-title" [ngClass]="{'todo-complete': task.completed}">
+                                    {{ task.description }}
+                                </span>
+                                <!-- <br> -->
+                                <span>
+                                    {{ $any(task.date)?.toDate() | date: 'dd/MM/yy' }}
+                                </span>
+                            </div>
+
+                            <button mat-button color="warn" (click)="removeTask(task, manager.id, manager)">
+                                מחיקה
+                            </button>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</body>
