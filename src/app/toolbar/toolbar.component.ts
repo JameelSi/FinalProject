@@ -15,7 +15,7 @@ export class ToolbarComponent implements OnInit {
 
   @ViewChild(MatToolbar) nav!: MatToolbar;
   isOnTop = true;
-  isAdmin!: boolean
+  isAdmin = false;
   userType!: string
 
   menuItems: MenuItem[] = [

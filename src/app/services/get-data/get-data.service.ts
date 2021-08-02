@@ -3,7 +3,7 @@ import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/fire
 import { combineLatest, Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
 // import { map, catchError } from 'rxjs/operators';
-import { areaCoord, neighborhood, manager, clubCoord, event, message} from '../../types/customTypes';
+import { areaCoord, neighborhood, manager, clubCoord, event, message, Volunteer, Elderly } from '../../types/customTypes';
 
 @Injectable({
   providedIn: 'root'
@@ -17,6 +17,8 @@ export class GetDataService {
   eventsRef: AngularFirestoreCollection<event>
   readMessagesRef: AngularFirestoreCollection<message>
   unreadMessagesRef: AngularFirestoreCollection<message>
+  volunteersRef: AngularFirestoreCollection<Volunteer>
+  elderliesRef: AngularFirestoreCollection<Elderly>
 
   constructor(private store: AngularFirestore) {
     this.areaCoordsRef = this.store.collection("AreaCoordinators")
@@ -26,8 +28,10 @@ export class GetDataService {
     this.eventsRef = this.store.collection("Events", ref => {
       return ref.orderBy("date")
     })
-    this.readMessagesRef = this.store.collection('Messages', (ref: any) => {return ref.where('read', '==', true).orderBy('date', "desc")})
-    this.unreadMessagesRef = this.store.collection('Messages', (ref: any) => { return ref.where('read', '==', false).orderBy('date', "desc")})  
+    this.readMessagesRef = this.store.collection('Messages', (ref: any) => { return ref.where('read', '==', true).orderBy('date', "desc") })
+    this.unreadMessagesRef = this.store.collection('Messages', (ref: any) => { return ref.where('read', '==', false).orderBy('date', "desc") })
+    this.volunteersRef = this.store.collection("Volunteers")
+    this.elderliesRef = this.store.collection("Elderlies")
   }
 
   // get data for projects tracking page
@@ -39,24 +43,39 @@ export class GetDataService {
     return combineLatest([areaCoords, allNeighborhoods, managers, clubCoords]);
   }
 
-  getProjectVolOppsData(){
+  getProjectVolOppsData() {
     let volOpps: Observable<event[]>
     volOpps = this.eventsRef.valueChanges({ idField: 'id' });
     return volOpps
   }
 
-  getJerNeighborhoods(){
+  getJerNeighborhoods() {
     let neighborhoods: Observable<neighborhood[]>
     neighborhoods = this.neighbsRef.valueChanges({ idField: 'id' });
     return neighborhoods
   }
 
-  getMessages(){
+  getMessages() {
     let readMsgs: Observable<message[]>
     let unreadMsgs: Observable<message[]>
     readMsgs = this.readMessagesRef.valueChanges({ idField: 'id' });
     unreadMsgs = this.unreadMessagesRef.valueChanges({ idField: 'id' });
     return combineLatest([readMsgs, unreadMsgs])
+  }
+
+  getVolInfo(uid: string) {
+    let user: Observable<Volunteer | undefined>
+    let userRef = this.store.doc<Volunteer>(`Volunteers/${uid}`)
+    user = userRef.valueChanges({ idField: 'id' })
+    return user
+  }
+  getVolunteers() {
+    const vols = this.volunteersRef.valueChanges({ idField: 'id' });
+    return vols
+  }
+  getElderlies() {
+    const elds = this.elderliesRef.valueChanges({ idField: 'id' });
+    return elds
   }
 
   getManagers(){

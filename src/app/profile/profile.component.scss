@@ -1,0 +1,78 @@
+.body{
+    padding:50px;
+    padding-top: 15vh;
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: center;
+}
+.rightDiv,.leftDiv{
+    flex: 1;
+}
+.firstCard{
+    height: 70vh;
+}
+.secondCard{
+    width: 95%;
+    height: 38vh;
+}
+
+.thirdCard{
+    margin-top: 2%;
+    height: 30vh;
+    width: 95%;
+}
+.profileImg{
+    text-align: center;
+}
+mat-card-content{
+    margin-top: 15px;
+}
+mat-card-title{
+    color: gray;
+}
+
+.fields{
+    display: flex;
+    // justify-content:space-between;
+    font-size: medium;
+    font-weight: bold;
+
+    mat-icon{
+        flex-grow: 0;
+        font-size: medium;
+        margin-left: 2vh;
+        color: #48BF92;
+    }
+    .title{
+        flex-grow: 2;
+    }
+    .info{
+        flex-grow: 0;
+    }
+}
+
+@media screen and (max-width: 800px) {
+    .body{
+        flex-direction: column;
+        padding:50px;
+        padding-top: 15vh;
+        display: flex;
+    }
+    .firstCard,.secondCard, .thirdCard{
+        margin-top: 2%;
+        height: auto;
+    }
+}
+
+@media screen and (max-height: 565px) {
+    .body{
+        flex-direction: column;
+        padding:50px;
+        padding-top: 15vh;
+        display: flex;
+    }
+    .firstCard,.secondCard, .thirdCard{
+        margin-top: 2%;
+        height: auto;
+    }
+}
