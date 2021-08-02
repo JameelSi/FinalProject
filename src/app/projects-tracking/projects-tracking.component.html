@@ -136,10 +136,10 @@
                 <mat-cell *matCellDef="let element" class="action-link">
                     <div>
                         <mat-icon class="tableBtn"
-                            (click)="openDialog('Update', element, undefined, currNeighborhood?.id?.trim(), 'project')">
+                            (click)="openDialog('Update', element, undefined, currNeighborhood?.id?.trim())">
                             edit</mat-icon>
                         <mat-icon class="tableBtn && delBtn"
-                            (click)="openDialog('Delete', element, undefined, currNeighborhood?.id?.trim(), 'project')">
+                            (click)="openDialog('Delete', element, undefined, currNeighborhood?.id?.trim())">
                             delete</mat-icon>
                     </div>
                 </mat-cell>
@@ -151,7 +151,7 @@
 
         </mat-table>
         <button class="answersAdd" height="50px" width="50px"
-            (click)="openDialog('Add', currNeighborhood, undefined, currNeighborhood?.id?.trim(), 'project' )">הוסף
+            (click)="openDialog('Add', currNeighborhood, undefined, currNeighborhood?.id?.trim())">הוסף
             שורה</button>
         <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
 

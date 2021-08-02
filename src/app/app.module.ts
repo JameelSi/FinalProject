@@ -60,6 +60,7 @@ import { PrettyPrintPipe } from './prettyPrint/pretty-print.pipe';
 import { TasksComponent } from './tasks/tasks.component';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { EmailsComponent } from './emails/emails.component';
 
 @NgModule({
   declarations: [
@@ -79,6 +80,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     ProfileComponent,
     RegisteredUsersComponent,
     TasksComponent,
+    EmailsComponent,
     ],
   imports: [
     BrowserModule,
