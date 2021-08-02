@@ -32,8 +32,21 @@
             </mat-error>
           </mat-form-field>
 
+          <mat-form-field appearance="fill">
+            <mat-label>פרויקט מתמשך?</mat-label>
+            <mat-select  required [(ngModel)]="newProj.continuous" name="continuous">
+              <mat-option value="כן">
+                 כן</mat-option>
+              <mat-option value="לא">
+                לא</mat-option>
+            </mat-select>
+            <mat-error>שדה חובה</mat-error>
+          </mat-form-field>
+
+
           <mat-label><b>{{actionHebrew[action]}} מועדון </b>*</mat-label>
-          <mat-radio-group class="radio_group" required name="clubCoordinatorId" [(ngModel)]="newProj.clubCoordinatorId">
+          <mat-radio-group class="radio_group" required name="clubCoordinatorId"
+            [(ngModel)]="newProj.clubCoordinatorId">
             <mat-radio-button *ngFor="let clubCoord of local_data.clubs" [value]="clubCoord.id">
               {{clubCoord.name}}<br>{{clubCoord.club}}<br>{{clubCoord.address}}
             </mat-radio-button>
@@ -56,6 +69,16 @@
                 שדה סוג מיזם הינו חובה.
               </div>
             </mat-error>
+          </mat-form-field>
+
+          <mat-form-field>
+            <mat-label>מצב ?</mat-label>
+            <mat-select  [(ngModel)]="newProj.status" name="status">
+              <mat-option value="פתוח">
+                פתוח</mat-option>
+              <mat-option value="סגור">
+                סגור</mat-option>
+            </mat-select>
           </mat-form-field>
 
           <mat-form-field>
@@ -132,8 +155,9 @@
 
           <ng-container *ngIf="dialogType === 'clubCoord'">
             <mat-form-field>
-              <input type="text" pattern="\d*" name="coordPhone" matInput placeholder="{{actionHebrew[action]}} מספר טלפון של הרכז"
-                [(ngModel)]="$any(newUser).coordPhone" #coordPhone="ngModel" />
+              <input type="text" pattern="\d*" name="coordPhone" matInput
+                placeholder="{{actionHebrew[action]}} מספר טלפון של הרכז" [(ngModel)]="$any(newUser).coordPhone"
+                #coordPhone="ngModel" />
             </mat-form-field>
           </ng-container>
 
@@ -163,8 +187,8 @@
 
           <ng-container *ngIf="dialogType === 'areaCoord'">
             <mat-form-field>
-              <input type="text" pattern="\d*" name="phone" matInput placeholder="{{actionHebrew[action]}} מספר טלפון" [(ngModel)]="newUser.phone"
-                #phone="ngModel" />
+              <input type="text" pattern="\d*" name="phone" matInput placeholder="{{actionHebrew[action]}} מספר טלפון"
+                [(ngModel)]="newUser.phone" #phone="ngModel" />
               <mat-error *ngIf="phone.invalid && (phone.dirty || phone.touched)">
                 <div *ngIf="phone.errors?.required">
                   שדה זה הינו חובה.

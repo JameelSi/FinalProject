@@ -38,7 +38,7 @@ export class ProjectsTrackingComponent implements OnInit, OnDestroy {
   testEmitter$ = new BehaviorSubject<neighborhood[]>(this.allNeighborhoods);
   currNeighborhoods!: neighborhood[]
   managers: manager[] = []
-  displayedColumns: string[] = ['date', 'clubCoordinatorId', 'projectType', 'comments', 'action']
+  displayedColumns: string[] = ['date', 'clubCoordinatorId', 'projectType', 'comments','continuous','status','action']
   projectsToDisplay!: MatTableDataSource<project>
   currAreaCoord?: areaCoord
   currNeighborhood?: neighborhood
@@ -232,7 +232,9 @@ export class ProjectsTrackingComponent implements OnInit, OnDestroy {
               date: result.data.date, 
               projectType: result.data.projectType,
               comments: result.data.comments,
-              clubCoordinatorId: result.data.clubCoordinatorId
+              clubCoordinatorId: result.data.clubCoordinatorId,
+              status: result.data.status,
+              continuous: result.data.continuous,
             }).then(() => this.progressSpinner.hide())
         } else if (result.event == 'Update' && type == 'project') {
           if (updateDocRef)
@@ -240,7 +242,9 @@ export class ProjectsTrackingComponent implements OnInit, OnDestroy {
               date: result.data.date, 
               projectType: result.data.projectType,
               comments: result.data.comments,
-              clubCoordinatorId: result.data.clubCoordinatorId
+              clubCoordinatorId: result.data.clubCoordinatorId,
+              status: result.data.status,
+              continuous: result.data.continuous,
             }, result.newProj).then(() => this.progressSpinner.hide())
         }
       }

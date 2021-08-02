@@ -76,6 +76,8 @@ export interface event {
     date: Date | Moment,
     clubCoordinatorId: string,
     clubInfo?: clubCoord,
+    continuous?:string,
+    status?: string
   }
   
   export interface manager {

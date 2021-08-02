@@ -54,10 +54,12 @@ export class DialogBoxComponent implements OnInit {
         date: moment(this.local_data.date.toDate()),
         projectType: this.local_data.projectType,
         comments: this.local_data.comments,
-        clubCoordinatorId: this.local_data.clubCoordinatorId
+        clubCoordinatorId: this.local_data.clubCoordinatorId,
+        continuous:this.local_data.continuous,
+        status:this.local_data.status
       }
     } else if (this.dialogType === "project") {
-      this.newProj = { projectType: '', comments: '', date: moment(), clubCoordinatorId: '' }
+      this.newProj = { projectType: '', comments: '', date: moment(), continuous:'',status:'',clubCoordinatorId: '' }
     }
     if (this.dialogType === 'neighb') {
       this.newNeighb = {

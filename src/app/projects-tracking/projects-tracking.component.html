@@ -121,6 +121,24 @@
                 </mat-cell>
             </ng-container>
 
+            <ng-container matColumnDef="continuous">
+                <mat-header-cell *matHeaderCellDef>מתמשך?</mat-header-cell>
+                <mat-cell class="duration-cell" *matCellDef="let project">
+                    {{project.continuous}}
+                </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="status">
+                <mat-header-cell *matHeaderCellDef>מצב</mat-header-cell>
+                <mat-cell class="duration-cell" *matCellDef="let project">
+                    <div style="color: green;" *ngIf="project.status === 'פתוח'">
+                        {{project.status}}
+                    </div>
+                    <div style="color: red;" *ngIf="project.status === 'סגור'">
+                        {{project.status}}
+                    </div>
+                </mat-cell>
+            </ng-container>
             <!-- Action Column -->
             <ng-container matColumnDef="action">
                 <mat-header-cell *matHeaderCellDef> פעולה </mat-header-cell>

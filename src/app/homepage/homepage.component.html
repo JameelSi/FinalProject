@@ -23,8 +23,8 @@
                 <img fxHide fxShow.lt-md src="https://firebasestorage.googleapis.com/v0/b/simhatv2test.appspot.com/o/images%2Fprev.png?alt=media&token=8ac7b330-653d-4e3e-a4c8-53f6dda55a81">
                 <div class="spacer"></div>
                 <div class="btn-wrapper">
-                    <button routerLink='/signup/Elderlies' class="main-btn" mat-raised-button color="accent">להרשמה</button>
-                    <button routerLink='/contactus' class="main-btn" mat-raised-button color="accent">שלח הודעה</button>
+                    <button *ngIf="!authService.isLoggedIn" routerLink='/signup/Elderlies' class="main-btn" mat-raised-button color="accent">להרשמה</button>
+                    <button *ngIf="!isAdmin" routerLink='/contactus' class="main-btn" mat-raised-button color="accent">שלח הודעה</button>
                 </div>
             </div>
         </div>
