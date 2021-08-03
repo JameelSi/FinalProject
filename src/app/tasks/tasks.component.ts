@@ -68,6 +68,10 @@ export class TasksComponent implements OnInit {
     }))
   }
 
+  ngOnDestroy(){
+    this.subs.unsubscribe()
+  }
+
   async completeTask(task: task, docId: string, mngr: manager) {
     //  update progress
     const index = mngr.tasks.indexOf(task);

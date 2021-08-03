@@ -74,10 +74,10 @@ export interface event {
     projectType: string,
     comments: string,
     date: Date | Moment,
-    clubCoordinatorId: string,
-    clubInfo?: clubCoord,
     continuous?:string,
     status?: string
+    clubCoordinatorId: string[],
+    clubInfo?: clubCoord[] | undefined,
   }
   
   export interface manager {
@@ -97,6 +97,7 @@ export interface event {
     name: string,
     phone: string,
     coordPhone: string | undefined,
+    currentValue?: boolean
   }
 
   export interface MenuItem {

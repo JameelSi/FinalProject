@@ -48,9 +48,26 @@
           <mat-radio-group class="radio_group" required name="clubCoordinatorId"
             [(ngModel)]="newProj.clubCoordinatorId">
             <mat-radio-button *ngFor="let clubCoord of local_data.clubs" [value]="clubCoord.id">
-              {{clubCoord.name}}<br>{{clubCoord.club}}<br>{{clubCoord.address}}
+              {{clubCoord.name}}
+              <br *ngIf="clubCoord.name && clubCoord.club">{{clubCoord.club}}
+              <br *ngIf="(clubCoord.name || clubCoord.club) && clubCoord.address">{{clubCoord.address}}
             </mat-radio-button>
-          </mat-radio-group>
+          </mat-radio-group> -->
+
+          <mat-label><b>{{actionHebrew[action]}} מועדון </b>*</mat-label>
+          <br>
+          <mat-error>חובה לבחור לפחות מועדון אחד</mat-error>
+          <span>
+            <ul class="checkBoxes">
+              <li *ngFor="let clubCoord of local_data.clubs">
+                <mat-checkbox name="clubCoords" [(ngModel)]="clubCoord.currentValue" #clubCoords="ngModel">
+                  {{clubCoord.name}}
+                  <br *ngIf="clubCoord.name && clubCoord.club">{{clubCoord.club}}
+                  <br *ngIf="(clubCoord.name || clubCoord.club) && clubCoord.address">{{clubCoord.address}}
+                </mat-checkbox>
+              </li>
+            </ul>
+          </span>
 
           <!--TODO: error message not showing-->
           <!-- <div
@@ -115,7 +132,7 @@
 
       <ng-template #coordTemplate>
         <ng-container *ngIf="(dialogType === 'areaCoord' || dialogType === 'clubCoord' || dialogType === 'manager') 
-         && newUser && action != 'Delete'; else eventsTemplate">
+         && newUser && action != 'Delete'; else editEventsTemplate">
 
           <ng-container *ngIf="dialogType === 'areaCoord' || dialogType === 'manager'">
             <mat-error *ngIf="invalidCreation">המייל שהוכס כבר קיים</mat-error>
@@ -229,8 +246,8 @@
         </ng-container>
       </ng-template>
 
-      <ng-template #eventsTemplate>
-        <ng-container *ngIf="dialogType === 'event' && action != 'Delete'; else elseTemplate ">
+      <ng-template #editEventsTemplate>
+        <ng-container *ngIf="dialogType === 'editEvent' && action != 'Delete'; else displayEventsTemplate ">
           <mat-form-field appearance="fill">
             <mat-label>{{actionHebrew[action]}} תאריך</mat-label>
             <input matInput required id="date2" name="date2" [matDatepicker]="picker2" [(ngModel)]="newEvent.date"
@@ -278,14 +295,25 @@
         </ng-container>
       </ng-template>
 
-
+      <ng-template #displayEventsTemplate>
+        <ng-container *ngIf="dialogType === 'displayEvent' && action != 'Delete'; else elseTemplate ">
+          <img src="{{local_data.event.img}}" width='100%'>
+        {{local_data.event.name}}
+        {{local_data.event.description}}
+        </ng-container>
+      </ng-template>
+      
       <ng-template class="delete" #elseTemplate>
       </ng-template>
-
+      
     </form>
   </div>
+  
+  <mat-dialog-actions align="end" *ngIf="dialogType === 'displayEvent'">
+    <button mat-button mat-dialog-close mat-flat-button>סגור</button>
+  </mat-dialog-actions>
 
-  <div mat-dialog-actions>
+  <div mat-dialog-actions *ngIf="dialogType != 'displayEvent'">
     <button mat-button [disabled]="projForm.invalid" color="warn" (click)="doAction()">{{actionHebrew[action]}}</button>
     <button mat-button (click)="closeDialog()" mat-flat-button>בטל</button>
   </div>

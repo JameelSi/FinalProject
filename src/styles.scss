@@ -18,3 +18,12 @@ body {
     background-size: 100% 100%;
 }
 .cdk-overlay-pane,.mat-menu-panel{width: 50vh;}
+
+// allow line breaks in mat-tooltip
+.mat-tooltip  {
+    white-space: pre-line;
+    font-size: small;
+}
+.colored-tooltip{
+    background: #19547b; 
+}

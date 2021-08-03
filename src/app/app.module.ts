@@ -59,6 +59,8 @@ import { ContactUsComponent } from './contact-us/contact-us.component';
 import { PrettyPrintPipe } from './prettyPrint/pretty-print.pipe';
 import { TasksComponent } from './tasks/tasks.component';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { EmailsComponent } from './emails/emails.component';
 
 @NgModule({
   declarations: [
@@ -78,6 +80,7 @@ import {MatProgressBarModule} from '@angular/material/progress-bar';
     ProfileComponent,
     RegisteredUsersComponent,
     TasksComponent,
+    EmailsComponent,
     ],
   imports: [
     BrowserModule,
@@ -120,7 +123,8 @@ import {MatProgressBarModule} from '@angular/material/progress-bar';
     ScrollingModule,
     ButtonModule,
     AngularFireStorageModule,
-    MatProgressBarModule
+    MatProgressBarModule,
+    MatTooltipModule,
   ],
   providers: [ScrollDispatcher],
   bootstrap: [AppComponent],

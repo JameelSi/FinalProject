@@ -6,6 +6,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { DialogBoxComponent } from '../dialog-box/dialog-box.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { event } from '../types/customTypes';
+import { Subscription } from 'rxjs';
 interface responsiveCarouselOption {
   breakpoint: string,
   numVisible: number,
@@ -22,6 +23,7 @@ export class HomepageComponent implements OnInit {
 
   events!: event[];
   responsiveOptions: responsiveCarouselOption[]
+  subs= new Subscription()
   // profileUrl!: Observable<string | null>;
   isAdmin!: boolean
   constructor(
@@ -53,20 +55,31 @@ export class HomepageComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.dataProvider.getProjectVolOppsData().subscribe(res => {
+    this.subs = this.dataProvider.getProjectVolOppsData().subscribe(res => {
       this.events = res
     })
   }
 
-  openDialog(action: 'Delete' | 'Add', element: any, doc: string | undefined) {
+  ngOnDestroy(){
+    this.subs.unsubscribe()
+  }
+
+  openDialog(action: 'Delete' | 'Add' | 'Display', type: 'editEvent' | 'displayEvent', doc: event | undefined) {
     let collec = 'Events'
+    let element: any = {}
     if(action==='Add') element.dialogTitle = 'הוסף את פרטי האירוע החדש'
     else if(action==='Delete') element.dialogTitle = 'בטוח למחוק את האירוע?'
+    else if(action==='Display') element.dialogTitle = 'פרטי האירוע'
     element.action = action;
-    element.dialogType = 'event';
+    element.dialogType = type;
+    if (type==='displayEvent'){
+      element.event = doc
+    }
     const dialogRef = this.dialog.open(DialogBoxComponent, {
       direction: 'rtl',
       data: element,
+      width: '80%',
+      height: '80%',
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -81,7 +94,7 @@ export class HomepageComponent implements OnInit {
           });
         }
         else if (result.data.action === "Delete") {
-          this.afs.collection(collec).doc(doc).delete().then(() => {
+          this.afs.collection(collec).doc(doc?.id).delete().then(() => {
             this.snackBar.open("התהליך הסתיים בהצלחה", '', { duration: 3000, direction: 'rtl', panelClass: ['snacks'] });
           }).catch((error) => {
             this.snackBar.open("קרתה שגיאה נא לנסות בזמן מאוחר יותר", '', { duration: 3000, direction: 'rtl', panelClass: ['snacks'] });

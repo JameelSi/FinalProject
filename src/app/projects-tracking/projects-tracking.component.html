@@ -1,3 +1,18 @@
+<<<<<<< HEAD
+<div class="menu-header" *ngIf="sidenav.mode == 'over'">
+    <span class="spacer"></span>
+    <div style="display: flex; flex-direction: row; align-items:baseline;">
+        <h4 class="title">מרכזי אזור</h4>
+        <button mat-icon-button (click)="sidenav.toggle()">
+            <mat-icon *ngIf="!sidenav.opened">
+                menu
+            </mat-icon>
+            <mat-icon *ngIf="sidenav.opened">
+                close
+            </mat-icon>
+        </button>
+    </div>
+=======
 
 <div class="menu-header" *ngIf="sidenav.mode == 'over'">
     <button mat-icon-button (click)="sidenav.toggle()">
@@ -9,6 +24,7 @@
         </mat-icon>
     </button>
     <h4 class="title">מרכזי אזור</h4>
+>>>>>>> f4cb0ea44b811808309574b6d8a9be0a5f7d8449
 </div>
 <!-------------------- SIDENAV DRAWER ------------------------------------------------------>
 <mat-drawer-container>
@@ -102,9 +118,15 @@
             <ng-container matColumnDef="clubCoordinatorId">
                 <mat-header-cell *matHeaderCellDef mat-sort-header>מעדון</mat-header-cell>
                 <mat-cell class="description-cell" *matCellDef="let project">
-                    {{project.clubInfo?.club}}, {{project.clubInfo?.address}}
-                    <br>
-                    {{project.clubInfo?.name}}, {{project.clubInfo?.phone}}
+                    <div *ngFor="let info of project.clubInfo">
+                        <div matTooltip="כתובת: {{info.address}}&#13;שם: {{info.name}}&#13;פל: {{info.phone}}"
+                        matTooltipClass="colored-tooltip"
+                            [matTooltipPosition]="'after'">
+                            {{info.club}}&nbsp;
+                            <!-- <br>
+                            {{info.name}}, {{info.phone}} -->
+                        </div>
+                    </div>
                 </mat-cell>
 
             </ng-container>
@@ -145,10 +167,17 @@
                 <mat-cell *matCellDef="let element" class="action-link">
                     <div>
                         <mat-icon class="tableBtn"
+<<<<<<< HEAD
+                            (click)="openDialog('Update', element, undefined, currNeighborhood?.id?.trim())">
+                            edit</mat-icon>
+                        <mat-icon class="tableBtn && delBtn"
+                            (click)="openDialog('Delete', element, undefined, currNeighborhood?.id?.trim())">
+=======
                             (click)="openDialog('Update', element, undefined, currNeighborhood?.id?.trim(), 'project')">
                             edit</mat-icon>
                         <mat-icon class="tableBtn && delBtn"
                             (click)="openDialog('Delete', element, undefined, currNeighborhood?.id?.trim(), 'project')">
+>>>>>>> f4cb0ea44b811808309574b6d8a9be0a5f7d8449
                             delete</mat-icon>
                     </div>
                 </mat-cell>
@@ -160,7 +189,11 @@
 
         </mat-table>
         <button class="answersAdd" height="50px" width="50px"
+<<<<<<< HEAD
+            (click)="openDialog('Add', currNeighborhood, undefined, currNeighborhood?.id?.trim())">הוסף
+=======
             (click)="openDialog('Add', currNeighborhood, undefined, currNeighborhood?.id?.trim(), 'project' )">הוסף
+>>>>>>> f4cb0ea44b811808309574b6d8a9be0a5f7d8449
             שורה</button>
         <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
 
