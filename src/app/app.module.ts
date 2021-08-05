@@ -80,7 +80,7 @@ import { EmailsComponent } from './emails/emails.component';
     ProfileComponent,
     RegisteredUsersComponent,
     TasksComponent,
-    EmailsComponent,
+    // EmailsComponent,
     ],
   imports: [
     BrowserModule,

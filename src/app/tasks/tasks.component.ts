@@ -200,17 +200,17 @@ export class TasksComponent implements OnInit {
 //         tasksProgress: 0,
 //         tasks: [
 //           {
-//             description: 'להתחיל ללמוד על הפקן מערכת',
+//             description: 'משימה 1',
 //             date: moment().toDate(),
 //             completed: false
 //           },
 //           {
-//             description: 'להראות את האתר לפקן אלינה',
+//             description: 'משימה 2',
 //             date: moment().toDate(),
 //             completed: false
 //           },
 //           { 
-//             description: 'להגיד שזה האתר הכי טוב שראית בחייך', 
+//             description: 'משימה 3', 
 //             date: new Date(2021,8,21),
 //             completed: false 
 //           },
