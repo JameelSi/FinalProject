@@ -15,6 +15,7 @@ import { ProgressSpinnerOverlayService } from '../services/progressSpinerOverlay
 import { AuthService } from '../services/auth/auth.service';
 import { areaCoord, neighborhood, project, manager, clubCoord } from '../types/customTypes';
 import firebase from 'firebase/app';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-projects-tracking',
@@ -149,7 +150,7 @@ export class ProjectsTrackingComponent implements OnInit, OnDestroy {
             proj.clubInfo = []
             proj.clubCoordinatorId.forEach(id => {
               if(id==='0'){
-                if (proj.clubInfo) proj.clubInfo.push({name: 'כללי', address:'', club:'', phone:'', coordPhone:''})
+                proj.clubInfo?.push({name: '', address:'', club:'כללי', phone:'', coordPhone:''})
               }else{
                 let tempInfo = this.clubCoords.find(i => i.id?.trim() == id.trim())
                 if (proj.clubInfo && tempInfo) proj.clubInfo.push(tempInfo)

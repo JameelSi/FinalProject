@@ -113,7 +113,6 @@ export class DialogBoxComponent implements OnInit {
   doAction() {
     if ((this.dialogType === 'areaCoord' || this.dialogType === 'manager') && this.action != "Delete"){
       this.updateNeighbs()
-      this.updateClubs()
     }
     if (this.dialogType === 'areaCoord') {
       this.createUser().then(() => {
@@ -136,6 +135,7 @@ export class DialogBoxComponent implements OnInit {
       })
     }
     else if (!this.invalidCreation) {
+      if(this.dialogType === 'project') this.updateClubs()
       this.dialogRef.close({
         event: this.action,
         data: this.local_data,
