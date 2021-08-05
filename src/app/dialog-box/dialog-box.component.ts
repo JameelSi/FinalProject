@@ -48,7 +48,7 @@ export class DialogBoxComponent implements OnInit {
     //@Optional() is used to prevent error if no data is passed
     @Optional() @Inject(MAT_DIALOG_DATA) public data: any) {
     this.local_data = { ...data };
-    if(this.local_data.clubs && this.local_data.clubs[0].id!=0) this.local_data.clubs?.unshift({name:'כללי', id:'0'}) // TODO test all cases
+    if(this.local_data.clubs && this.local_data.clubs[0].id!=0) this.local_data.clubs?.unshift({name:'כללי', id:'0'}) 
     this.dialogType = this.local_data.dialogType
     this.action = this.local_data.action;
     if (this.action === 'Update' && this.dialogType == "project") {
@@ -62,7 +62,6 @@ export class DialogBoxComponent implements OnInit {
       }
     } else if (this.dialogType === "project") {
       this.newProj = { projectType: '', comments: '', date: moment(), continuous:'',status:'',clubCoordinatorId: [] }
-      // this.newProj = { projectType: '', comments: '', date: moment(), clubCoordinatorId: [] }
     }
     if (this.dialogType === 'neighb') {
       this.newNeighb = {
@@ -167,7 +166,7 @@ export class DialogBoxComponent implements OnInit {
     });
   }
 
-  updateClubs() { // TODO test all cases
+  updateClubs() { 
     this.local_data.clubs.forEach((club: clubCoord) => {
       if (club.currentValue) {
         if(club.id)

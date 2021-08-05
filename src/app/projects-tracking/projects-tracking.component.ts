@@ -146,7 +146,7 @@ export class ProjectsTrackingComponent implements OnInit, OnDestroy {
         neighb.managerInfo = this.managers.find(i => i.id.trim() == neighb.managerId.trim())
         neighb.projects.forEach(proj => {
           // for the variables that are arrays
-          if (proj.clubCoordinatorId.constructor === Array) { //TODO test all cases
+          if (proj.clubCoordinatorId.constructor === Array) {
             proj.clubInfo = []
             proj.clubCoordinatorId.forEach(id => {
               if(id==='0'){
