@@ -39,9 +39,11 @@ export class NeedsComponent implements OnInit, OnDestroy {
     public authService:AuthService,
   ) {
     this.itemsCollection = afs.collection<Item>('items');
-    this.authService.authData$.subscribe(data=>{
-      this.isAdmin = data.admin
-    })
+    this.subs.add(
+      this.authService.authData$.subscribe(data=>{
+        this.isAdmin = data.admin
+      })
+    )
   }
 
   ngOnInit() {

@@ -164,6 +164,7 @@ export class DialogBoxComponent implements OnInit {
       if (neighb.currentValue) {
         (this.newUser as areaCoord).neighborhoods.push(neighb.id)
       }
+      neighb.currentValue = false
     });
   }
 

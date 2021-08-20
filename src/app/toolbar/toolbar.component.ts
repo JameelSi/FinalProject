@@ -99,17 +99,19 @@ export class ToolbarComponent implements OnInit {
     }
     
   ]
-  subs:Subscription
+  subs = new Subscription()
   constructor(
     private scrollDispatcher: ScrollDispatcher,
     private zone: NgZone,
     private observer: BreakpointObserver,
     public authService:AuthService,
   ) {
-    this.subs = this.authService.authData$.subscribe(data=>{
-      this.isAdmin = data.admin
-      this.userType = data.type
-    })
+    this.subs.add(
+      this.authService.authData$.subscribe(data=>{
+        this.isAdmin = data.admin
+        this.userType = data.type
+      })
+    )
   }
 
   ngOnInit(): void {
