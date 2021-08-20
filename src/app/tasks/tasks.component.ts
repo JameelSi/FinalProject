@@ -189,6 +189,7 @@ export class TasksComponent implements OnInit {
         });
     }
   }
+  
 }
 
 // // add tasks array of maps to all managers
@@ -204,16 +205,16 @@ export class TasksComponent implements OnInit {
 //             date: moment().toDate(),
 //             completed: false
 //           },
-//           {
-//             description: 'משימה 2',
-//             date: moment().toDate(),
-//             completed: false
-//           },
-//           { 
-//             description: 'משימה 3', 
-//             date: new Date(2021,8,21),
-//             completed: false 
-//           },
+//           // {
+//           //   description: 'משימה 2',
+//           //   date: moment().toDate(),
+//           //   completed: false
+//           // },
+//           // { 
+//           //   description: 'משימה 3', 
+//           //   date: new Date(2021,8,21),
+//           //   completed: false 
+//           // },
 //         ]
 //       })
 //     });

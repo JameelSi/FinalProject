@@ -53,4 +53,5 @@ firebase.json
 functions
 firestore.indexes.json
 firestore.rules
-storage.rulessendgrid.env
+storage.rules
+sendgrid.env

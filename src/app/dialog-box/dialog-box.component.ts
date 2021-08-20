@@ -10,6 +10,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { project, areaCoord, neighborhood, manager, clubCoord, event } from '../types/customTypes';
 import { Moment } from 'moment';
 import { ThrowStmt } from '@angular/compiler';
+import { environment } from 'src/environments/environment';
 
 
 type user = clubCoord | manager | areaCoord
@@ -177,18 +178,9 @@ export class DialogBoxComponent implements OnInit {
 
   async createUser() {
     if ((this.newUser as areaCoord).email && this.newPassword) {
-      //create and init new app reference (to prevent user from logging in)
-      const config = {
-        apiKey: "AIzaSyDlr_TVnprFbrWL557dAC-1OdTMyNvxqTk",
-        authDomain: "simhatv2test.firebaseapp.com",
-        projectId: "simhatv2test",
-        storageBucket: "simhatv2test.appspot.com",
-        messagingSenderId: "186409866492",
-        appId: "1:186409866492:web:3e40efbd9ba31d4cc63379",
-        measurementId: "G-JQX7RBYSQC"
-      };
+      //create and init new app reference (to prevent user from logging in) 
       if (firebase.apps.length === 1)
-        this.secondaryApp = firebase.initializeApp(config, "Secondary");
+        this.secondaryApp = firebase.initializeApp(environment.firebase, "Secondary");
       else
         this.secondaryApp = firebase.apps[1]
       await this.secondaryApp.auth().createUserWithEmailAndPassword((this.newUser as areaCoord).email, this.newPassword).then((res: any) => {
