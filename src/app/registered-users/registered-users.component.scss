@@ -38,6 +38,22 @@ mat-drawer-container{
     padding-top:7%;
 }
 
+.menu-container{
+  padding: 3vh 5vh;
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: wrap;  
+  .menu-btn{
+    margin-left: 5vh;
+    margin-bottom: 2vh;
+    background-color:#B6C9F0;
+    // #B8DFD8
+    // #B6C9F0
+    // #CDC7BE
+  }
+}
+
+
 mat-accordion{
     padding-top: 8%;
     display: flex;
@@ -51,12 +67,15 @@ mat-accordion{
 }
 
 @media screen and (max-width: 800px) {
-    mat-drawer-container{
-        padding-top: 0;
-    }
-    .mainContent{
-        width: auto;
-    }
+  mat-drawer {
+    margin-top: 0;
+  }
+  mat-drawer-container{
+      padding-top: 0;
+  }
+  .mainContent{
+      width: auto;
+  }
 }
 
 

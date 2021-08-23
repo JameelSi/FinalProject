@@ -6,7 +6,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatDrawer } from '@angular/material/sidenav';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { MatAccordion } from '@angular/material/expansion';
+import { MatAccordion, MatExpansionPanel } from '@angular/material/expansion';
 import { BehaviorSubject, combineLatest, concat, forkJoin, Subscription } from 'rxjs';
 import { concatMap, filter, map, tap } from 'rxjs/operators';
 import { DialogBoxComponent } from '../dialog-box/dialog-box.component';
@@ -31,7 +31,7 @@ export class ProjectsTrackingComponent implements OnInit, OnDestroy {
   @ViewChildren(MatSort) sorts!: QueryList<MatSort>;
   @ViewChildren(MatPaginator) paginators!: QueryList<MatPaginator>;
   @ViewChild(MatAccordion) accordion!: MatAccordion;
-
+  @ViewChild(MatExpansionPanel) pannel?: MatExpansionPanel;
 
   areaCoords: areaCoord[] = []
   clubCoords: clubCoord[] = []
@@ -55,9 +55,11 @@ export class ProjectsTrackingComponent implements OnInit, OnDestroy {
     private dataProvider: GetDataService, private afs: AngularFirestore,
     public authService: AuthService,
     private progressSpinner: ProgressSpinnerOverlayService) {
-    this.authService.authData$.subscribe(auth => {
-      this.adminType = auth.type
-    })
+    this.subs.add(
+      this.authService.authData$.subscribe(auth => {
+        this.adminType = auth.type
+      })
+    )
   }
 
   ngOnDestroy(): void {
@@ -140,6 +142,8 @@ export class ProjectsTrackingComponent implements OnInit, OnDestroy {
           let temp2 = this.areaCoords[0]
           this.areaCoords[0] = temp
           this.areaCoords[idx] = temp2
+          this.getAreaCoordsData(temp)
+          this.pannel?.open()
         }
       }
       this.allNeighborhoods.forEach(neighb => {

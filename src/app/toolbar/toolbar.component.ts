@@ -1,5 +1,6 @@
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { ScrollDispatcher } from '@angular/cdk/scrolling';
+import { flatten } from '@angular/compiler';
 import { Component, NgZone, OnInit, ViewChild } from '@angular/core';
 import { MatToolbar } from '@angular/material/toolbar';
 import { Subscription } from 'rxjs';
@@ -96,20 +97,22 @@ export class ToolbarComponent implements OnInit {
       requireLogIn: true, 
       requireLogOut: false,
       showAll: false,
-    }
+    },
     
   ]
-  subs:Subscription
+  subs = new Subscription()
   constructor(
     private scrollDispatcher: ScrollDispatcher,
     private zone: NgZone,
     private observer: BreakpointObserver,
     public authService:AuthService,
   ) {
-    this.subs = this.authService.authData$.subscribe(data=>{
-      this.isAdmin = data.admin
-      this.userType = data.type
-    })
+    this.subs.add(
+      this.authService.authData$.subscribe(data=>{
+        this.isAdmin = data.admin
+        this.userType = data.type
+      })
+    )
   }
 
   ngOnInit(): void {

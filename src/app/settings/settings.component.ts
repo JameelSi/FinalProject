@@ -165,6 +165,22 @@ export class SettingsComponent implements OnInit {
                 this.snackBar.open("קרתה שגיאה נא לנסות בזמן מאוחר יותר", '', { duration: 3000, direction: 'rtl', panelClass: ['snacks'] });
               })
           }
+          else if(result.data.dialogType === "manager"){
+            this.afs.collection(collec).doc(doc).delete()
+            .then(() => {
+              this.snackBar.open("התהליך הסתיים בהצלחה", '', { duration: 3000, direction: 'rtl', panelClass: ['snacks'] });
+            }).catch((error) => {
+              this.snackBar.open("קרתה שגיאה נא לנסות בזמן מאוחר יותר", '', { duration: 3000, direction: 'rtl', panelClass: ['snacks'] });
+            })
+            // remove deleted manager's id from neighborhoods
+            let citiesRef = firebase.firestore().collection("ירושלים");
+            let query = citiesRef.where("managerId", "==", doc);
+            query.get().then(docs=>{
+              docs.forEach(docc=>{
+                docc.ref.update({managerId: ""})
+              })
+            }).catch(err=> console.log(err))
+          }
           else {
             this.afs.collection(collec).doc(doc).delete().then(() => {
               this.snackBar.open("התהליך הסתיים בהצלחה", '', { duration: 3000, direction: 'rtl', panelClass: ['snacks'] });

@@ -32,9 +32,9 @@ export class HomepageComponent implements OnInit {
     public authService: AuthService,
     private dialog: MatDialog,
     readonly snackBar: MatSnackBar) {
-    this.authService.authData$.subscribe(data => {
+    this.subs.add(this.authService.authData$.subscribe(data => {
       this.isAdmin = data.admin
-    })
+    }))
     this.responsiveOptions = [
       {
         breakpoint: '1024px',
@@ -55,9 +55,10 @@ export class HomepageComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.subs = this.dataProvider.getProjectVolOppsData().subscribe(res => {
+    this.subs.add(this.dataProvider.getProjectVolOppsData().subscribe(res => {
       this.events = res
     })
+    )
   }
 
   ngOnDestroy(){
@@ -75,11 +76,16 @@ export class HomepageComponent implements OnInit {
     if (type==='displayEvent'){
       element.event = doc
     }
+    let w, h
+    if(action==='Display'){
+      w = '80%'
+      h = '80%'
+    }
     const dialogRef = this.dialog.open(DialogBoxComponent, {
       direction: 'rtl',
       data: element,
-      width: '80%',
-      height: '80%',
+      width: w,
+      height: h,
     });
 
     dialogRef.afterClosed().subscribe(result => {

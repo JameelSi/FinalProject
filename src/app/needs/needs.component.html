@@ -25,22 +25,24 @@
             <mat-panel-description>
               לחץ עליי להצגת מענים!
             </mat-panel-description>
-
           </mat-expansion-panel-header>
+
           <div class="answersContentBox">
             <div *ngFor="let content of item.content; index as i" class="answersBox">
-              <mat-icon *ngIf="authService.isLoggedIn && isAdmin" class="answersDelete" (click)="addDialog('Delete',item,'doc',content)">do_not_disturb_on
+              <mat-icon *ngIf="authService.isLoggedIn && isAdmin" class="answersDelete"
+                (click)="addDialog('Delete',item,'doc',content)">do_not_disturb_on
               </mat-icon>
               <div class="answersContent"
                 [ngClass]="{ 'first': i%4===0,'second' : i%4===1,'third':i%4===2,'fourth':i%4==3}"
                 [innerHTML]="content | prettyPrint">
                 {{content}}
-                <mat-icon *ngIf="authService.isLoggedIn && isAdmin" (click)="addDialog('Update',item,'doc',content)">edit</mat-icon>
               </div>
+              <mat-icon *ngIf="authService.isLoggedIn && isAdmin" (click)="addDialog('Update',item,'doc',content)">edit
+              </mat-icon>
             </div>
           </div>
-          <button *ngIf="authService.isLoggedIn && isAdmin" class="answersAdd" (click)="addDialog('Add',item,'doc')">+</button>
-
+          <button *ngIf="authService.isLoggedIn && isAdmin" class="answersAdd"
+            (click)="addDialog('Add',item,'doc')">+</button>
 
         </mat-expansion-panel>
 
