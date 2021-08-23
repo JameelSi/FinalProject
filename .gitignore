@@ -50,8 +50,12 @@ src/environments
 .firebaserc
 firebase.json
 .firebase
-functions
 firestore.indexes.json
 firestore.rules
 storage.rules
+ui-debug.log
+firestore-debug.log
+
+
+# send grid
 sendgrid.env

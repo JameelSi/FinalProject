@@ -1,5 +1,6 @@
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { ScrollDispatcher } from '@angular/cdk/scrolling';
+import { flatten } from '@angular/compiler';
 import { Component, NgZone, OnInit, ViewChild } from '@angular/core';
 import { MatToolbar } from '@angular/material/toolbar';
 import { Subscription } from 'rxjs';
@@ -96,7 +97,7 @@ export class ToolbarComponent implements OnInit {
       requireLogIn: true, 
       requireLogOut: false,
       showAll: false,
-    }
+    },
     
   ]
   subs = new Subscription()

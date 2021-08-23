@@ -34,7 +34,7 @@ export class RegisteredUsersComponent implements OnInit {
   volunteers: Volunteer[] = []
   dataSource: any[] = [];
   neighborhoods!: neighborhood[]
-  currType!: number
+  currType = 1
 
   constructor(private observer: BreakpointObserver, private dataProvider: GetDataService, private dialog: MatDialog, private afs: AngularFirestore, readonly snackBar: MatSnackBar) { }
 
@@ -50,7 +50,8 @@ export class RegisteredUsersComponent implements OnInit {
     this.subs.add(
       this.dataProvider.getElderlies().subscribe((res) => {
         this.elderlies = res
-        this.dataSource = this.elderlies
+        if(this.currType && this.currType==2)
+          this.dataSource = this.elderlies
       })
     )
 

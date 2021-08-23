@@ -26,7 +26,7 @@ const routes: Routes = [
   { path: 'signin', component: SigninComponent },
   { path: 'settings', component: SettingsComponent, canActivate: [AuthGuard]},
   { path: 'messages', component: MessagesComponent, canActivate: [AuthGuard]},
-  { path: 'contactus', component: ContactUsComponent},
+  { path: 'contactus', component: ContactUsComponent},  
   { path: 'profile', component: ProfileComponent, canActivate: [LoggedInGuard] },
   { path: 'registereduser', component: RegisteredUsersComponent, canActivate: [AuthGuard]},
   { path: 'tasks', component: TasksComponent, canActivate: [AuthGuard] },
