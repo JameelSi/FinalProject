@@ -1,6 +1,8 @@
 .body{
-    padding:50px;
     padding-top: 15vh;
+}
+form{
+    padding:50px;
     display: flex;
     flex-direction: row-reverse;
     justify-content: center;
@@ -9,18 +11,28 @@
     flex: 1;
 }
 .firstCard{
-    height: 70vh;
+    width: 95%;
+    height: fit-content;
+    mat-card-header{
+        padding-bottom: 10%;
+    }
+}
+
+.img-btns{
+    display:flex; 
+    flex-direction: row; 
+    justify-content: space-around;
+    padding: 6% 0;
+    flex-wrap: wrap;
+    button{
+        margin: 2%;
+    }
 }
 .secondCard{
     width: 95%;
-    height: 38vh;
+    height: fit-content;
 }
 
-.thirdCard{
-    margin-top: 2%;
-    height: 30vh;
-    width: 95%;
-}
 .profileImg{
     text-align: center;
 }
@@ -36,13 +48,6 @@ mat-card-title{
     // justify-content:space-between;
     font-size: medium;
     font-weight: bold;
-
-    mat-icon{
-        flex-grow: 0;
-        font-size: medium;
-        margin-left: 2vh;
-        color: #48BF92;
-    }
     .title{
         flex-grow: 2;
     }
@@ -51,28 +56,75 @@ mat-card-title{
     }
 }
 
-@media screen and (max-width: 800px) {
-    .body{
+.thirdCard{
+    margin-top: 2%;
+    height: fit-content;
+    width: 95%;
+    mat-card-content{
+        display: flex;
+        flex-direction: row;
+        justify-content:space-evenly;
+    }
+    .fields{
+        display: flex;
         flex-direction: column;
-        padding:50px;
-        padding-top: 15vh;
+    }
+    .title{
+        flex-grow: 0;
+    }
+}
+
+.checks{
+    margin-right: 8px;
+    font-size: 14px;
+}
+.checBox{
+    height: 15px;
+    width: 20px;
+}
+.checksLabel{
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    flex-basis:25%
+}
+
+
+::ng-deep .mat-form-field {
+    min-width: 30px !important;
+    width: fit-content !important;
+}
+
+::ng-deep .mat-form-field-infix {
+    min-width: 30px !important;
+    width: fit-content !important;
+}
+
+
+@media screen and (max-width: 800px) {
+    form{
+        flex-direction: column;
+        padding:20px;
         display: flex;
     }
     .firstCard,.secondCard, .thirdCard{
+        width: 98%;
         margin-top: 2%;
         height: auto;
+        min-height: fit-content;
     }
 }
 
 @media screen and (max-height: 565px) {
-    .body{
+    form{
         flex-direction: column;
-        padding:50px;
-        padding-top: 15vh;
+        padding: 20px;
         display: flex;
     }
     .firstCard,.secondCard, .thirdCard{
+        width: 98%;
         margin-top: 2%;
         height: auto;
+        min-height: fit-content;
     }
 }

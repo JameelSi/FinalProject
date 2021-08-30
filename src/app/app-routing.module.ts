@@ -14,6 +14,7 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
 import { ContactUsComponent } from './contact-us/contact-us.component';
 import { TasksComponent } from './tasks/tasks.component';
 import { LoggedInGuard } from './guards/logged-in.guard';
+import { SmsComponent } from './sms/sms.component';
 
 // AuthGuard -> admins
 // LoggedInGuard -> any logged in user
@@ -27,6 +28,7 @@ const routes: Routes = [
   { path: 'settings', component: SettingsComponent, canActivate: [AuthGuard]},
   { path: 'messages', component: MessagesComponent, canActivate: [AuthGuard]},
   { path: 'contactus', component: ContactUsComponent},  
+  { path: 'sms', component: SmsComponent},  
   { path: 'profile', component: ProfileComponent, canActivate: [LoggedInGuard] },
   { path: 'registereduser', component: RegisteredUsersComponent, canActivate: [AuthGuard]},
   { path: 'tasks', component: TasksComponent, canActivate: [AuthGuard] },

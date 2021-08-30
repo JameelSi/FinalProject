@@ -227,7 +227,7 @@
       </ng-template>
 
       <ng-template #editEventsTemplate>
-        <ng-container *ngIf="dialogType === 'editEvent' && action != 'Delete'; else displayEventsTemplate ">
+        <ng-container *ngIf="dialogType === 'editEvent' && action != 'Delete'; else elseTemplate ">
           <mat-form-field appearance="fill">
             <mat-label>{{actionHebrew[action]}} תאריך</mat-label>
             <input matInput required id="date2" name="date2" [matDatepicker]="picker2" [(ngModel)]="newEvent.date"
@@ -272,14 +272,6 @@
                       *ngIf="uploadProgress">delete_forever</mat-icon>
           </div> -->
 
-        </ng-container>
-      </ng-template>
-
-      <ng-template #displayEventsTemplate>
-        <ng-container *ngIf="dialogType === 'displayEvent' && action != 'Delete'; else sendMailTemplate ">
-          <img src="{{local_data.event.img}}" width='100%'>
-          {{local_data.event.name}}
-          {{local_data.event.description}}
         </ng-container>
       </ng-template>
 
@@ -355,7 +347,7 @@
 
   <ng-template #actions>
     <ng-container
-      *ngIf="dialogType === ('editTemplates') ||dialogType ==='displayEvent' && action != 'Delete'; else elseActions ">
+      *ngIf="dialogType === ('editTemplates') && action != 'Delete'; else elseActions ">
       <button mat-button mat-dialog-close mat-flat-button>סגור</button>
     </ng-container>
   </ng-template>
@@ -367,15 +359,7 @@
   </ng-template>
 
   <mat-dialog-actions>
-    <!-- <ng-template matStepLabel>תחומי עיניין</ng-template> -->
     <ng-container *ngTemplateOutlet="actions"></ng-container>
-    <!-- <button mat-button mat-dialog-close mat-flat-button>סגור</button> -->
   </mat-dialog-actions>
-
-  <!-- <div mat-dialog-actions *ngIf="dialogType != ('displayEvent' && 'editTemplates')">
-    <button [disabled]="projForm.invalid" color="warn" mat-stroked-button
-      (click)="doAction()">{{actionHebrew[action]}}</button>
-    <button mat-button (click)="closeDialog()" mat-flat-button>בטל</button>
-  </div> -->
 
 </div>

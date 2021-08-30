@@ -12,7 +12,7 @@ import { GetDataService } from '../services/get-data/get-data.service';
 import { Elderly, Volunteer } from '../types/customTypes';
 
 // for AutoComplete - validate that user picks from the list
-function containsValidator(validOptions: Array<string>) {
+export function containsValidator(validOptions: Array<string>) {
   return (control: FormControl): { [key: string]: any } | null => {
     if (validOptions.indexOf(control.value) !== -1) {
       return null
@@ -20,7 +20,7 @@ function containsValidator(validOptions: Array<string>) {
     return { 'contains': true }
   }
 }
-function legalValidator() {
+export function legalValidator() {
   return (control: FormControl): { [key: string]: any } | null => {
 
     let temp = 0;

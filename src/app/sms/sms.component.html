@@ -1,0 +1,82 @@
+<body dir="rtl">
+
+    <h1 class="title">SMS בוט</h1>
+
+    <div class="main">
+
+        
+        <div class="sms-bot">
+            <!-- add new bot response -->
+            <h3>הוסף תגובה חדשה</h3>
+            <div class="new-response">
+                <mat-form-field appearance="outline">
+                    <mat-label>הודעה המתקבלת</mat-label>
+                    <textarea matInput id="1" cols="30" rows="3" [(ngModel)]='newReceived'></textarea>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                    <mat-label>תשובת הבוט</mat-label>
+                    <textarea matInput id="1" cols="30" rows="3" [(ngModel)]='newReply'></textarea>
+                </mat-form-field>
+
+                <button mat-raised-button color="primary" (click)="addResponse()">
+                     הוסף
+                </button>
+            </div>
+            <!-- responses list -->
+            <ul>
+                <li>
+                    <div class="header">
+                        <div class="headers">
+                            הודעה שמתקבלת
+                        </div>
+                        <div class="headers">
+                            תשובת הבוט
+                        </div>
+                        <div class="headers">
+                            פעולות
+                        </div>
+                    </div>
+
+                    <div class="row" *ngFor="let item of botReplies; index as i">
+
+                        <span class="received">
+                            <editable (update)="updateField(i, 'recieved', item)">
+                                <ng-template viewMode>{{item.key}}</ng-template>
+                                <ng-template editMode>
+                                    <mat-form-field style="width: 100%;">
+                                        <textarea rows="10" cols="100" matInput [formControl]="getControl(i, 'recieved')"
+                                            focusable></textarea>
+                                    </mat-form-field>
+                                </ng-template>
+                            </editable>
+                        </span>
+
+                        <span class="to-send">
+                            <editable (update)="updateField(i, 'reply', item)">
+                                <ng-template viewMode>
+                                    <div [innerHTML]="item.value | prettyPrint"></div>
+                                </ng-template>
+                                <ng-template editMode>
+                                    <mat-form-field style="width: 100%;">
+                                        <textarea matInput 
+                                            [formControl]="getControl(i, 'reply')" focusable>
+                                        </textarea>
+                                    </mat-form-field>
+                                </ng-template>
+                            </editable>
+                        </span>
+
+                        <span class="actions">
+
+                            <button mat-button color="warn" (click)="deleteResponse(item)">
+                                מחיקה
+                            </button>
+                        </span>
+
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</body>

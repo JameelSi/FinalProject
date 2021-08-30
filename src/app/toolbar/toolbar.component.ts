@@ -95,6 +95,14 @@ export class ToolbarComponent {
       requireLogIn: true,
       requireLogOut: false,
       showAll: false,
+    },{
+      label: "sms בוט",
+      icon: "smart_toy", 
+      route: "/sms",
+      admin: true,
+      requireLogIn: true, 
+      requireLogOut: false,
+      showAll: false,
     },
 
   ]

@@ -30,7 +30,7 @@ export class DialogBoxComponent implements OnInit {
   newNeighb?: neighborhood;
   newUser!: user;
   newEvent!: event;
-  dialogType: 'project' | 'needs' | 'resetPass' | 'neighb' | 'areaCoord' | 'manager' | 'clubCoord' | 'editEvent' | 'displayEvent' | 'sendMail' | 'editTemplates';
+  dialogType: 'project' | 'needs' | 'resetPass' | 'neighb' | 'areaCoord' | 'manager' | 'clubCoord' | 'editEvent'  | 'sendMail' | 'editTemplates';
   actionHebrew: { [key: string]: string } = { "Add": 'הוסף', "Update": 'עדכן', "Delete": 'מחק', "reset": 'שלח' };
   newEmail?: string;
   newPassword?: string;

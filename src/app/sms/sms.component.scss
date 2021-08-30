@@ -1,0 +1,164 @@
+
+body{
+    padding-top: 12vh;
+}
+  
+ol, ul {
+  list-style: none;
+}
+
+.title{
+  padding: 5vh 10vh 0;
+  font-size:xx-large;
+  font-weight: bolder;
+}
+
+.main{
+  padding: 0 10vh;
+}
+
+.sms-bot {
+  padding: 30px 30px 15px;
+  margin: 5vh 0vh;
+  margin-bottom: 15vh;
+}
+  
+.new-response{
+    width: 100%;
+    padding-right: 4vh;
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    button {
+        height: fit-content;
+        max-width: fit-content;
+    }
+    mat-form-field {
+        padding: 0 15px;
+        flex-grow:1;
+    }
+}
+
+.row, .header {
+  padding: 10px 3vh;
+  min-height: 30px;
+  line-height: 30px;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: nowrap;
+}
+.row{
+  border-bottom: 1px solid;
+  border-color: #dfdcdc #d9d6d6 #ccc;
+  border-radius: 1px;
+  width: 100%;
+}
+.header{
+  display: flex;
+    font-weight: bolder;
+    font-size: larger;
+    background-color:lightgrey;
+}
+  
+.headers {
+  font-size: 16px;
+  vertical-align: middle;
+  line-break: normal;
+  overflow-wrap: normal;
+}
+
+.recieved, .to-send{
+  font-size: 16px;
+  vertical-align: middle;
+}
+.to-send{
+  width: 40%;
+}
+.actions{
+  button{
+    width:fit-content
+  }
+}
+
+ul{
+    li{
+        width: 100%;
+      }
+      span{
+        word-break:normal;
+        overflow-wrap: normal;
+    }
+}
+
+// md
+@media screen and (max-width: 959px) {
+  .main{
+    padding: 0 7vh;
+  }
+  .title{
+    padding: 5vh 7vh 0;
+  }
+}
+
+@media screen and (max-width: 750px) {
+  .main{
+    padding: 0 3vh;
+  }
+  .title{
+    padding: 5vh 2vh 0;
+  }
+  .sms-bot {
+    padding: 0px;
+    margin: 0vh;
+    margin-bottom: 10vh;
+  }
+  .new-response{
+    width: 100%;
+    padding-right: 4vh;
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    mat-form-field {
+        padding: 0 15px;
+    }
+  }
+    .headers {
+      width: 20%;
+    }
+}
+
+// sm
+@media screen and (max-width: 599px) {
+  .main{
+    padding: 0 1vh;
+  }
+  .title{
+    padding: 5vh 2vh 0;
+  }
+  .sms-bot {
+    padding: 0px;
+    margin: 0vh;
+    margin-bottom: 10vh;
+  }
+  .row, .header {
+    padding: 10px 3vh;
+    min-height: 30px;
+    line-height: 30px;
+    display: flex;
+    justify-content: space-between;
+  }
+  .new-response{
+    padding-right: 0;
+  }
+  .headers {
+    width: 20%;
+  }
+  .recieved{
+    width: 40%;
+  }
+  // .to-send{
+  //   background-color: aqua;
+  //   width: 60%;
+  // }
+  
+}
