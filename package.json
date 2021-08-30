@@ -25,6 +25,7 @@
     "@angular/platform-browser-dynamic": "~11.2.11",
     "@angular/router": "~11.2.11",
     "@sendgrid/mail": "^7.4.5",
+    "eslint-config-google": "^0.14.0",
     "firebase": "^7.0 || ^8.0",
     "firebase-admin": "^9.10.0",
     "firebase-functions": "^3.14.1",

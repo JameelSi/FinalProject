@@ -34,25 +34,14 @@
 
           <mat-form-field appearance="fill">
             <mat-label>פרויקט מתמשך?</mat-label>
-            <mat-select  required [(ngModel)]="newProj.continuous" name="continuous">
+            <mat-select required [(ngModel)]="newProj.continuous" name="continuous">
               <mat-option value="כן">
-                 כן</mat-option>
+                כן</mat-option>
               <mat-option value="לא">
                 לא</mat-option>
             </mat-select>
             <mat-error>שדה חובה</mat-error>
           </mat-form-field>
-
-
-          <!-- <mat-label><b>{{actionHebrew[action]}} מועדון </b>*</mat-label>
-          <mat-radio-group class="radio_group" required name="clubCoordinatorId"
-            [(ngModel)]="newProj.clubCoordinatorId">
-            <mat-radio-button *ngFor="let clubCoord of local_data.clubs" [value]="clubCoord.id">
-              {{clubCoord.name}}
-              <br *ngIf="clubCoord.name && clubCoord.club">{{clubCoord.club}}
-              <br *ngIf="(clubCoord.name || clubCoord.club) && clubCoord.address">{{clubCoord.address}}
-            </mat-radio-button>
-          </mat-radio-group> -->
 
           <mat-label><b>{{actionHebrew[action]}} מועדון </b>*</mat-label>
           <br>
@@ -69,15 +58,6 @@
             </ul>
           </span>
 
-          <!--TODO: error message not showing-->
-          <!-- <div
-              *ngIf="newProj.clubCoordinatorId.invalid && (newProj.clubCoordinatorId.dirty || newProj.clubCoordinatorId.touched)"
-              class="alert">
-              <mat-error *ngIf="newProj.clubCoordinatorId.errors?.required">
-                שדה המועדון הינו חובה.
-              </mat-error>
-            </div> -->
-
           <mat-form-field>
             <input matInput id="projectType" name="projectType" required placeholder="{{actionHebrew[action]}} סוג מיזם"
               [(ngModel)]="newProj.projectType" #projectType="ngModel">
@@ -90,7 +70,7 @@
 
           <mat-form-field>
             <mat-label>מצב ?</mat-label>
-            <mat-select  [(ngModel)]="newProj.status" name="status">
+            <mat-select [(ngModel)]="newProj.status" name="status">
               <mat-option value="פתוח">
                 פתוח</mat-option>
               <mat-option value="סגור">
@@ -296,26 +276,106 @@
       </ng-template>
 
       <ng-template #displayEventsTemplate>
-        <ng-container *ngIf="dialogType === 'displayEvent' && action != 'Delete'; else elseTemplate ">
+        <ng-container *ngIf="dialogType === 'displayEvent' && action != 'Delete'; else sendMailTemplate ">
           <img src="{{local_data.event.img}}" width='100%'>
-        {{local_data.event.name}}
-        {{local_data.event.description}}
+          {{local_data.event.name}}
+          {{local_data.event.description}}
         </ng-container>
       </ng-template>
-      
+
+      <ng-template #sendMailTemplate>
+        <ng-container *ngIf="dialogType === 'sendMail' && action != 'Delete'; else editTemplates ">
+          <h3 style="text-decoration: underline;">{{local_data.count}} משתמשים נבחרו</h3>
+
+          <label> <strong>תבניות מוכנות</strong> </label>
+          <ul class="checkBoxes">
+            <mat-radio-group>
+              <mat-radio-button *ngFor="let template of templates |keyvalue" [value]="template.key"
+                (change)="fillFeilds($event)">
+                {{template.key}}
+              </mat-radio-button>
+            </mat-radio-group>
+          </ul>
+
+          <mat-form-field appearance="fill">
+            <mat-label>נושא</mat-label>
+            <input matInput name="mailSubject" type="text" required [(ngModel)]="local_data.mailSubject"
+              #mailSubject="ngModel">
+            <mat-error>שדה חובה</mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance='outline'>
+            <mat-label>תוכן</mat-label>
+            <textarea style="min-height: 150px;" required name="mailContent" matInput
+              [(ngModel)]="local_data.mailContent" #mailContent="ngModel"></textarea>
+            <mat-error>שדה חובה</mat-error>
+          </mat-form-field>
+
+        </ng-container>
+      </ng-template>
+
+      <ng-template #editTemplates>
+        <ng-container *ngIf="dialogType === 'editTemplates' && action != 'Delete'; else elseTemplate ">
+          <ul class="checkBoxes">
+            <mat-radio-group>
+              <mat-radio-button style="margin: 0;" *ngFor="let template of templates |keyvalue" [value]="template.key"
+                (change)="fillFeilds($event)">
+                {{template.key}}
+              </mat-radio-button>
+            </mat-radio-group>
+          </ul>
+
+          <mat-form-field appearance="fill">
+            <mat-label>נושא</mat-label>
+            <input matInput name="mailSubject" type="text" required [(ngModel)]="local_data.mailSubject"
+              #mailSubject="ngModel">
+            <mat-error>שדה חובה</mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance='outline'>
+            <mat-label>תוכן</mat-label>
+            <textarea style="min-height: 150px;" required name="mailContent" matInput
+              [(ngModel)]="local_data.mailContent" #mailContent="ngModel"></textarea>
+            <mat-error>שדה חובה</mat-error>
+          </mat-form-field>
+
+          <button mat-stroked-button [disabled]="projForm.invalid" color='primary' style="margin-left:5px"
+            (click)="addTemplate()">הוסף</button>
+          <button mat-stroked-button [disabled]="projForm.invalid" color='warn' (click)="deleteTemplate()"
+            style="margin-left:5px">מחק</button>
+          <button mat-stroked-button [disabled]="projForm.invalid" color='basic'
+            (click)="updateTemplate()">עדכן</button>
+        </ng-container>
+      </ng-template>
+
       <ng-template class="delete" #elseTemplate>
       </ng-template>
-      
     </form>
   </div>
-  
-  <mat-dialog-actions *ngIf="dialogType === 'displayEvent'">
-    <button mat-button mat-dialog-close mat-flat-button>סגור</button>
+
+  <ng-template #actions>
+    <ng-container
+      *ngIf="dialogType === ('editTemplates') ||dialogType ==='displayEvent' && action != 'Delete'; else elseActions ">
+      <button mat-button mat-dialog-close mat-flat-button>סגור</button>
+    </ng-container>
+  </ng-template>
+
+  <ng-template #elseActions>
+    <button [disabled]="projForm.invalid" color="warn" mat-stroked-button
+      (click)="doAction()">{{actionHebrew[action]}}</button>
+    <button mat-button (click)="closeDialog()" mat-flat-button>בטל</button>
+  </ng-template>
+
+  <mat-dialog-actions>
+    <!-- <ng-template matStepLabel>תחומי עיניין</ng-template> -->
+    <ng-container *ngTemplateOutlet="actions"></ng-container>
+    <!-- <button mat-button mat-dialog-close mat-flat-button>סגור</button> -->
   </mat-dialog-actions>
 
-  <div mat-dialog-actions *ngIf="dialogType != 'displayEvent'">
-    <button mat-button [disabled]="projForm.invalid" color="warn" (click)="doAction()">{{actionHebrew[action]}}</button>
+  <!-- <div mat-dialog-actions *ngIf="dialogType != ('displayEvent' && 'editTemplates')">
+    <button [disabled]="projForm.invalid" color="warn" mat-stroked-button
+      (click)="doAction()">{{actionHebrew[action]}}</button>
     <button mat-button (click)="closeDialog()" mat-flat-button>בטל</button>
-  </div>
+  </div> -->
 
 </div>

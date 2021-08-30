@@ -1,7 +1,5 @@
 import { BreakpointObserver } from '@angular/cdk/layout';
-import { ScrollDispatcher } from '@angular/cdk/scrolling';
-import { flatten } from '@angular/compiler';
-import { Component, NgZone, OnInit, ViewChild } from '@angular/core';
+import { Component,ViewChild } from '@angular/core';
 import { MatToolbar } from '@angular/material/toolbar';
 import { Subscription } from 'rxjs';
 import { AuthService } from '../services/auth/auth.service';
@@ -12,13 +10,13 @@ import { MenuItem } from '../types/customTypes';
   templateUrl: './toolbar.component.html',
   styleUrls: ['./toolbar.component.scss']
 })
-export class ToolbarComponent implements OnInit {
+export class ToolbarComponent {
 
   @ViewChild(MatToolbar) nav!: MatToolbar;
   isOnTop = true;
   isAdmin = false;
   userType!: string
-
+  isSmall=false;
   menuItems: MenuItem[] = [
     {
       label: "דף הבית",
@@ -28,7 +26,7 @@ export class ToolbarComponent implements OnInit {
       requireLogIn: false,
       requireLogOut: false,
       showAll: true,
-    },{
+    }, {
       label: "רישום למתנדב",
       icon: "person_add_alt",
       route: "/signup/Volunteers",
@@ -49,7 +47,7 @@ export class ToolbarComponent implements OnInit {
       admin: true,
       requireLogIn: true,
       requireLogOut: false
-    },{
+    }, {
       label: "מענים",
       icon: "medical_services",
       route: "/needs",
@@ -65,7 +63,7 @@ export class ToolbarComponent implements OnInit {
       requireLogIn: true,
       requireLogOut: false,
       showAll: false,
-    },{
+    }, {
       label: "מאגר נרשמים",
       icon: "groups",
       route: "/registereduser",
@@ -73,7 +71,7 @@ export class ToolbarComponent implements OnInit {
       requireLogIn: true,
       requireLogOut: false,
       showAll: false,
-    },{
+    }, {
       label: "ריכוז הודעות",
       icon: "message",
       route: "/messages",
@@ -81,7 +79,7 @@ export class ToolbarComponent implements OnInit {
       requireLogIn: true,
       requireLogOut: false,
       showAll: false,
-    },{
+    }, {
       label: "איזור אישי",
       icon: "account_circle",
       route: "/profile",
@@ -89,57 +87,45 @@ export class ToolbarComponent implements OnInit {
       requireLogIn: true,
       requireLogOut: false,
       showAll: false,
-    },{
+    }, {
       label: "מעקב משימות",
-      icon: "task_alt", 
+      icon: "task_alt",
       route: "/tasks",
       admin: true,
-      requireLogIn: true, 
+      requireLogIn: true,
       requireLogOut: false,
       showAll: false,
     },
-    
+
   ]
   subs = new Subscription()
-  constructor(
-    private scrollDispatcher: ScrollDispatcher,
-    private zone: NgZone,
-    private observer: BreakpointObserver,
-    public authService:AuthService,
-  ) {
+  constructor(public authService: AuthService, private observer: BreakpointObserver,)  {
     this.subs.add(
-      this.authService.authData$.subscribe(data=>{
+      this.authService.authData$.subscribe(data => {
         this.isAdmin = data.admin
         this.userType = data.type
       })
     )
   }
+  ngAfterViewInit() {
+    setTimeout(() => {
+      this.subs.add(
+        this.observer.observe(['(max-width: 1150px)']).subscribe((res) => {
+          if(res.matches)
+            this.isSmall=true;
+          else 
+            this.isSmall=false;
+        })
+      );
+    });
 
-  ngOnInit(): void {
-    // this.scrollDispatcher.scrolled().subscribe((event: any) => {
-    //   console.log('event', event)
-    //   const scroll = event.CdkScrollable.measureScrollOffset("start");
-    //   let newIsOnTop = this.isOnTop;
+  }
 
-    //   if (scroll > 0) {
-    //     newIsOnTop = false
-    //   } else {
-    //     newIsOnTop = true;
-    //   }
-
-    //   if (newIsOnTop !== this.isOnTop) {
-    //     this.zone.run(() => {
-    //       this.isOnTop = newIsOnTop;
-    //     });
-    //   }
-    // });
-    
-    }
-    ngOnDestroy(){
-      this.subs.unsubscribe()
-    }
-  logOut(){
+  ngOnDestroy() {
+    this.subs.unsubscribe()
+  }
+  logOut() {
     this.authService.logout()
   }
-  
+
 }

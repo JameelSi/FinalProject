@@ -1,8 +1,10 @@
 <!--breakpoints: https://github.com/angular/flex-layout/issues/821 -->
 <div dir="rtl">
     <mat-toolbar fxLayout="row" class="fixed-toolbar">
-        <span fxFlex routerLink="/" style="cursor: pointer;"><img class="logoImg" src="../../assets/imgs/logo.png"></span>
-            <div routerLink={{item.route}} *ngFor="let item of menuItems" fxHide.lt-sm fxHide.lt-md>
+        <span fxFlex routerLink="/" style="cursor: pointer;"><img class="logoImg"
+                src="../../assets/imgs/logo.png"></span>
+        <ng-container *ngIf="!isSmall">
+            <div routerLink={{item.route}} *ngFor="let item of menuItems">
                 <ng-container
                     *ngIf="( !item.admin || (item.admin && authService.isLoggedIn && isAdmin ) ) 
                     && ((item.requireLogIn && authService.isLoggedIn) || (item.requireLogOut && !authService.isLoggedIn || item.showAll))">
@@ -11,15 +13,16 @@
                     </button>
                 </ng-container>
             </div>
+        </ng-container>
         <ng-container *ngIf="!authService.isLoggedIn">
-            <button routerLink="/signin" mat-stroked-button  color=primary>כניסה</button>
+            <button routerLink="/signin" mat-stroked-button color=primary>כניסה</button>
         </ng-container>
         <ng-container *ngIf="authService.isLoggedIn">
-            <button mat-button (click)="logOut()"  mat-stroked-button>יציאה</button>
+            <button mat-button (click)="logOut()" mat-stroked-button>יציאה</button>
             <mat-divider></mat-divider>
         </ng-container>
 
-        <button mat-icon-button [matMenuTriggerFor]="dropMenu" fxHide fxShow.lt-sm fxShow.lt-md>
+        <button mat-icon-button [matMenuTriggerFor]="dropMenu" *ngIf="isSmall">
             <mat-icon>more_vert</mat-icon>
         </button>
         <!-- add signin/sign out outside menu -->

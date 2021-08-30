@@ -1,3 +1,4 @@
+
 .spacer {
     flex: 1 1 auto;
 }
@@ -7,23 +8,25 @@
     position: absolute;
     // top: 0;
     z-index: 999;
-    background-color: transparent;
-    // background-color: white;
-//     background: -webkit-linear-gradient(to right, #0000, #ffff);  /* Chrome 10-25, Safari 5.1-6 */
+    // background-color: transparent;
+    // background: -webkit-linear-gradient(to right, #0000, #ffff);  /* Chrome 10-25, Safari 5.1-6 */
 //   background: linear-gradient(to right, #0000, #ffff); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-    color: black;
+    // color: whitesmoke;
     min-height: 12vh;
-    background-color: white;
+    background-color: #24272a;
 }
 button{
     font-size: large;
-    color: black;
+    color: whitesmoke;
     margin: 5px;
 
 }
 
 .logoutBtn{
     background-color: red;
+}
+.logoImg{
+    background-blend-mode: soft-light;
 }
 
 @media screen and (max-height: 640px) {

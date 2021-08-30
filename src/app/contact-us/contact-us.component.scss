@@ -94,10 +94,11 @@ footer{
     background-color: $wave_color;
     // top: calc(99vh + 99px);
     top: 99vh;
-    position: absolute;
+    position: static;
     width: 100%;
     display: flex;
     justify-content: space-between;
+    margin-top:7%
 }
 
 .footer-links-wrapper{

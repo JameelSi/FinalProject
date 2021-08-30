@@ -2,8 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
 import { combineLatest, Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
-// import { map, catchError } from 'rxjs/operators';
-import { areaCoord, neighborhood, manager, clubCoord, event, message, Volunteer, Elderly } from '../../types/customTypes';
+import { areaCoord, neighborhood, manager, clubCoord, event, message, Volunteer, Elderly,emailTemplate } from '../../types/customTypes';
 
 @Injectable({
   providedIn: 'root'
@@ -19,6 +18,7 @@ export class GetDataService {
   unreadMessagesRef: AngularFirestoreCollection<message>
   volunteersRef: AngularFirestoreCollection<Volunteer>
   elderliesRef: AngularFirestoreCollection<Elderly>
+  emailTemplatesRef: AngularFirestoreCollection<emailTemplate>
 
   constructor(private store: AngularFirestore) {
     this.areaCoordsRef = this.store.collection("AreaCoordinators")
@@ -32,6 +32,7 @@ export class GetDataService {
     this.unreadMessagesRef = this.store.collection('Messages', (ref: any) => { return ref.where('read', '==', false).orderBy('date', "desc") })
     this.volunteersRef = this.store.collection("Volunteers")
     this.elderliesRef = this.store.collection("Elderlies")
+    this.emailTemplatesRef=this.store.collection("EmailsTemplates")
   }
 
   // get data for projects tracking page
@@ -82,6 +83,10 @@ export class GetDataService {
     let orderedManagersRef: AngularFirestoreCollection<manager>
     orderedManagersRef = this.store.collection("Managers", ref => { return ref.orderBy("name") })
     return orderedManagersRef.valueChanges({ idField: 'id' })
+  }
+  getEmailTemplates() {
+    const temps = this.emailTemplatesRef.valueChanges({ idField: 'id' });
+    return temps
   }
 
   // getManagersOver(num: number){

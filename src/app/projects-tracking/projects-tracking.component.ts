@@ -1,21 +1,20 @@
 import { BreakpointObserver } from '@angular/cdk/layout';
-import { ChangeDetectorRef, Component, ComponentFactoryResolver, NgZone, OnDestroy, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
-import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from '@angular/fire/firestore';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatDrawer } from '@angular/material/sidenav';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatAccordion, MatExpansionPanel } from '@angular/material/expansion';
-import { BehaviorSubject, combineLatest, concat, forkJoin, Subscription } from 'rxjs';
-import { concatMap, filter, map, tap } from 'rxjs/operators';
+import { BehaviorSubject, combineLatest,Subscription } from 'rxjs';
+import { filter } from 'rxjs/operators';
 import { DialogBoxComponent } from '../dialog-box/dialog-box.component';
 import { GetDataService } from '../services/get-data/get-data.service';
 import { ProgressSpinnerOverlayService } from '../services/progressSpinerOverlay/progress-spinner-overlay.service';
 import { AuthService } from '../services/auth/auth.service';
 import { areaCoord, neighborhood, project, manager, clubCoord } from '../types/customTypes';
 import firebase from 'firebase/app';
-import * as moment from 'moment';
 
 @Component({
   selector: 'app-projects-tracking',
@@ -26,8 +25,6 @@ import * as moment from 'moment';
 export class ProjectsTrackingComponent implements OnInit, OnDestroy {
 
   @ViewChild(MatDrawer) sidenav!: MatDrawer;
-  // @ViewChild(MatPaginator) paginator!: MatPaginator;
-  // @ViewChild(MatSort) sort!: MatSort;
   @ViewChildren(MatSort) sorts!: QueryList<MatSort>;
   @ViewChildren(MatPaginator) paginators!: QueryList<MatPaginator>;
   @ViewChild(MatAccordion) accordion!: MatAccordion;

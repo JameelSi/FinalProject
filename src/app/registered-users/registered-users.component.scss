@@ -41,17 +41,19 @@ mat-drawer-container{
 .menu-container{
   padding: 3vh 5vh;
   display: flex;
-  justify-content: flex-start;
+  justify-content: space-between;
   flex-wrap: wrap;  
-  .menu-btn{
+}
+.menu-btn{
     margin-left: 5vh;
     margin-bottom: 2vh;
     background-color:#B6C9F0;
+    width: fit-content;
+    height: 50px;
     // #B8DFD8
     // #B6C9F0
     // #CDC7BE
   }
-}
 
 
 mat-accordion{
@@ -142,3 +144,17 @@ tr.example-detail-row {
     border-width: 1px; 
     border-color: gainsboro;
   }
+.currN{
+  margin-top: auto;
+  margin-bottom: auto;
+  font-size: larger;
+  font-weight: bold;
+  text-decoration: underline;
+}
+.mailBtn{
+  font-weight: bold;
+  height: 50px;
+}
+#matErr{
+  font-size: smaller;
+}

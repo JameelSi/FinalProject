@@ -150,17 +150,16 @@ a {
     .delete{color: red;}
 
     .bot{
-      width: 20%;
-      height: 15%;
-      background-color:#00a295 ;
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      font-weight: bold;
-      font-size: 20px;
-      padding-top: 20px;
-      text-align: center;
-      word-wrap: break-word;
+      width: 86.5%;
+      height: fit-content;
+      padding: 10px;
+      margin-right: 2%;
+      margin-top: 15px;
+      background: #4b6cb7;  /* fallback for old browsers */
+      background: -webkit-linear-gradient(to right, #182848, #4b6cb7);  /* Chrome 10-25, Safari 5.1-6 */
+      background: linear-gradient(to right, #182848, #4b6cb7); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+      color: white;
+      // word-wrap: break-word;
     }
 
     // colors: https://uigradients.com/
@@ -188,5 +187,11 @@ a {
       background: -webkit-linear-gradient(to left, #4dd3f8, #8fb0ee, #7f9ad5);  /* Chrome 10-25, Safari 5.1-6 */
       background: linear-gradient(to left, #4dd3f8, #8fb0ee, #7f9ad5); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
     }
-
-    
+    .phoneNum{
+      width: 30vh;
+      height: 35px;
+      margin: 5px;
+    }
+    // .phoneBtn{
+      
+    // }
