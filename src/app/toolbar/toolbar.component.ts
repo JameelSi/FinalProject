@@ -56,7 +56,7 @@ export class ToolbarComponent {
       requireLogOut: false,
       showAll: true,
     }, {
-      label: "הגדרות",
+      label: "תפקידים",
       icon: "settings",
       route: "/settings",
       admin: true,
