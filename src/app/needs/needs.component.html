@@ -1,5 +1,4 @@
 <mat-drawer-container>
-
   <mat-drawer mode="side" class=mat-elevation-z8 position="end" dir="rtl">
     <h2 class="contentTitle">תוכן צרכים</h2>
     <ol class="listOfContents">
@@ -11,6 +10,16 @@
   </mat-drawer>
 
   <mat-drawer-content id="mainContent" dir="rtl">
+
+    <div *ngIf="!isAdmin" class="mat-elevation-z8 bot">
+      <h2 style="color: white; font-weight: bold;">רוצה להקיל על עצמך ולקבל פרטים על המענים שמעניינים אותך בלי לחפש ?
+        רשום את המספר שלך עכשיו ותהנה מהשירות!</h2>
+      <form [formGroup]="numberForm" >
+        <input class="phoneNum" formControlName="pName" placeholder="שם">
+        <input class="phoneNum" formControlName="phoneNum" placeholder="הכנס מס' טלפון..">
+        <button  mat-raised-button  (click)="sendSms()">שלח!</button>
+      </form>
+    </div>
     <mat-accordion>
       <div *ngFor="let item of items | async let i=index" id="{{'item'+i}}" class="panelBox">
         <div *ngIf="authService.isLoggedIn && isAdmin" class="icons">
@@ -49,7 +58,6 @@
       </div>
     </mat-accordion>
 
-    <!-- <div class="bot"> רוצה להנות מהבוט שלנו בווטאפ ? :) שלח הודעה עכשיו למספר :054-!</div> -->
 
   </mat-drawer-content>
 

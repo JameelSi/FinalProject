@@ -14,8 +14,8 @@ const client = new twilio.Twilio(accountSid, authToken);
 // Sends sms via HTTP - twilio
 exports.sendSms = functions.https.onCall(async (data, context) => {
   const textMessage = {
-    body: " שלום" + data.name +
-     ",אני בוטבוט, התשאטבוט של הגיל השלישי זה אנחנו! 😄\n" +
+    body: " שלום" + data.name +"\n,"+
+     "אני בוטבוט, התשאטבוט של הגיל השלישי זה אנחנו! 😄\n" +
             "שמעתי שאתם צריכים מידע על המענים הקיימים, \n" +
             "ורציתי לעזור לכם ולתת לכם את כל המידע שאתם צריכים🥳 \n" +
             "‼️ תכתבו לי את מספר המענה שאתם רוצים מהרשימה: \n" +
@@ -42,11 +42,12 @@ exports.sendEmail = functions.https.onCall(async (data, context) => {
   const sendgridInfo = require("./sendgrid.env");
   sgMail.setApiKey(sendgridInfo.SENDGRID_API_KEY);
   const msg = {
-    to: data.emails,
+    to: data.emails.pop(),
+    bcc: data.emails,
     from: sendgridInfo.SENDGRID_EMAIL,
     subject: data.subject,
     text: data.text,
-    html: "<strong>" + data.text + "</strong>",
+    html: "<p dir=\"rtl\">" + data.text + "</p>",
   };
   sgMail.send(msg)
       .then(() => {

@@ -26,18 +26,40 @@
         <div dir="rtl" class="menu-container">
             <button class="menu-btn" mat-raised-button [matMenuTriggerFor]="menu">
                 <mat-icon>place</mat-icon>
-                שכונות
+                סווג לפי שכונה
             </button>
             <mat-menu xPosition="after" yPosition="below" #menu="matMenu">
                 <button mat-menu-item (click)="setNeighb('all')"> הכל </button>
                 <button mat-menu-item *ngFor='let neighb of neighborhoods' (click)="setNeighb(neighb)">
                     {{neighb.id}}</button>
             </mat-menu>
+            <div class="currN">מוצג: {{currNeighb}}</div>
+            <div style="display: flex; flex-direction: column;">
+                <button mat-raised-button class="mailBtn" (click)="sendMail()">שליחת מייל</button>
+                <button mat-raised-button style="margin-top: 8px;" (click)="editTemplates()"> עדכון תבניות</button>
+                <mat-error id="matErr" *ngIf="emptySelection">*נא לבחור לפחות 1</mat-error>
+            </div>
         </div>
-
         <div class="mainContent">
 
             <table dir="rtl" mat-table [dataSource]="dataSource" multiTemplateDataRows class="mat-elevation-z8">
+
+                <ng-container matColumnDef="select">
+                    <th mat-header-cell *matHeaderCellDef>
+                        <mat-checkbox (change)="$event ? masterToggle() : null"
+                            [checked]="selection.hasValue() && isAllSelected()"
+                            [indeterminate]="selection.hasValue() && !isAllSelected()" [aria-label]="checkboxLabel()">
+                        </mat-checkbox>
+                    </th>
+
+                    <td mat-cell *matCellDef="let row">
+                        <mat-checkbox (click)="$event.stopPropagation()"
+                            (change)="$event ? selection.toggle(row) : null" [checked]="selection.isSelected(row)"
+                            [aria-label]="checkboxLabel(row)">
+                        </mat-checkbox>
+                    </td>
+
+                </ng-container>
                 <!----------------------------------  headers ---------------------------------->
                 <ng-container matColumnDef="name">
                     <th mat-header-cell *matHeaderCellDef> שם</th>
@@ -62,7 +84,8 @@
 
                 <ng-container matColumnDef="delete">
                     <th mat-header-cell *matHeaderCellDef> מחיקה </th>
-                    <td mat-cell *matCellDef="let element"> <mat-icon style="cursor: pointer;" color="warn" (click)="deleteUser(element)">delete</mat-icon>
+                    <td mat-cell *matCellDef="let element">
+                        <mat-icon style="cursor: pointer;" color="warn" (click)="deleteUser(element)">delete</mat-icon>
                     </td>
                 </ng-container>
 
@@ -80,7 +103,7 @@
                                 </div>
                                 <div class="dets"> <strong>שפות: </strong> {{element.langs}} </div>
                                 <div class="dets" *ngIf="element.personal_id"> <strong>מס' זהות : </strong>
-                                    {{element.personal_id}} </div>                                
+                                    {{element.personal_id}} </div>
                                 <div class="dets" *ngIf="element.hobbies"> <strong>תחומי התנדבות: </strong>
                                     {{element.hobbies}} </div>
                                 <div class="dets" *ngIf="element.needs"> <strong>צרכים : </strong> {{element.needs}}
