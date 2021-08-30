@@ -60,6 +60,12 @@ import { PrettyPrintPipe } from './prettyPrint/pretty-print.pipe';
 import { TasksComponent } from './tasks/tasks.component';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { SmsComponent } from './sms/sms.component';
+import {InplaceModule} from 'primeng/inplace';
+import { EditableComponent } from './editable/editable.component';
+import { ViewModeDirective } from './directives/viewMode';
+import { EditModeDirective } from './directives/editMode';
+import { MAT_DATE_LOCALE } from '@angular/material/core';
 
 @NgModule({
   declarations: [
@@ -79,6 +85,10 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     ProfileComponent,
     RegisteredUsersComponent,
     TasksComponent,
+    SmsComponent,
+    ViewModeDirective,
+    EditModeDirective,
+    EditableComponent,
     ],
   imports: [
     BrowserModule,
@@ -123,8 +133,10 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     AngularFireStorageModule,
     MatProgressBarModule,
     MatTooltipModule,
+    InplaceModule,
   ],
-  providers: [ScrollDispatcher],
+  providers: [ScrollDispatcher,
+      {provide: MAT_DATE_LOCALE, useValue: 'en-GB'},],
   bootstrap: [AppComponent],
   entryComponents: [ MatSpinner ]
 })

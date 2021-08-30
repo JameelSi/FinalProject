@@ -6,7 +6,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class PrettyPrintPipe implements PipeTransform {
 
   transform(value: string): string {
-    return value.replace(/\n/g, '<br>')
+    return value.replace(/\n|\\n/g, '<br>')
   }
 
 }

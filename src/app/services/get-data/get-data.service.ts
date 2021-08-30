@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
+import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from '@angular/fire/firestore';
 import { combineLatest, Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
 // import { map, catchError } from 'rxjs/operators';
@@ -84,16 +84,10 @@ export class GetDataService {
     return orderedManagersRef.valueChanges({ idField: 'id' })
   }
 
-  // getManagersOver(num: number){
-  //   let managersOverRef: AngularFirestoreCollection<manager>
-  //   managersOverRef = this.store.collection("Managers", ref => { return ref.where('progress', '>=', num) })
-  //   return managersOverRef.valueChanges({ idField: 'id' })
-  // }
-
-  // getManagersUnder(num: number){
-  //   let managersUnderRef: AngularFirestoreCollection<manager>
-  //   managersUnderRef = this.store.collection("Managers", ref => { return ref.where('progress', '<', num) })
-  //   return managersUnderRef.valueChanges({ idField: 'id' })
-  // }
+  getBotReplies(){
+    let botRepliesRef: AngularFirestoreDocument<{ [key: string]: string }>
+    botRepliesRef = this.store.collection("Bot").doc("Responses")
+    return botRepliesRef.valueChanges()
+  }
 
 }

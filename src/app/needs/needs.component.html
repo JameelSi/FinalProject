@@ -35,7 +35,7 @@
               <div class="answersContent"
                 [ngClass]="{ 'first': i%4===0,'second' : i%4===1,'third':i%4===2,'fourth':i%4==3}"
                 [innerHTML]="content | prettyPrint">
-                {{content}}
+                <!-- {{content}} -->
               </div>
               <mat-icon *ngIf="authService.isLoggedIn && isAdmin" (click)="addDialog('Update',item,'doc',content)">edit
               </mat-icon>

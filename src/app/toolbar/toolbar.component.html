@@ -4,8 +4,8 @@
         <span fxFlex routerLink="/" style="cursor: pointer;"><img class="logoImg" src="../../assets/imgs/logo.png"></span>
             <div routerLink={{item.route}} *ngFor="let item of menuItems" fxHide.lt-sm fxHide.lt-md>
                 <ng-container
-                    *ngIf="( !item.admin || (item.admin && authService.isLoggedIn && isAdmin ) ) 
-                    && ((item.requireLogIn && authService.isLoggedIn) || (item.requireLogOut && !authService.isLoggedIn || item.showAll))">
+                    *ngIf="( (item.admin && authService.isLoggedIn && isAdmin) ||
+                    (item.requireLogIn && !item.admin && authService.isLoggedIn && !isAdmin) || (item.requireLogOut && !authService.isLoggedIn) || item.showAll)">
                     <button mat-button>
                         {{item.label}}
                     </button>

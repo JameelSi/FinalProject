@@ -7,5 +7,5 @@ ui-debug.log
 .runtimeconfig.json
 emulator-suite.js
 
-
-
+# sendgrid
+sendgrid.env

@@ -16,14 +16,14 @@ mat-card {
   // margin: 5em auto;
   text-align: center;
 }
-@media screen and (max-width: 1000px) {
+@media screen and (max-width: 1100px) {
   mat-card{
-    width: 40vh;
+    width: 50%;
   }
 }
-@media screen and (max-width: 400px) {
+@media screen and (max-width: 700px) {
   mat-card{
-    width: 100%;
+    width: 80%;
   }
 }
 

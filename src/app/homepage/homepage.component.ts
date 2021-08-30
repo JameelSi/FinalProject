@@ -23,7 +23,7 @@ export class HomepageComponent implements OnInit {
 
   events!: event[];
   responsiveOptions: responsiveCarouselOption[]
-  subs= new Subscription()
+  subs = new Subscription()
   // profileUrl!: Observable<string | null>;
   isAdmin!: boolean
   constructor(
@@ -61,31 +61,21 @@ export class HomepageComponent implements OnInit {
     )
   }
 
-  ngOnDestroy(){
+  ngOnDestroy() {
     this.subs.unsubscribe()
   }
 
-  openDialog(action: 'Delete' | 'Add' | 'Display', type: 'editEvent' | 'displayEvent', doc: event | undefined) {
+  openDialog(action: 'Delete' | 'Add', type: 'editEvent', doc: event | undefined) {
     let collec = 'Events'
     let element: any = {}
-    if(action==='Add') element.dialogTitle = 'הוסף את פרטי האירוע החדש'
-    else if(action==='Delete') element.dialogTitle = 'בטוח למחוק את האירוע?'
-    else if(action==='Display') element.dialogTitle = 'פרטי האירוע'
+    if (action === 'Add') element.dialogTitle = 'הוסף את פרטי האירוע החדש'
+    else if (action === 'Delete') element.dialogTitle = 'בטוח למחוק את האירוע?'
+    else if (action === 'Display') element.dialogTitle = 'פרטי האירוע'
     element.action = action;
     element.dialogType = type;
-    if (type==='displayEvent'){
-      element.event = doc
-    }
-    let w, h
-    if(action==='Display'){
-      w = '80%'
-      h = '80%'
-    }
     const dialogRef = this.dialog.open(DialogBoxComponent, {
       direction: 'rtl',
       data: element,
-      width: w,
-      height: h,
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -108,6 +98,35 @@ export class HomepageComponent implements OnInit {
         }
       }
     })
+  }
+
+  modal(imageSrc: any, imageTitle: string, imageDescrip: string) {
+    // Get the modal
+    let modal = document.getElementById("myModal");
+
+    // Get the image and insert it inside the modal - use its "alt" text as a caption
+    let modalImg: any
+    let temp = document.getElementById("img01");
+    if (temp) {
+      modalImg = temp
+    }
+    let captionText = document.getElementById("caption");
+    let titleText = document.getElementById("title");
+    if (modal && modalImg && captionText && titleText) {
+      modal.style.display = "block";
+      (modalImg as HTMLImageElement).src = imageSrc;
+      captionText.innerHTML = imageDescrip;
+      titleText.innerHTML = imageTitle;
+    }
+
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("close")[0] as HTMLElement;
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function () {
+      if (modal) {
+        modal.style.display = "none";
+      }
+    }
   }
 
 }

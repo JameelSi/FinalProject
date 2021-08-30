@@ -1,0 +1,4 @@
+<div style="display: flex; justify-items: center;">
+    <button mat-button *ngIf="mode=='edit'" (click)="clicked()" style="cursor: pointer; color: green;"><mat-icon>done</mat-icon></button>
+    <ng-container *ngTemplateOutlet="currentView"></ng-container>
+</div>

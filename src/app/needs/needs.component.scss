@@ -125,8 +125,8 @@ a {
       flex-wrap: nowrap;
     }
     .answersContent{
-      overflow-wrap: break-word;
-      word-break: break-all;
+      overflow-wrap: normal;
+      flex-wrap: wrap;
       background: linear-gradient(
         142.53deg
         ,#00a295,#26e8f4 98.75%),#3dcda7;

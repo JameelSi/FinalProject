@@ -23,8 +23,8 @@
                 <img fxHide fxShow.lt-md src="https://firebasestorage.googleapis.com/v0/b/simhatv2test.appspot.com/o/images%2Fprev.png?alt=media&token=8ac7b330-653d-4e3e-a4c8-53f6dda55a81">
                 <div class="spacer"></div>
                 <div class="btn-wrapper">
-                    <button *ngIf="!authService.isLoggedIn" routerLink='/signup/Elderlies' class="main-btn" mat-raised-button color="accent">להרשמה</button>
-                    <button *ngIf="!isAdmin" routerLink='/contactus' class="main-btn" mat-raised-button color="accent">שלח הודעה</button>
+                    <button *ngIf="!authService.isLoggedIn" routerLink='/signup/Elderlies' class="main-btn" mat-raised-button >להרשמה</button>
+                    <button *ngIf="!isAdmin" routerLink='/contactus' class="main-btn" mat-raised-button >שלח הודעה</button>
                 </div>
             </div>
         </div>
@@ -48,12 +48,14 @@
             <div class="vol-item-content">
                 <div class="p-mb-3"></div>
                 <div>
+                    <h4 class="p-mb-1">{{currEvent.title}}</h4>
                     <div class="p-mb-3">
-                        <img src="{{currEvent.img}}" [alt]="currEvent.title" class="vol-image" (click)="openDialog('Display','displayEvent', currEvent)"/>
+                        <img src="{{currEvent.img}}" id="myImg" [alt]="currEvent.title" class="vol-image" 
+                        (click)="modal(currEvent.img, currEvent.title, currEvent.description)"/>
+                        <!-- openDialog('Display','displayEvent', currEvent) -->
                     </div>
-                    <h4 class="p-mb-1">{{currEvent.name}}</h4>
-                    <h6 class="p-mt-0 p-mb-3">{{currEvent.description}}</h6>
-                    <h6 class="p-mt-0 p-mb-3">click for more info</h6>
+                    <h6 class="p-mt-0 p-mb-3" style="font-size: medium;">{{currEvent.description}}</h6>
+                    <h6 class="p-mt-0 p-mb-3"><strong>!תלחצו לעוד פרטים</strong></h6>
                     <mat-icon *ngIf="authService.isLoggedIn && isAdmin" (click)="openDialog('Delete', 'editEvent', currEvent)"
                         style="color:red; cursor: pointer;">
                         delete
@@ -64,6 +66,18 @@
     </ng-template>
 
 </p-carousel>
+
+<!-- Enlarge Image Modal -->
+<div id="myModal" class="modal">
+    <!-- Modal Title -->
+    <div id="title"></div>
+    <!-- The Close Button -->
+    <span class="close">&times;</span>
+    <!-- Modal Content (The Image) -->
+    <img class="modal-content" id="img01">
+    <!-- Modal Caption (Image Text) -->
+    <div id="caption"></div>
+  </div>
 
 <div class="spacer"></div>
 
