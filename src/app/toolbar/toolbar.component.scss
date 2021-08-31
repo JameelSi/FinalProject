@@ -1,4 +1,4 @@
-
+$background: #24272a;
 .spacer {
     flex: 1 1 auto;
 }
@@ -13,11 +13,12 @@
 //   background: linear-gradient(to right, #0000, #ffff); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
     // color: whitesmoke;
     min-height: 12vh;
-    background-color: #24272a;
+    background-color: $background;
 }
+
 button{
     font-size: large;
-    color: whitesmoke;
+    color:seashell;
     margin: 5px;
 
 }
@@ -38,4 +39,8 @@ button{
 
 mat-menu{
     z-index: 9999;
+}
+
+::ng-deep .color{
+    background: $background;
 }

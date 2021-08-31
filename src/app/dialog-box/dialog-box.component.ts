@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, Optional } from '@angular/core';
+import { AfterViewChecked, Component, Inject, OnInit, Optional } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import * as moment from 'moment';
 import { AuthService } from '../services/auth/auth.service';
@@ -30,7 +30,7 @@ export class DialogBoxComponent implements OnInit {
   newNeighb?: neighborhood;
   newUser!: user;
   newEvent!: event;
-  dialogType: 'project' | 'needs' | 'resetPass' | 'neighb' | 'areaCoord' | 'manager' | 'clubCoord' | 'editEvent'  | 'sendMail' | 'editTemplates';
+  dialogType: 'project' | 'needs' | 'resetPass' | 'neighb' | 'areaCoord' | 'manager' | 'clubCoord' | 'editEvent' | 'sendMail' | 'editTemplates';
   actionHebrew: { [key: string]: string } = { "Add": 'הוסף', "Update": 'עדכן', "Delete": 'מחק', "reset": 'שלח' };
   newEmail?: string;
   newPassword?: string;
@@ -49,14 +49,18 @@ export class DialogBoxComponent implements OnInit {
     this.dialogType = this.local_data.dialogType
     this.action = this.local_data.action;
     if (this.action === 'Update' && this.dialogType == "project") {
+      if (!(this.local_data.clubCoordinatorId instanceof Array)) {
+        this.local_data.clubCoordinatorId = [this.local_data.clubCoordinatorId]
+      }
       this.newProj = {
         date: moment(this.local_data.date.toDate()),
         projectType: this.local_data.projectType,
         comments: this.local_data.comments,
-        clubCoordinatorId: this.local_data.clubCoordinatorId,
+        clubCoordinatorId: [],
         continuous: this.local_data.continuous,
         status: this.local_data.status
       }
+      // this.updateOldClubs()
     } else if (this.dialogType === "project") {
       this.newProj = { projectType: '', comments: '', date: moment(), continuous: '', status: '', clubCoordinatorId: [] }
     }
@@ -171,99 +175,118 @@ export class DialogBoxComponent implements OnInit {
   updateClubs() {
     this.local_data.clubs.forEach((club: clubCoord) => {
       if (club.currentValue) {
-        if (club.id)
+        if (club.id) {
           this.newProj?.clubCoordinatorId.push(club.id)
+        }
       }
+      club.currentValue = false
     });
   }
 
-  async createUser() {
-    if ((this.newUser as areaCoord).email && this.newPassword) {
-      //create and init new app reference (to prevent user from logging in) 
-      if (firebase.apps.length === 1)
-        this.secondaryApp = firebase.initializeApp(environment.firebase, "Secondary");
-      else
-        this.secondaryApp = firebase.apps[1]
-      await this.secondaryApp.auth().createUserWithEmailAndPassword((this.newUser as areaCoord).email, this.newPassword).then((res: any) => {
-        if (!res) {
-          this.invalidCreation = true;
-        }
-        // user created
-        else {
-          this.invalidCreation = false;
-          (this.newUser as areaCoord).uid = res.user?.uid
-          //I don't know if the next statement is necessary 
-          this.secondaryApp.auth().signOut();
-        }
+  // ngAfterViewChecked() {
+  //   this.updateOldClubs()
+  // }
+
+//   updateOldClubs() {
+//     this.local_data.clubs.forEach((club: any, i: number) => {
+//       if (this.local_data.clubCoordinatorId.includes(club.id)) {
+//         console.log(i)
+//         this.local_data.clubs[i].currentValue = true
+//       }
+//       else{
+//         this.local_data.clubs[i].currentValue = false
+//       }
+//     })
+//     console.log(this.local_data.clubs)
+// }
+
+async createUser() {
+  if ((this.newUser as areaCoord).email && this.newPassword) {
+    //create and init new app reference (to prevent user from logging in) 
+    if (firebase.apps.length === 1)
+      this.secondaryApp = firebase.initializeApp(environment.firebase, "Secondary");
+    else
+      this.secondaryApp = firebase.apps[1]
+    await this.secondaryApp.auth().createUserWithEmailAndPassword((this.newUser as areaCoord).email, this.newPassword).then((res: any) => {
+      if (!res) {
+        this.invalidCreation = true;
+      }
+      // user created
+      else {
+        this.invalidCreation = false;
+        (this.newUser as areaCoord).uid = res.user?.uid
+        //I don't know if the next statement is necessary 
+        this.secondaryApp.auth().signOut();
+      }
+    })
+      .catch((err: any) => {
+        this.invalidCreation = true;
+        this.snackBar.open(err, '', { duration: 3000, direction: 'rtl', panelClass: ['snacks'] });
       })
-        .catch((err: any) => {
-          this.invalidCreation = true;
-          this.snackBar.open(err, '', { duration: 3000, direction: 'rtl', panelClass: ['snacks'] });
-        })
-    }
   }
+}
 
-  onFileSelected(event: any) {
-    const file: File = event.target.files[0];
-    if (file) {
-      this.uploadedFile = file
-    }
+onFileSelected(event: any) {
+  const file: File = event.target.files[0];
+  if (file) {
+    this.uploadedFile = file
   }
+}
 
-  async updateImgURL() {
-    // create ref to storage
-    let storage = firebase.storage();
-    let storageRef = storage.ref()
-    let imgRef = storageRef.child(`events/${this.uploadedFile.name}`);
-    let snapshot_: any
-    // upload image file to storage
-    await imgRef.put(this.uploadedFile).then((snapshot) => {
-      // get image's download url and keep in newEvent doc
-      snapshot_ = snapshot
-    })
-    await snapshot_.ref.getDownloadURL().then((url: any) => {
-      this.newEvent.img = url
-    });
+async updateImgURL() {
+  // create ref to storage
+  let storage = firebase.storage();
+  let storageRef = storage.ref()
+  let imgRef = storageRef.child(`events/${this.uploadedFile.name}`);
+  let snapshot_: any
+  // upload image file to storage
+  await imgRef.put(this.uploadedFile).then((snapshot) => {
+    // get image's download url and keep in newEvent doc
+    snapshot_ = snapshot
+  })
+  await snapshot_.ref.getDownloadURL().then((url: any) => {
+    this.newEvent.img = url
+  });
+}
+fillFeilds(event: MatRadioChange) {
+  //Using NewLine as \n when inserting and reading from firebase because firebase doesnt support \n
+  let temp = this.templates[event.value].replace(/NewLine/g, "\n")
+  this.choosenTemplate = event.value
+  this.local_data.mailSubject = event.value
+  this.local_data.mailContent = temp
+}
+addTemplate() {
+  let temp = this.local_data.mailContent.replace(/\n/g, "NewLine")
+  if (this.local_data.mailSubject in this.templates) {
+    this.snackBar.open("כבר נמצא נא לשנות את השם או למחוק הישן", '', { duration: 1500, direction: 'rtl', panelClass: ['snacks'] });
+    return
   }
-  fillFeilds(event: MatRadioChange) {
-    //Using NewLine as \n when inserting and reading from firebase because firebase doesnt support \n
-    let temp = this.templates[event.value].replace(/NewLine/g, "\n")
-    this.choosenTemplate = event.value
-    this.local_data.mailSubject = event.value
-    this.local_data.mailContent = temp
-  }
-  addTemplate() {
-    let temp = this.local_data.mailContent.replace(/\n/g, "NewLine")
-    if (this.local_data.mailSubject in this.templates) {
-      this.snackBar.open("כבר נמצא נא לשנות את השם או למחוק הישן", '', { duration: 1500, direction: 'rtl', panelClass: ['snacks'] });
-      return
-    }
-    firebase.firestore().collection('EmailsTemplates').doc(this.local_data.mailSubject).set({
-      content: temp
-    }).then(err => {
-      this.snackBar.open("התווסף בהצלחה", '', { duration: 1500, direction: 'rtl', panelClass: ['snacks'] });
-    }).catch(err => {
-      this.snackBar.open("problem with firebase", '', { duration: 1500, direction: 'rtl', panelClass: ['snacks'] });
-    })
-  }
-  updateTemplate() {
-    let temp = this.local_data.mailContent.replace(/\n/g, "NewLine")
-    this.afs.collection('EmailsTemplates').doc(this.choosenTemplate).delete()
-    firebase.firestore().collection('EmailsTemplates').doc(this.local_data.mailSubject).set({
-      content: temp
-    }).then(err => {
-      this.snackBar.open("עודכן בהצלחה", '', { duration: 1500, direction: 'rtl', panelClass: ['snacks'] });
-      this.dialogRef.close();
-    }).catch(err => {
-      this.snackBar.open("problem with firebase", '', { duration: 1500, direction: 'rtl', panelClass: ['snacks'] });
-    })
-  }
-  deleteTemplate() {
-    this.afs.collection('EmailsTemplates').doc(this.local_data.mailSubject).delete().then(err => {
-      this.snackBar.open("נמחק בהצלחה", '', { duration: 1500, direction: 'rtl', panelClass: ['snacks'] });
-    }).catch(err => {
-      this.snackBar.open("problem with firebase", '', { duration: 1500, direction: 'rtl', panelClass: ['snacks'] });
-    })
+  firebase.firestore().collection('EmailsTemplates').doc(this.local_data.mailSubject).set({
+    content: temp
+  }).then(err => {
+    this.snackBar.open("התווסף בהצלחה", '', { duration: 1500, direction: 'rtl', panelClass: ['snacks'] });
+  }).catch(err => {
+    this.snackBar.open("problem with firebase", '', { duration: 1500, direction: 'rtl', panelClass: ['snacks'] });
+  })
+}
+updateTemplate() {
+  let temp = this.local_data.mailContent.replace(/\n/g, "NewLine")
+  this.afs.collection('EmailsTemplates').doc(this.choosenTemplate).delete()
+  firebase.firestore().collection('EmailsTemplates').doc(this.local_data.mailSubject).set({
+    content: temp
+  }).then(err => {
+    this.snackBar.open("עודכן בהצלחה", '', { duration: 1500, direction: 'rtl', panelClass: ['snacks'] });
     this.dialogRef.close();
-  }
+  }).catch(err => {
+    this.snackBar.open("problem with firebase", '', { duration: 1500, direction: 'rtl', panelClass: ['snacks'] });
+  })
+}
+deleteTemplate() {
+  this.afs.collection('EmailsTemplates').doc(this.local_data.mailSubject).delete().then(err => {
+    this.snackBar.open("נמחק בהצלחה", '', { duration: 1500, direction: 'rtl', panelClass: ['snacks'] });
+  }).catch(err => {
+    this.snackBar.open("problem with firebase", '', { duration: 1500, direction: 'rtl', panelClass: ['snacks'] });
+  })
+  this.dialogRef.close();
+}
 }
