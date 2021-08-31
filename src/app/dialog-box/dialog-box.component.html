@@ -49,7 +49,7 @@
           <span>
             <ul class="checkBoxes">
               <li *ngFor="let clubCoord of local_data.clubs">
-                <mat-checkbox name="clubCoords" [(ngModel)]="clubCoord.currentValue" #clubCoords="ngModel">
+                <mat-checkbox [checked]="clubCoord.currentValue" name="clubCoords" [(ngModel)]="clubCoord.currentValue" #clubCoords="ngModel">
                   {{clubCoord.name}}
                   <br *ngIf="clubCoord.name && clubCoord.club">{{clubCoord.club}}
                   <br *ngIf="(clubCoord.name || clubCoord.club) && clubCoord.address">{{clubCoord.address}}

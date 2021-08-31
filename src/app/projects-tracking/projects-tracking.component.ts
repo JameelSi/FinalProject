@@ -7,7 +7,7 @@ import { MatDrawer } from '@angular/material/sidenav';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatAccordion, MatExpansionPanel } from '@angular/material/expansion';
-import { BehaviorSubject, combineLatest,Subscription } from 'rxjs';
+import { BehaviorSubject, combineLatest, Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { DialogBoxComponent } from '../dialog-box/dialog-box.component';
 import { GetDataService } from '../services/get-data/get-data.service';
@@ -36,7 +36,7 @@ export class ProjectsTrackingComponent implements OnInit, OnDestroy {
   testEmitter$ = new BehaviorSubject<neighborhood[]>(this.allNeighborhoods);
   currNeighborhoods!: neighborhood[]
   managers: manager[] = []
-  displayedColumns: string[] = ['date', 'clubCoordinatorId', 'projectType', 'comments','continuous','status','action']
+  displayedColumns: string[] = ['date', 'clubCoordinatorId', 'projectType', 'comments', 'continuous', 'status', 'action']
   projectsToDisplay!: MatTableDataSource<project>
   currAreaCoord?: areaCoord
   currNeighborhood?: neighborhood
@@ -139,8 +139,10 @@ export class ProjectsTrackingComponent implements OnInit, OnDestroy {
           let temp2 = this.areaCoords[0]
           this.areaCoords[0] = temp
           this.areaCoords[idx] = temp2
-          this.getAreaCoordsData(temp)
-          this.pannel?.open()
+          if (!this.projectsToDisplay && !this.currNeighborhood) {
+            this.getAreaCoordsData(temp)
+            this.pannel?.open()
+          }
         }
       }
       this.allNeighborhoods.forEach(neighb => {
@@ -150,15 +152,15 @@ export class ProjectsTrackingComponent implements OnInit, OnDestroy {
           if (proj.clubCoordinatorId.constructor === Array) {
             proj.clubInfo = []
             proj.clubCoordinatorId.forEach(id => {
-              if(id==='0'){
-                proj.clubInfo?.push({name: '', address:'', club:'כללי', phone:'', coordPhone:''})
-              }else{
+              if (id === '0') {
+                proj.clubInfo?.push({ name: '', address: '', club: 'כללי', phone: '', coordPhone: '' })
+              } else {
                 let tempInfo = this.clubCoords.find(i => i.id?.trim() == id.trim())
                 if (proj.clubInfo && tempInfo) proj.clubInfo.push(tempInfo)
               }
             })
           }
-          else{ // for the variables in the database that are still strings
+          else { // for the variables in the database that are still strings
             let tempInfo = this.clubCoords.find(i => i.id?.trim() == (proj.clubCoordinatorId as unknown as string).trim())
             if (tempInfo) proj.clubInfo = [tempInfo]
           }
@@ -190,9 +192,7 @@ export class ProjectsTrackingComponent implements OnInit, OnDestroy {
   //   return ordered
   // }
 
-
   getAreaCoordsData(areaCoord: areaCoord | 'all') {
-
     if (areaCoord === "all") {
       this.accordion.closeAll();
       this.currAreaCoord = undefined
@@ -221,7 +221,7 @@ export class ProjectsTrackingComponent implements OnInit, OnDestroy {
       element.dialogTitle = 'נא להכניס את הנתונים החדשים'
       element.dialogType = 'project'
     }
-    else if (action === 'Delete' ) {
+    else if (action === 'Delete') {
       element.dialogTitle = 'בטוח למחוק את השורה?'
       element.dialogType = 'project'
     }
@@ -256,12 +256,12 @@ export class ProjectsTrackingComponent implements OnInit, OnDestroy {
         } else if (result.event == 'Update') {
           if (updateDocRef)
             this.editProject(updateDocRef, {
-              date: result.data.date,
-              projectType: result.data.projectType,
-              comments: result.data.comments,
-              clubCoordinatorId: result.data.clubCoordinatorId,
-              status: result.data.status,
-              continuous: result.data.continuous,
+              date: element.date,
+              projectType: element.projectType,
+              comments: element.comments,
+              clubCoordinatorId: element.clubCoordinatorId,
+              status: element.status,
+              continuous: element.continuous,
             }, result.newProj).then(() => this.progressSpinner.hide())
         }
       }

@@ -1,4 +1,4 @@
-
+$background: #24272a;
 .spacer {
     flex: 1 1 auto;
 }
@@ -9,13 +9,11 @@
     z-index: 999;
     min-height: 12vh;
     background-color: #313842;
-    // border-bottom: white;
-    // border-bottom-width: 1px;
-    // border-bottom-style: solid;
 }
+
 button{
     font-size: large;
-    color: whitesmoke;
+    color:seashell;
     margin: 5px;
 }
 
@@ -50,4 +48,8 @@ button{
 }
 mat-menu{
     z-index: 9999;
+}
+
+::ng-deep .color{
+    background: $background;
 }

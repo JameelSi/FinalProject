@@ -1,10 +1,10 @@
-import { Component, Inject, OnInit, Optional } from '@angular/core';
+import { AfterViewChecked, Component, Inject, OnInit, Optional } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import * as moment from 'moment';
 import { AuthService } from '../services/auth/auth.service';
 import firebase from 'firebase/app';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { project, areaCoord, neighborhood, manager, clubCoord, event, emailTemplate } from '../types/customTypes';
+import { project, areaCoord, neighborhood, manager, clubCoord, event } from '../types/customTypes';
 import { Moment } from 'moment';
 import { environment } from 'src/environments/environment';
 import { GetDataService } from '../services/get-data/get-data.service';
@@ -30,7 +30,7 @@ export class DialogBoxComponent implements OnInit {
   newNeighb?: neighborhood;
   newUser!: user;
   newEvent!: event;
-  dialogType: 'project' | 'needs' | 'resetPass' | 'neighb' | 'areaCoord' | 'manager' | 'clubCoord' | 'editEvent'  | 'sendMail' | 'editTemplates';
+  dialogType: 'project' | 'needs' | 'resetPass' | 'neighb' | 'areaCoord' | 'manager' | 'clubCoord' | 'editEvent' | 'sendMail' | 'editTemplates';
   actionHebrew: { [key: string]: string } = { "Add": 'הוסף', "Update": 'עדכן', "Delete": 'מחק', "reset": 'שלח' };
   newEmail?: string;
   newPassword?: string;
@@ -49,14 +49,18 @@ export class DialogBoxComponent implements OnInit {
     this.dialogType = this.local_data.dialogType
     this.action = this.local_data.action;
     if (this.action === 'Update' && this.dialogType == "project") {
+      if (!(this.local_data.clubCoordinatorId instanceof Array)) {
+        this.local_data.clubCoordinatorId = [this.local_data.clubCoordinatorId]
+      }
       this.newProj = {
         date: moment(this.local_data.date.toDate()),
         projectType: this.local_data.projectType,
         comments: this.local_data.comments,
-        clubCoordinatorId: this.local_data.clubCoordinatorId,
+        clubCoordinatorId: [],
         continuous: this.local_data.continuous,
         status: this.local_data.status
       }
+      // this.updateOldClubs()
     } else if (this.dialogType === "project") {
       this.newProj = { projectType: '', comments: '', date: moment(), continuous: '', status: '', clubCoordinatorId: [] }
     }
@@ -171,11 +175,30 @@ export class DialogBoxComponent implements OnInit {
   updateClubs() {
     this.local_data.clubs.forEach((club: clubCoord) => {
       if (club.currentValue) {
-        if (club.id)
+        if (club.id) {
           this.newProj?.clubCoordinatorId.push(club.id)
+        }
       }
+      club.currentValue = false
     });
   }
+
+  // ngAfterViewChecked() {
+  //   this.updateOldClubs()
+  // }
+
+  //   updateOldClubs() {
+  //     this.local_data.clubs.forEach((club: any, i: number) => {
+  //       if (this.local_data.clubCoordinatorId.includes(club.id)) {
+  //         console.log(i)
+  //         this.local_data.clubs[i].currentValue = true
+  //       }
+  //       else{
+  //         this.local_data.clubs[i].currentValue = false
+  //       }
+  //     })
+  //     console.log(this.local_data.clubs)
+  // }
 
   async createUser() {
     if ((this.newUser as areaCoord).email && this.newPassword) {
@@ -195,12 +218,12 @@ export class DialogBoxComponent implements OnInit {
           //I don't know if the next statement is necessary 
           this.secondaryApp.auth().signOut();
         }
+      }).catch((err: any) => {
+        this.invalidCreation = true;
+        this.snackBar.open(err, '', { duration: 3000, direction: 'rtl', panelClass: ['snacks'] });
       })
-        .catch((err: any) => {
-          this.invalidCreation = true;
-          this.snackBar.open(err, '', { duration: 3000, direction: 'rtl', panelClass: ['snacks'] });
-        })
     }
+
   }
 
   onFileSelected(event: any) {
@@ -225,7 +248,6 @@ export class DialogBoxComponent implements OnInit {
       this.newEvent.img = url
     });
   }
-  
   fillFeilds(event: MatRadioChange) {
     //Using NewLine as \n when inserting and reading from firebase because firebase doesnt support \n
     let temp = this.templates[event.value].replace(/NewLine/g, "\n")

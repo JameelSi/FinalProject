@@ -26,13 +26,13 @@
             <mat-icon>more_vert</mat-icon>
         </button>
         <!-- add signin/sign out outside menu -->
-        <mat-menu #dropMenu="matMenu">
+        <mat-menu #dropMenu="matMenu" class="color">
             <div routerLink={{item.route}} *ngFor="let item of menuItems">
                 <ng-container
                     *ngIf=" ( !item.admin || (item.admin && authService.isLoggedIn && isAdmin  ) ) 
                 && ((item.requireLogIn && authService.isLoggedIn) || (item.requireLogOut && !authService.isLoggedIn || item.showAll))">
                     <button mat-menu-item>
-                        <mat-icon>{{item.icon}}</mat-icon>
+                        <mat-icon style="color: white;">{{item.icon}}</mat-icon>
                         {{item.label}}
                     </button>
                     <mat-divider></mat-divider>
