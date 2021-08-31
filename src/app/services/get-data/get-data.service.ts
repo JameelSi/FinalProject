@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from '@angular/fire/firestore';
 import { combineLatest, Observable } from 'rxjs';
-import { take } from 'rxjs/operators';
-import { areaCoord, neighborhood, manager, clubCoord, event, message, Volunteer, Elderly,emailTemplate } from '../../types/customTypes';
+import { areaCoord, neighborhood, manager, clubCoord, event, message, Volunteer, Elderly,emailTemplate,review } from '../../types/customTypes';
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +18,8 @@ export class GetDataService {
   volunteersRef: AngularFirestoreCollection<Volunteer>
   elderliesRef: AngularFirestoreCollection<Elderly>
   emailTemplatesRef: AngularFirestoreCollection<emailTemplate>
-
+  readReviewsRef:AngularFirestoreCollection<review>
+  unreadReviewsRef:AngularFirestoreCollection<review>
   constructor(private store: AngularFirestore) {
     this.areaCoordsRef = this.store.collection("AreaCoordinators")
     this.neighbsRef = this.store.collection("ירושלים")
@@ -30,6 +30,8 @@ export class GetDataService {
     })
     this.readMessagesRef = this.store.collection('Messages', (ref: any) => { return ref.where('read', '==', true).orderBy('date', "desc") })
     this.unreadMessagesRef = this.store.collection('Messages', (ref: any) => { return ref.where('read', '==', false).orderBy('date', "desc") })
+    this.readReviewsRef = this.store.collection('Reviews', (ref: any) => { return ref.where('read', '==', true).orderBy('date', "desc") })
+    this.unreadReviewsRef = this.store.collection('Reviews', (ref: any) => { return ref.where('read', '==', false).orderBy('date', "desc") })
     this.volunteersRef = this.store.collection("Volunteers")
     this.elderliesRef = this.store.collection("Elderlies")
     this.emailTemplatesRef=this.store.collection("EmailsTemplates")
@@ -56,12 +58,16 @@ export class GetDataService {
     return neighborhoods
   }
 
-  getMessages() {
+  getMessagesAndReviews() {
     let readMsgs: Observable<message[]>
     let unreadMsgs: Observable<message[]>
+    let readReviews: Observable<review[]>
+    let unreadReviews: Observable<review[]>
     readMsgs = this.readMessagesRef.valueChanges({ idField: 'id' });
     unreadMsgs = this.unreadMessagesRef.valueChanges({ idField: 'id' });
-    return combineLatest([readMsgs, unreadMsgs])
+    readReviews=this.readReviewsRef.valueChanges({ idField: 'id' });
+    unreadReviews=this.unreadReviewsRef.valueChanges({ idField: 'id' });
+    return combineLatest([readMsgs, unreadMsgs,readReviews,unreadReviews])
   }
 
   getVolInfo(uid: string) {

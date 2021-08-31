@@ -1,4 +1,5 @@
 <div class="body">
+    <!-- undread messages filter -->
     <ng-template #filter1>
         <div dir="rtl">
             <mat-form-field class="filter">
@@ -8,6 +9,7 @@
             </mat-form-field>
         </div>
     </ng-template>
+    <!-- read messages filter -->
     <ng-template #filter2>
         <div dir="rtl">
             <mat-form-field class="filter">
@@ -18,9 +20,8 @@
         </div>
     </ng-template>
 
-
-
     <mat-tab-group dir="rtl">
+        <!--unread message tab -->
         <mat-tab>
             <ng-template mat-tab-label><strong>הודעות שלא נקראו</strong></ng-template>
             <ng-container *ngTemplateOutlet="filter1"></ng-container>
@@ -36,17 +37,18 @@
                         <!-- {{msg.content | prettyprint}} -->
                     </p>
                     <div class="contact">
-                        מס' טלפון: {{msg.phone}} 
+                        מס' טלפון: {{msg.phone}}
                         <br>
                         אימייל: {{msg.email}}
                     </div>
                 </mat-card-content>
                 <mat-card-actions>
-                    <button mat-stroked-button (click)="move(msg, true)">סמן כנקרא</button>
-                    <button mat-stroked-button (click)="deleteDialog({}, msg)">מחק הודעה</button>
+                    <button mat-stroked-button (click)="move(msg, true,'Messages')">סמן כנקרא</button>
+                    <button mat-stroked-button (click)="deleteDialog({}, msg,'Messages')">מחק הודעה</button>
                 </mat-card-actions>
             </mat-card>
         </mat-tab>
+        <!-- read messages tab -->
         <mat-tab>
             <ng-template mat-tab-label><strong>הודעות נקראו</strong></ng-template>
             <ng-container *ngTemplateOutlet="filter2"></ng-container>
@@ -58,18 +60,53 @@
                 </mat-card-header>
 
                 <mat-card-content>
-                    <p>
-                        {{msg.content}}
-                    </p>
+                    <p> {{msg.content}} </p>
                     <div class="contact">
-                        מס' טלפון: {{msg.phone}} 
+                        מס' טלפון: {{msg.phone}}
                         <br>
                         אימייל: {{msg.email}}
                     </div>
                 </mat-card-content>
                 <mat-card-actions>
-                    <button mat-stroked-button (click)="move(msg, false)">סמן כלא נקרא</button>
-                    <button mat-stroked-button (click)="deleteDialog({}, msg)">מחק הודעה</button>
+                    <button mat-stroked-button (click)="move(msg, false,'Messages')">סמן כלא נקרא</button>
+                    <button mat-stroked-button (click)="deleteDialog({}, msg,'Messages')">מחק הודעה</button>
+                </mat-card-actions>
+            </mat-card>
+        </mat-tab>
+        <!-- unread reviews -->
+        <mat-tab>
+            <ng-template mat-tab-label><strong>חוויות דעת שלא נקראו</strong></ng-template>
+            <mat-card dir="rtl" *ngFor="let rev of unreadReviews">
+                <mat-card-header>
+                    <div mat-card-avatar class="example-header-image"></div>
+                    <mat-card-title>{{rev.phone}}</mat-card-title>
+                    <mat-card-subtitle>{{rev.date.toDate() | date: 'dd/MM/yy'}}</mat-card-subtitle>
+                </mat-card-header>
+
+                <mat-card-content>
+                    <p [innerHTML]="rev.content | prettyPrint">
+                </mat-card-content>
+                <mat-card-actions>
+                    <button mat-stroked-button (click)="move(rev, true,'Reviews')">סמן כנקרא</button>
+                    <button mat-stroked-button (click)="deleteDialog({}, rev,'Reviews')">מחק הודעה</button>
+                </mat-card-actions>
+            </mat-card>
+        </mat-tab>
+        <!-- read reviews -->
+        <mat-tab>
+            <ng-template mat-tab-label><strong>חוויות דעת נקראו</strong></ng-template>
+            <mat-card dir="rtl" *ngFor="let rev of readReviews">
+                <mat-card-header>
+                    <div mat-card-avatar class="example-header-image"></div>
+                    <mat-card-title>{{rev.phone}}</mat-card-title>
+                    <mat-card-subtitle>{{rev.date.toDate() | date: 'dd/MM/yy'}}</mat-card-subtitle>
+                </mat-card-header>
+                <mat-card-content>
+                    <p> {{rev.content}} </p>
+                </mat-card-content>
+                <mat-card-actions>
+                    <button mat-stroked-button (click)="move(rev, false,'Reviews')">סמן כלא נקרא</button>
+                    <button mat-stroked-button (click)="deleteDialog({}, rev,'Reviews')">מחק הודעה</button>
                 </mat-card-actions>
             </mat-card>
         </mat-tab>

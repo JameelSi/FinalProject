@@ -235,18 +235,14 @@
             <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
             <mat-datepicker #picker2 disabled="false"></mat-datepicker>
             <mat-error *ngIf="date2.invalid && (date2.dirty || date2.touched)">
-              <div *ngIf="date2.errors?.required">
                 שדה התאריך הינו חובה.
-              </div>
             </mat-error>
           </mat-form-field>
           <mat-form-field>
             <textarea required name="title" matInput placeholder="{{actionHebrew[action]}} כותרת"
               [(ngModel)]="newEvent.title" #title="ngModel"></textarea>
             <mat-error *ngIf="title.invalid && (title.dirty || title.touched)">
-              <div *ngIf="title.errors?.required">
                 שדה זה הינו חובה.
-              </div>
             </mat-error>
           </mat-form-field>
 
@@ -264,13 +260,6 @@
             &nbsp;
             {{ uploadedFile?.name || "עדיין לא נבחרה תמונה"}}
           </div>
-          <!-- <div class="progress">
-            <mat-progress-bar class="progress-bar" mode="determinate"
-                              [value]="uploadProgress" *ngIf="uploadProgress">
-            </mat-progress-bar>
-            <mat-icon class="cancel-upload" (click)="cancelUpload()" 
-                      *ngIf="uploadProgress">delete_forever</mat-icon>
-          </div> -->
 
         </ng-container>
       </ng-template>

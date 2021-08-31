@@ -1,12 +1,12 @@
 
-$color1: #116466;
-$color2: #d1e8e2;
+$color1: #313842  ;
+$color2: #313842 ;
 
 .bkg-img{
 
-  background: #19547b;  /* fallback for old browsers */
-  background: -webkit-linear-gradient(to right, #ffd89b, #19547b);  /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(to top, $color2, $color1); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  background: #313842;  /* fallback for old browsers */
+  // background: -webkit-linear-gradient(to right, #ffd89b, #19547b);  /* Chrome 10-25, Safari 5.1-6 */
+  // background: linear-gradient(to top, $color2, $color1); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
  
   -webkit-background-size: cover;
   -moz-background-size: cover;
@@ -57,6 +57,12 @@ $color2: #d1e8e2;
   width: 20vh;
   font-size: large;
   margin: 2vh;
+  background-color: $color1;
+  color: white;
+  border-style: solid;
+  border-color: #AE76A6;
+  // 6A8D92
+  // AE76A6
 }
 .spacer{
   height: 5vh;
@@ -70,20 +76,19 @@ $color2: #d1e8e2;
   color: darkslategray;
 }
 
-.vol-item {
   .vol-item-content {
       border: 1px solid var(--surface-d);
       border-radius: 3px;
       margin: .3rem;
       text-align: center;
       padding: 2rem 0;
-  }
+}
 
   .vol-image {
-      width: 70%;
-      max-height: 25vh;
+      width: auto;
+      max-height: 40vh;
       box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23)
-  }
+  
 }
 
 //  #7BC6CC, #BE93C5
@@ -211,10 +216,6 @@ footer{
   }
 }
 
-button{
-  background-color: #f3cdab;
-}
-
 
 /* Style the Image Used to Trigger the Modal */
 #myImg {
@@ -229,7 +230,7 @@ button{
 .modal {
   display: none; /* Hidden by default */
   position: fixed; /* Stay in place */
-  z-index: 1; /* Sit on top */
+  z-index: 9999; /* Sit on top */
   padding-top: 100px; /* Location of the box */
   left: 0;
   top: 0;
@@ -284,13 +285,17 @@ button{
 
 /* The Close Button */
 .close {
-  position: absolute;
-  top: 15px;
-  right: 35px;
-  color: #f1f1f1;
+  position: relative;
+  right:15vw;
+  float: right;
+  // top: 15px;
+  // right: px;
+  // right: 40px;
+  color: red;
   font-size: 40px;
   font-weight: bold;
   transition: 0.3s;
+
 }
 
 .close:hover,

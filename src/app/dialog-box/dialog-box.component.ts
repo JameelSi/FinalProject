@@ -225,6 +225,7 @@ export class DialogBoxComponent implements OnInit {
       this.newEvent.img = url
     });
   }
+  
   fillFeilds(event: MatRadioChange) {
     //Using NewLine as \n when inserting and reading from firebase because firebase doesnt support \n
     let temp = this.templates[event.value].replace(/NewLine/g, "\n")

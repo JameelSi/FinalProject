@@ -122,6 +122,13 @@ export interface event {
     read?: boolean,
     id?: string,
   }
+  export interface review {
+    content: string,
+    date: Moment,
+    phone: string,
+    read?: boolean,
+    id?: string,
+  }
   export interface task {
     id?: string,
     description: string,

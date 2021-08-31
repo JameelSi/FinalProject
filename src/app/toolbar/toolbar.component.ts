@@ -72,7 +72,7 @@ export class ToolbarComponent {
       requireLogOut: false,
       showAll: false,
     }, {
-      label: "ריכוז הודעות",
+      label: "הודעות & חויות דעת",
       icon: "message",
       route: "/messages",
       admin: true,
