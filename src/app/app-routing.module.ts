@@ -16,6 +16,7 @@ import { TasksComponent } from './tasks/tasks.component';
 import { LoggedInGuard } from './guards/logged-in.guard';
 import { SmsComponent } from './sms/sms.component';
 import { ManagerGuard } from './guards/manager.guard';
+import { AdminOrManagerGuard } from './guards/admin-or-manager.guard';
 
 // AuthGuard -> admins
 // LoggedInGuard -> any logged in user
@@ -32,7 +33,7 @@ const routes: Routes = [
   { path: 'sms', component: SmsComponent},  
   { path: 'profile', component: ProfileComponent, canActivate: [LoggedInGuard] },
   { path: 'registereduser', component: RegisteredUsersComponent, canActivate: [AdminGuard]},
-  { path: 'tasks', component: TasksComponent, canActivate: [ManagerGuard]},
+  { path: 'tasks', component: TasksComponent, canActivate: [AdminOrManagerGuard]},
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: '**', component: PageNotFoundComponent },
 ];

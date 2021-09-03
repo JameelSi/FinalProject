@@ -31,12 +31,6 @@ export class TasksComponent implements OnInit, OnDestroy {
   isManager!: boolean
   uid!: string
 
-  // tasks: task[] = [
-  //   { description: 'להתחיל ללמוד על הפקן מערכת', completed: false },
-  //   { description: 'להראות את האתר לפקן אלינה', completed: false },
-  //   { description: 'להגיד שזה האתר הכי טוב שראית בחייך', completed: false },
-  // ];
-
   constructor(private observer: BreakpointObserver,
     private dataProvider: GetDataService,
     private dialog: MatDialog,
@@ -49,14 +43,15 @@ export class TasksComponent implements OnInit, OnDestroy {
         this.isAdmin = data.admin
         this.isManager = data.manager
         this.uid = data.uid
-        
-        let managersRef: AngularFirestoreDocument<manager>
-        managersRef = this.afs.doc(`Managers/${this.uid}`)
-        let temp = managersRef.valueChanges({ idField: 'id' })
-        temp.subscribe((manager: manager | undefined) => {
-          if (manager)
-            this.managersToDisplay = [manager]
-        })
+        if (this.isManager) {
+          let managersRef: AngularFirestoreDocument<manager>
+          managersRef = this.afs.doc(`Managers/${this.uid}`)
+          let temp = managersRef.valueChanges({ idField: 'id' })
+          temp.subscribe((manager: manager | undefined) => {
+            if (manager)
+              this.managersToDisplay = [manager]
+          })
+        }
       }))
 
   }
