@@ -34,34 +34,28 @@
 
 <div class="spacer"></div>
 
-<p-carousel [value]="events" [numVisible]="3" [numScroll]="1" [responsiveOptions]="responsiveOptions">
+<p-carousel [value]="events" [numVisible]="3" [numScroll]="1" [responsiveOptions]="responsiveOptions" [autoplayInterval]="5000" [circular]="true">
     <ng-template pTemplate="header">
         <div dir="rtl" class="vol-header">אירועים
             <div class="addBtn" *ngIf="authService.isLoggedIn && isAdmin" (click)="openDialog('Add','editEvent', undefined)">הוסף
                 אירוע</div>
         </div>
-
     </ng-template>
 
     <ng-template let-currEvent pTemplate="item">
-        <div class="vol-item">
             <div class="vol-item-content">
                 <div class="p-mb-3"></div>
-                <div>
-                    <h4 class="p-mb-1">{{currEvent.title}}</h4>
+                    <h4 class="p-mb-1"> <strong>{{currEvent.title}} </strong></h4>
                     <div class="p-mb-3">
-                        <img src="{{currEvent.img}}" id="myImg" [alt]="currEvent.title" class="vol-image" 
-                        (click)="modal(currEvent.img, currEvent.title, currEvent.description)"/>
-                        <!-- openDialog('Display','displayEvent', currEvent) -->
+                        <img src="{{currEvent.img}}" id="myImg" class="vol-image" 
+                        (click)="modal(currEvent.img)"/>
                     </div>
                     <h6 class="p-mt-0 p-mb-3" style="font-size: medium;">{{currEvent.description}}</h6>
-                    <h6 class="p-mt-0 p-mb-3"><strong>!תלחצו לעוד פרטים</strong></h6>
+                    <p class="p-mt-0 p-mb-3">לחצו על התמונה לעוד פרטים</p>
                     <mat-icon *ngIf="authService.isLoggedIn && isAdmin" (click)="openDialog('Delete', 'editEvent', currEvent)"
                         style="color:red; cursor: pointer;">
                         delete
                     </mat-icon>
-                </div>
-            </div>
         </div>
     </ng-template>
 
@@ -70,13 +64,13 @@
 <!-- Enlarge Image Modal -->
 <div id="myModal" class="modal">
     <!-- Modal Title -->
-    <div id="title"></div>
+    <!-- <div id="title"></div> -->
     <!-- The Close Button -->
     <span class="close">&times;</span>
     <!-- Modal Content (The Image) -->
     <img class="modal-content" id="img01">
     <!-- Modal Caption (Image Text) -->
-    <div id="caption"></div>
+    <!-- <div id="caption"></div> -->
   </div>
 
 <div class="spacer"></div>

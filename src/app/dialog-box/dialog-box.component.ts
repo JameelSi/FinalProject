@@ -4,7 +4,7 @@ import * as moment from 'moment';
 import { AuthService } from '../services/auth/auth.service';
 import firebase from 'firebase/app';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { project, areaCoord, neighborhood, manager, clubCoord, event, emailTemplate } from '../types/customTypes';
+import { project, areaCoord, neighborhood, manager, clubCoord, event } from '../types/customTypes';
 import { Moment } from 'moment';
 import { environment } from 'src/environments/environment';
 import { GetDataService } from '../services/get-data/get-data.service';

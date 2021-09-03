@@ -6,25 +6,22 @@ $background: #24272a;
 .fixed-toolbar {
     display:contents;
     position: absolute;
-    // top: 0;
     z-index: 999;
-    // background-color: transparent;
-    // background: -webkit-linear-gradient(to right, #0000, #ffff);  /* Chrome 10-25, Safari 5.1-6 */
-//   background: linear-gradient(to right, #0000, #ffff); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-    // color: whitesmoke;
     min-height: 12vh;
-    background-color: $background;
+    background-color: #313842;
 }
 
 button{
     font-size: large;
     color:seashell;
     margin: 5px;
-
 }
 
 .logoutBtn{
     background-color: red;
+}
+.loginBtn{
+    background-color: #2A7F62
 }
 .logoImg{
     background-blend-mode: soft-light;
@@ -37,6 +34,18 @@ button{
     }
 }
 
+@media screen and (max-width: 1000px) {
+    .fixed-toolbar{
+        display:contents;
+        position: absolute;
+        z-index: 999;
+        min-height: 12vh;
+        background-color: #313842;
+        border-bottom: white;
+        border-bottom-width: 1px;
+        border-bottom-style: solid;
+    }
+}
 mat-menu{
     z-index: 9999;
 }

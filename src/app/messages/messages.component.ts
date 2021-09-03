@@ -3,9 +3,9 @@ import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { DialogBoxComponent } from '../dialog-box/dialog-box.component';
 import { GetDataService } from '../services/get-data/get-data.service';
-import { message } from '../types/customTypes';
-import firebase from 'firebase/app';
+import { message,review } from '../types/customTypes';
 import { promise } from 'protractor';
+import firebase from 'firebase/app';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AngularFirestore } from '@angular/fire/firestore';
 
@@ -19,6 +19,8 @@ export class MessagesComponent implements OnInit, OnDestroy {
   db = firebase.firestore()
   readMsgs!: message[]
   unreadMsgs!: message[]
+  readReviews!: review[]
+  unreadReviews!: review[]
   private subs = new Subscription()
 
   constructor(public dialog: MatDialog, private dataProvider: GetDataService, readonly snackBar: MatSnackBar, private afs: AngularFirestore) { }
@@ -26,11 +28,13 @@ export class MessagesComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     // get from firebase
     this.subs.add(
-      this.dataProvider.getMessages()
+      this.dataProvider.getMessagesAndReviews()
         .subscribe((data) => {
-          const [readMsgs, unreadMsgs] = data;
+          const [readMsgs, unreadMsgs,readReviews,unreadReviews] = data;
           this.readMsgs = readMsgs;
           this.unreadMsgs = unreadMsgs;
+          this.readReviews = readReviews;
+          this.unreadReviews = unreadReviews;
         }))
   }
 
@@ -43,8 +47,8 @@ export class MessagesComponent implements OnInit, OnDestroy {
     let filter = filterValue.trim().toLowerCase();
   }
 
-  deleteDialog(element: any, doc: message) {
-    let collec = 'Messages'
+  deleteDialog(element: any, doc: message | review, collec:'Messages' |'Reviews') {
+    // let collec = 'Messages'
     element.dialogTitle = 'בטוח למחוק את ההודעה?'
     element.action = 'Delete';
     element.dialogType = ''
@@ -64,8 +68,8 @@ export class MessagesComponent implements OnInit, OnDestroy {
     })
   }
 
-  move(doc: message, read: boolean) {
-    let collec = 'Messages'
+  move(doc: message | review, read: boolean ,collec: 'Messages' | 'Reviews') {
+    // let collec = 'Messages'
     this.afs.collection(collec).doc(doc.id).update({
       read: read
     }).then((res) => {

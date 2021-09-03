@@ -57,7 +57,7 @@ export class ToolbarComponent implements OnDestroy {
       requireLogOut: false,
       showAll: true,
     }, {
-      label: "הגדרות",
+      label: "תפקידים",
       icon: "settings",
       route: "/settings",
       admin: true,
@@ -73,7 +73,7 @@ export class ToolbarComponent implements OnDestroy {
       requireLogOut: false,
       showAll: false,
     }, {
-      label: "ריכוז הודעות",
+      label: "הודעות & חויות דעת",
       icon: "message",
       route: "/messages",
       admin: true,

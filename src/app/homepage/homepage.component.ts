@@ -37,7 +37,7 @@ export class HomepageComponent implements OnInit, OnDestroy {
     }))
     this.responsiveOptions = [
       {
-        breakpoint: '1024px',
+        breakpoint: '3000px',
         numVisible: 3,
         numScroll: 3
       },
@@ -100,7 +100,7 @@ export class HomepageComponent implements OnInit, OnDestroy {
     })
   }
 
-  modal(imageSrc: any, imageTitle: string, imageDescrip: string) {
+  modal(imageSrc: any) {
     // Get the modal
     let modal = document.getElementById("myModal");
 
@@ -110,13 +110,13 @@ export class HomepageComponent implements OnInit, OnDestroy {
     if (temp) {
       modalImg = temp
     }
-    let captionText = document.getElementById("caption");
-    let titleText = document.getElementById("title");
-    if (modal && modalImg && captionText && titleText) {
+    // let captionText = document.getElementById("caption");
+    // let titleText = document.getElementById("title");
+    if (modal && modalImg ) {
       modal.style.display = "block";
       (modalImg as HTMLImageElement).src = imageSrc;
-      captionText.innerHTML = imageDescrip;
-      titleText.innerHTML = imageTitle;
+      // captionText.innerHTML = imageDescrip;
+      // titleText.innerHTML = imageTitle;
     }
 
     // Get the <span> element that closes the modal
