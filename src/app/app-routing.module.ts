@@ -9,29 +9,30 @@ import { SettingsComponent } from './settings/settings.component';
 import { MessagesComponent } from './messages/messages.component';
 import { ProfileComponent } from './profile/profile.component';
 import { RegisteredUsersComponent } from './registered-users/registered-users.component';
-import { AuthGuard } from './guards/auth.guard';
+import { AdminGuard } from './guards/admin.guard';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { ContactUsComponent } from './contact-us/contact-us.component';
 import { TasksComponent } from './tasks/tasks.component';
 import { LoggedInGuard } from './guards/logged-in.guard';
 import { SmsComponent } from './sms/sms.component';
+import { ManagerGuard } from './guards/manager.guard';
 
 // AuthGuard -> admins
 // LoggedInGuard -> any logged in user
 
 const routes: Routes = [
-  { path: 'projectsTracking', component: ProjectsTrackingComponent, canActivate: [AuthGuard]},
+  { path: 'projectsTracking', component: ProjectsTrackingComponent, canActivate: [AdminGuard]},
   { path: 'needs', component: NeedsComponent },
   { path: 'home', component: HomepageComponent },
   { path: 'signup/:userType', component: SignupComponent },
   { path: 'signin', component: SigninComponent },
-  { path: 'settings', component: SettingsComponent, canActivate: [AuthGuard]},
-  { path: 'messages', component: MessagesComponent, canActivate: [AuthGuard]},
+  { path: 'settings', component: SettingsComponent, canActivate: [AdminGuard]},
+  { path: 'messages', component: MessagesComponent, canActivate: [AdminGuard]},
   { path: 'contactus', component: ContactUsComponent},  
   { path: 'sms', component: SmsComponent},  
   { path: 'profile', component: ProfileComponent, canActivate: [LoggedInGuard] },
-  { path: 'registereduser', component: RegisteredUsersComponent, canActivate: [AuthGuard]},
-  { path: 'tasks', component: TasksComponent, canActivate: [AuthGuard] },
+  { path: 'registereduser', component: RegisteredUsersComponent, canActivate: [AdminGuard]},
+  { path: 'tasks', component: TasksComponent, canActivate: [ManagerGuard]},
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: '**', component: PageNotFoundComponent },
 ];

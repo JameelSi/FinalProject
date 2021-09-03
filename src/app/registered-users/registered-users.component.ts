@@ -1,5 +1,5 @@
 import { BreakpointObserver } from '@angular/cdk/layout';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatDrawer } from '@angular/material/sidenav';
 import { Subscription } from 'rxjs';
 import { Volunteer, Elderly, neighborhood } from '../types/customTypes';
@@ -28,7 +28,7 @@ import * as mail from '@sendgrid/mail';
 })
 
 
-export class RegisteredUsersComponent implements OnInit {
+export class RegisteredUsersComponent implements OnInit, OnDestroy {
   columnsToDisplay = ['select', 'name', 'neighborhood', 'phone', 'email', 'delete'];
   expandedElement?: Volunteer | null;
   selection = new SelectionModel<any>(true, []);

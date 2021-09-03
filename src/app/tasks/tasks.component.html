@@ -1,13 +1,13 @@
 <body dir="rtl">
 
-    <h1 class="title">מעקב משישמות</h1>
+    <h1 class="title">מעקב משימות</h1>
 
     <!-- tabs with calendar -->
 
     <div class="main">
         <!-- filters -->
         <!-- menu for managers  -->
-        <div class="menu-container">
+        <div class="menu-container" *ngIf="isAdmin">
             <button class="mngrs-menu-btn" mat-raised-button [matMenuTriggerFor]="menu">
                 <mat-icon>person</mat-icon>
                 מנהלי תחום

@@ -128,7 +128,7 @@
             </mat-form-field>
           </ng-container>
 
-          <ng-container *ngIf="dialogType === 'areaCoord' ">
+          <ng-container *ngIf="dialogType === 'areaCoord' || dialogType === 'manager'">
             <mat-form-field>
               <textarea required name="password" matInput placeholder="{{actionHebrew[action]}} סיסמא"
                 [(ngModel)]="newPassword" #password="ngModel"></textarea>
@@ -263,6 +263,7 @@
             </button>
             &nbsp;
             {{ uploadedFile?.name || "עדיין לא נבחרה תמונה"}}
+            <mat-error *ngIf="imageAlreadyExists">כבר יש תמונה עם השם הזה, אם מוסיפים התמונה הקודמת תימחק, נא לשנות את שם התמונה</mat-error>
           </div>
           <!-- <div class="progress">
             <mat-progress-bar class="progress-bar" mode="determinate"

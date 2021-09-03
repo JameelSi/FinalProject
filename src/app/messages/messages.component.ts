@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { DialogBoxComponent } from '../dialog-box/dialog-box.component';
@@ -14,7 +14,7 @@ import { AngularFirestore } from '@angular/fire/firestore';
   templateUrl: './messages.component.html',
   styleUrls: ['./messages.component.scss']
 })
-export class MessagesComponent implements OnInit {
+export class MessagesComponent implements OnInit, OnDestroy {
 
   db = firebase.firestore()
   readMsgs!: message[]

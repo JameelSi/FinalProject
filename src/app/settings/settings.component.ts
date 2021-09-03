@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { MatDialog } from '@angular/material/dialog';
 import { combineLatest, Subscription } from 'rxjs';
@@ -13,7 +13,7 @@ import { areaCoord, neighborhood, manager, clubCoord } from '../types/customType
   templateUrl: './settings.component.html',
   styleUrls: ['./settings.component.scss']
 })
-export class SettingsComponent implements OnInit {
+export class SettingsComponent implements OnInit, OnDestroy {
 
   db = firebase.firestore()
   areaCoords!: areaCoord[];
@@ -124,7 +124,7 @@ export class SettingsComponent implements OnInit {
             }
           })
         }
-        else if (result.data.action === "Add" && (result.data.dialogType === "clubCoord" || result.data.dialogType === "manager")) {
+        else if (result.data.action === "Add" && (result.data.dialogType === "clubCoord")) {
           this.db.collection(collec).add({
             ...result.newUser
           })
@@ -135,7 +135,7 @@ export class SettingsComponent implements OnInit {
               this.snackBar.open("קרתה שגיאה נא לנסות בזמן מאוחר יותר", '', { duration: 3000, direction: 'rtl', panelClass: ['snacks'] });
             });
         }
-        else if (result.data.action === "Add" && result.data.dialogType === "areaCoord") {
+        else if (result.data.action === "Add" && result.data.dialogType === "areaCoord" || result.data.dialogType === "manager") {
 
           Promise.all(
             [this.db.collection(collec).doc(result.newUser.uid).set({
@@ -166,7 +166,10 @@ export class SettingsComponent implements OnInit {
               })
           }
           else if(result.data.dialogType === "manager"){
-            this.afs.collection(collec).doc(doc).delete()
+            Promise.all(
+              [this.afs.collection('Admin').doc(doc).delete(),
+              this.afs.collection(collec).doc(doc).delete()]
+            )
             .then(() => {
               this.snackBar.open("התהליך הסתיים בהצלחה", '', { duration: 3000, direction: 'rtl', panelClass: ['snacks'] });
             }).catch((error) => {

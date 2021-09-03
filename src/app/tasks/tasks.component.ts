@@ -1,6 +1,6 @@
 import { BreakpointObserver } from '@angular/cdk/layout';
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from '@angular/fire/firestore';
 import { MatDialog } from '@angular/material/dialog';
 import { MatDrawer } from '@angular/material/sidenav';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -9,6 +9,7 @@ import * as moment from 'moment';
 import { Moment } from 'moment';
 import { Subscription } from 'rxjs';
 import { DialogBoxComponent } from '../dialog-box/dialog-box.component';
+import { AuthService } from '../services/auth/auth.service';
 import { GetDataService } from '../services/get-data/get-data.service';
 import { manager, neighborhood, task } from '../types/customTypes';
 
@@ -18,7 +19,7 @@ import { manager, neighborhood, task } from '../types/customTypes';
   styleUrls: ['./tasks.component.scss']
 })
 
-export class TasksComponent implements OnInit {
+export class TasksComponent implements OnInit, OnDestroy {
   @ViewChild(MatDrawer)
   sidenav!: MatDrawer;
   managers!: manager[]
@@ -26,6 +27,9 @@ export class TasksComponent implements OnInit {
   newDate!: Date | Moment | undefined
   managersToDisplay!: manager[]
   neighborhoods!: neighborhood[]
+  isAdmin!: boolean
+  isManager!: boolean
+  uid!: string
 
   // tasks: task[] = [
   //   { description: 'להתחיל ללמוד על הפקן מערכת', completed: false },
@@ -37,38 +41,59 @@ export class TasksComponent implements OnInit {
     private dataProvider: GetDataService,
     private dialog: MatDialog,
     private afs: AngularFirestore,
-    readonly snackBar: MatSnackBar,) {
+    readonly snackBar: MatSnackBar,
+    private auth: AuthService) {
     // this.updateManagers()
+    this.subs.add(
+      this.auth.authData$.subscribe(data => {
+        this.isAdmin = data.admin
+        this.isManager = data.manager
+        this.uid = data.uid
+        
+        let managersRef: AngularFirestoreDocument<manager>
+        managersRef = this.afs.doc(`Managers/${this.uid}`)
+        let temp = managersRef.valueChanges({ idField: 'id' })
+        temp.subscribe((manager: manager | undefined) => {
+          if (manager)
+            this.managersToDisplay = [manager]
+        })
+      }))
+
   }
 
   ngOnInit(): void {
     // get from firebase
-    this.subs.add(
-      this.dataProvider.getManagers()
-        .subscribe((data) => {
-          this.managers = data
-          this.managersToDisplay = this.managersToDisplay ?
-          this.managers.filter((obj)=> {
-            // filter out items not in managersToDisplay
-            return this.managersToDisplay?.some((obj2) => {
-              return obj.id === obj2.id;
-            });
-          }) 
-          : this.managers
-          // if neighborhoods are not specified in manager doc then get neighborhoods for managers from neighborhood doc
-          this.managers.forEach(mngr => {
-            if (mngr.neighborhoods.length == 0) {
-              this.getManagersNeighb(mngr)
-            }
+    if (this.isAdmin) {
+      this.subs.add(
+        this.dataProvider.getManagers()
+          .subscribe((data) => {
+            this.managers = data
+            this.managersToDisplay = this.managersToDisplay ?
+              this.managers.filter((obj) => {
+                // filter out items not in managersToDisplay
+                return this.managersToDisplay?.some((obj2) => {
+                  return obj.id === obj2.id;
+                });
+              })
+              : this.managers
+            // if neighborhoods are not specified in manager doc then get neighborhoods for managers from neighborhood doc
+            this.managers.forEach(mngr => {
+              if (mngr.neighborhoods.length == 0) {
+                this.getManagersNeighb(mngr)
+              }
+            })
           })
-        })
-    )
-    this.subs.add(this.dataProvider.getJerNeighborhoods().subscribe(data => {
-      this.neighborhoods = data
-    }))
+      )
+      this.subs.add(this.dataProvider.getJerNeighborhoods().subscribe(data => {
+        this.neighborhoods = data
+      }))
+    }
+    else {
+
+    }
   }
 
-  ngOnDestroy(){
+  ngOnDestroy() {
     this.subs.unsubscribe()
   }
 
@@ -95,7 +120,7 @@ export class TasksComponent implements OnInit {
     let element: any = {}
     let collec = 'Managers'
     let updateDocRef = this.afs.collection(collec).doc(docId)
-    
+
     element.dialogTitle = 'בטוח למחוק את המשימה?'
     element.action = 'Delete';
     element.dialogType = ''
@@ -142,13 +167,13 @@ export class TasksComponent implements OnInit {
     });
   }
 
-  updateProgress(task: task | undefined, mngr: manager, action: 1 | -1 | 0): number{
+  updateProgress(task: task | undefined, mngr: manager, action: 1 | -1 | 0): number {
     // action = +1 when adding new task, -1 when deleting a task, 0 when completing/ uncompleting task
     let completedArr = mngr?.tasks.filter(task => task.completed === true)
     let completedNum
-    if(action === -1 && task?.completed){
+    if (action === -1 && task?.completed) {
       completedNum = completedArr?.length + action ?? 0
-    } else{
+    } else {
       completedNum = completedArr?.length ?? 0
     }
     return (completedNum / (mngr?.tasks.length + action ?? 1)) * 100 | 0
@@ -181,15 +206,14 @@ export class TasksComponent implements OnInit {
         .then((querySnapshot) => {
           querySnapshot.forEach((doc) => {
             mngr.neighborhoods.push(doc.data().id)
-            console.log(doc.id, " => ", doc.data());
           });
         })
         .catch((error) => {
-          console.log("Error getting documents: ", error);
+          // console.log("Error getting documents: ", error);
         });
     }
   }
-  
+
 }
 
 // // add tasks array of maps to all managers

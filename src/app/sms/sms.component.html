@@ -8,21 +8,29 @@
         <div class="sms-bot">
             <!-- add new bot response -->
             <h3>הוסף תגובה חדשה</h3>
-            <div class="new-response">
+            <form class="new-response" [formGroup]="newResponse" (ngSubmit)="addResponse(formDirective)" #formDirective="ngForm">
                 <mat-form-field appearance="outline">
                     <mat-label>הודעה המתקבלת</mat-label>
-                    <textarea matInput id="1" cols="30" rows="3" [(ngModel)]='newReceived'></textarea>
+                    <textarea name="newReceived" matInput id="1" cols="30" rows="3" formControlName="newReceived"></textarea>
+                    <mat-error *ngIf="newResponse.controls['newReceived'].errors?.required">השדה הינו חובה</mat-error>
+                    <mat-error *ngIf="newResponse.controls['newReceived'].errors?.forbiddenInput">
+                        השדה אינו יכול להכיל: ״[״, ״]״, ״~״, ״*״, ״/״
+                    </mat-error>
                 </mat-form-field>
-
+                
                 <mat-form-field appearance="outline">
                     <mat-label>תשובת הבוט</mat-label>
-                    <textarea matInput id="1" cols="30" rows="3" [(ngModel)]='newReply'></textarea>
+                    <textarea matInput id="1" cols="30" rows="3" formControlName="newReply" ></textarea>
+                    <mat-error *ngIf="newResponse.controls['newReply'].errors?.required">השדה הינו חובה</mat-error>
+                    <mat-error *ngIf="newResponse.controls['newReply'].errors?.forbiddenInput">
+                        השדה אינו יכול להכיל: ״[״, ״]״, ״~״, ״*״, ״/״
+                    </mat-error>
                 </mat-form-field>
 
-                <button mat-raised-button color="primary" (click)="addResponse()">
+                <button type="submit" mat-raised-button color="primary" [disabled]="!newResponse.valid">
                      הוסף
                 </button>
-            </div>
+            </form>
             <!-- responses list -->
             <ul>
                 <li>
