@@ -227,7 +227,7 @@
       </ng-template>
 
       <ng-template #editEventsTemplate>
-        <ng-container *ngIf="dialogType === 'editEvent' && action != 'Delete'; else elseTemplate ">
+        <ng-container *ngIf="dialogType === 'editEvent' && action != 'Delete'; else sendMailTemplate ">
           <mat-form-field appearance="fill">
             <mat-label>{{actionHebrew[action]}} תאריך</mat-label>
             <input matInput required id="date2" name="date2" [matDatepicker]="picker2" [(ngModel)]="newEvent.date"
