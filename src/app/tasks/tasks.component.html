@@ -59,7 +59,7 @@
 
             <div class="todo-app">
                 <!-- add new task -->
-                <div class="new-task">
+                <div *ngIf="isAdmin" class="new-task">
                     <mat-form-field appearance="standard">
                         <input matInput placeholder="משימה חדשה" class="todo-input" #inputElementRef>
                     </mat-form-field>
@@ -92,7 +92,7 @@
                                 </span>
                             </div>
 
-                            <button mat-button color="warn" (click)="removeTask(task, manager.id, manager)">
+                            <button *ngIf="isAdmin" mat-button color="warn" (click)="removeTask(task, manager.id, manager)">
                                 מחיקה
                             </button>
                         </div>
