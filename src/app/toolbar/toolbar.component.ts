@@ -1,5 +1,5 @@
 import { BreakpointObserver } from '@angular/cdk/layout';
-import { Component,ViewChild } from '@angular/core';
+import { Component,OnDestroy,ViewChild } from '@angular/core';
 import { MatToolbar } from '@angular/material/toolbar';
 import { Subscription } from 'rxjs';
 import { AuthService } from '../services/auth/auth.service';
@@ -10,11 +10,12 @@ import { MenuItem } from '../types/customTypes';
   templateUrl: './toolbar.component.html',
   styleUrls: ['./toolbar.component.scss']
 })
-export class ToolbarComponent {
+export class ToolbarComponent implements OnDestroy {
 
   @ViewChild(MatToolbar) nav!: MatToolbar;
   isOnTop = true;
   isAdmin = false;
+  isManager = false;
   userType!: string
   isSmall=false;
   menuItems: MenuItem[] = [
@@ -84,7 +85,8 @@ export class ToolbarComponent {
       icon: "account_circle",
       route: "/profile",
       admin: false,
-      requireLogIn: true,
+      vol: true,
+      requireLogIn: false,
       requireLogOut: false,
       showAll: false,
     }, {
@@ -92,6 +94,7 @@ export class ToolbarComponent {
       icon: "task_alt",
       route: "/tasks",
       admin: true,
+      manager: true,
       requireLogIn: true,
       requireLogOut: false,
       showAll: false,
@@ -112,6 +115,7 @@ export class ToolbarComponent {
       this.authService.authData$.subscribe(data => {
         this.isAdmin = data.admin
         this.userType = data.type
+        this.isManager = data.manager
       })
     )
   }

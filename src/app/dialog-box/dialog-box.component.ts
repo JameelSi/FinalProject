@@ -1,4 +1,4 @@
-import { AfterViewChecked, Component, Inject, OnInit, Optional } from '@angular/core';
+import { AfterViewChecked, Component, Inject, OnDestroy, OnInit, Optional } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import * as moment from 'moment';
 import { AuthService } from '../services/auth/auth.service';
@@ -10,6 +10,7 @@ import { environment } from 'src/environments/environment';
 import { GetDataService } from '../services/get-data/get-data.service';
 import { MatRadioChange } from '@angular/material/radio';
 import { AngularFirestore } from '@angular/fire/firestore';
+import { BehaviorSubject, observable, Subscription } from 'rxjs';
 
 type user = clubCoord | manager | areaCoord
 
@@ -21,7 +22,7 @@ type user = clubCoord | manager | areaCoord
 })
 
 
-export class DialogBoxComponent implements OnInit {
+export class DialogBoxComponent implements OnInit, OnDestroy {
 
   dialogTitle: string;
   action: string;
@@ -39,6 +40,11 @@ export class DialogBoxComponent implements OnInit {
   uploadedFile!: any
   choosenTemplate: string = "";
   templates: { [key: string]: string } = {}
+
+  imageAlreadyExists$ = new BehaviorSubject(false);
+  imageAlreadyExists =  false;
+  subs = new Subscription()
+
   constructor(public dialogRef: MatDialogRef<DialogBoxComponent>,
     public authService: AuthService,
     readonly snackBar: MatSnackBar,
@@ -100,6 +106,9 @@ export class DialogBoxComponent implements OnInit {
       }
     }
     else if (this.dialogType === "editEvent") {
+      this.subs.add(this.imageAlreadyExists$.subscribe(imageAlreadyExists => {
+        this.imageAlreadyExists = imageAlreadyExists;
+      }));
       this.newEvent = {
         date: moment(),
         title: '',
@@ -117,11 +126,15 @@ export class DialogBoxComponent implements OnInit {
     })
   }
 
+  ngOnDestroy(){
+    this.subs.unsubscribe()
+  }
+
   doAction() {
     if ((this.dialogType === 'areaCoord' || this.dialogType === 'manager') && this.action != "Delete") {
       this.updateNeighbs()
     }
-    if (this.dialogType === 'areaCoord') {
+    if ((this.dialogType === 'areaCoord' || this.dialogType === 'manager') && this.action != "Delete") {
       this.createUser().then(() => {
         if (!this.invalidCreation) {
           this.dialogRef.close({
@@ -201,35 +214,44 @@ export class DialogBoxComponent implements OnInit {
   // }
 
   async createUser() {
-    if ((this.newUser as areaCoord).email && this.newPassword) {
+    if ((this.newUser as areaCoord | manager).email && this.newPassword) {
       //create and init new app reference (to prevent user from logging in) 
       if (firebase.apps.length === 1)
         this.secondaryApp = firebase.initializeApp(environment.firebase, "Secondary");
       else
         this.secondaryApp = firebase.apps[1]
-      await this.secondaryApp.auth().createUserWithEmailAndPassword((this.newUser as areaCoord).email, this.newPassword).then((res: any) => {
+      await this.secondaryApp.auth().createUserWithEmailAndPassword((this.newUser as areaCoord | manager).email, this.newPassword).then((res: any) => {
         if (!res) {
           this.invalidCreation = true;
         }
         // user created
         else {
           this.invalidCreation = false;
-          (this.newUser as areaCoord).uid = res.user?.uid
+          (this.newUser as areaCoord | manager).uid = res.user?.uid
           //I don't know if the next statement is necessary 
           this.secondaryApp.auth().signOut();
         }
-      }).catch((err: any) => {
-        this.invalidCreation = true;
-        this.snackBar.open(err, '', { duration: 3000, direction: 'rtl', panelClass: ['snacks'] });
       })
+        .catch((err: any) => {
+          this.invalidCreation = true;
+          this.snackBar.open(err, '', { duration: 3000, direction: 'rtl', panelClass: ['snacks'] });
+        })
     }
-
   }
 
   onFileSelected(event: any) {
     const file: File = event.target.files[0];
     if (file) {
       this.uploadedFile = file
+      let storage = firebase.storage();
+      let storageRef = storage.ref()
+      let imgRef = storageRef.child(`events/${this.uploadedFile.name}`);
+      imgRef.getDownloadURL().then(() => {
+        this.imageAlreadyExists$.next(true);
+      }).catch((err) => {
+        this.imageAlreadyExists$.next(false);
+        return err;
+      })
     }
   }
 

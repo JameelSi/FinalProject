@@ -162,7 +162,7 @@ export class NeedsComponent implements OnInit, OnDestroy {
     }
     this.phone = this.numberForm.get("phoneNum")?.value
     this.pName = this.numberForm.get("pName")?.value
-    this.phone = "+972" + this.phone
+    this.phone = "+972" + this.phone.slice(1)
     // let msg =  "שלום " + this.name + ",\nנמצאה לך התאמה באתר שמחת זקנתי!\nלפרטים נוספים יש להיכנס לאתר ולבצע התחברות עם כתובת מייל וסיסמה\nלאחר מכאן לחץ/י בתפריט על 'צפייה בהתאמות'\nhttps://simhat-zkenty.firebaseapp.com\n\nצוות שמחת זקנתי"
     let sendsms = firebase.functions().httpsCallable('sendSms');
     sendsms({ number: this.phone, name: this.pName }).then((result) => {

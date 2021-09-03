@@ -11,7 +11,8 @@ import { ReplaySubject } from 'rxjs';
 type AuthData = {
   uid: string,
   admin: boolean,
-  type: string
+  type: string,
+  manager: boolean
 }
 
 @Injectable({
@@ -22,7 +23,6 @@ export class AuthService {
   userState: any = null;
   type = "";
   admin = false;
-  areaCoord = false;
   manager = false;
   clubCoord = false;
   uid_!: any
@@ -44,8 +44,9 @@ export class AuthService {
       concatMap(auth => defer(() => firebase.firestore().collection('Admin').doc(`${auth?.uid}`).get()))
     ).subscribe(doc => {
       this.type = doc.data()?.type
-      this.admin = doc.data()? true : false
-      this.authSubject.next({ uid: this.uid, type: this.type, admin: this.admin });
+      this.admin = doc.data()?.type === "AreaCoordinators"
+      this.manager = doc.data()?.type === "Managers"
+      this.authSubject.next({ uid: this.uid, type: this.type, admin: this.admin, manager: this.manager });
     });
   }
 
@@ -101,6 +102,14 @@ export class AuthService {
 
   get isAdmin$() {
     return this.authSubject.pipe(map(({ admin }) => admin));
+  }
+
+  get isManager(): boolean {
+    return this.manager
+  }
+
+  get isManager$() {
+    return this.authSubject.pipe(map(({ manager }) => manager));
   }
 
   get adminType(): string {

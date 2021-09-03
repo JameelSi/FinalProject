@@ -88,6 +88,7 @@ export interface event {
     neighborhoods: string[],
     tasks: task[],
     tasksProgress?: number,
+    uid?: string
   }
   
   export interface clubCoord {
@@ -108,9 +109,8 @@ export interface event {
     requireLogIn: boolean;
     requireLogOut? : boolean;
     showAll?: boolean;
-    // showOnMobile: boolean;
-    // showOnTablet: boolean;
-    // showOnDesktop: boolean;
+    vol?:boolean, 
+    manager?: boolean
   }
 
   export interface message {

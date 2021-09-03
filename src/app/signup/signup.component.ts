@@ -1,5 +1,5 @@
 import { BreakpointObserver } from '@angular/cdk/layout';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { combineLatest, Observable, Subscription } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
@@ -53,7 +53,7 @@ export function legalValidator() {
   providers: [{ provide: STEPPER_GLOBAL_OPTIONS, useValue: { showError: true } }]
 })
 
-export class SignupComponent implements OnInit {
+export class SignupComponent implements OnInit, OnDestroy {
   ready = false;
   // screen width subscriber
   subs = new Subscription();

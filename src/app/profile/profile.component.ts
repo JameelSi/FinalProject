@@ -1,4 +1,4 @@
-import { AfterViewChecked, Component, OnInit } from '@angular/core';
+import { AfterViewChecked, Component, OnDestroy, OnInit } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
@@ -17,7 +17,7 @@ import { areaCoord, Volunteer } from '../types/customTypes';
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.scss']
 })
-export class ProfileComponent implements OnInit, AfterViewChecked {
+export class ProfileComponent implements OnInit, AfterViewChecked, OnDestroy {
 
   meh!: any
   langsArr: string[] = ['עברית', 'אנגלית', 'ערבית', 'רוסית', 'אמהרית', 'צרפתית'];

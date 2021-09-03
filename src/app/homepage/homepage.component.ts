@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
 import { GetDataService } from '../services/get-data/get-data.service';
 import { AuthService } from '../services/auth/auth.service';
@@ -19,7 +19,7 @@ interface responsiveCarouselOption {
   styleUrls: ['./homepage.component.scss']
 })
 
-export class HomepageComponent implements OnInit {
+export class HomepageComponent implements OnInit, OnDestroy {
 
   events!: event[];
   responsiveOptions: responsiveCarouselOption[]
