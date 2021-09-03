@@ -60,7 +60,7 @@ export class SmsComponent implements OnInit, OnDestroy {
         }
         return new FormGroup({
           recieved: new FormControl({value: obj.key, disabled:disable}, Validators.required),
-          reply: new FormControl({value: obj.value, disabled:disable}, Validators.required)
+          reply: new FormControl({value: obj.value}, Validators.required)
         });
       });
       this.controls = new FormArray(toGroups);
