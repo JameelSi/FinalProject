@@ -134,7 +134,7 @@ export class DialogBoxComponent implements OnInit, OnDestroy {
     if ((this.dialogType === 'areaCoord' || this.dialogType === 'manager') && this.action != "Delete") {
       this.updateNeighbs()
     }
-    if (this.dialogType === 'areaCoord' || this.dialogType === 'manager') {
+    if ((this.dialogType === 'areaCoord' || this.dialogType === 'manager') && this.action != "Delete") {
       this.createUser().then(() => {
         if (!this.invalidCreation) {
           this.dialogRef.close({

@@ -116,7 +116,6 @@ export class ToolbarComponent implements OnDestroy {
         this.isAdmin = data.admin
         this.userType = data.type
         this.isManager = data.manager
-        console.log(this.isManager, this.isAdmin)
       })
     )
   }

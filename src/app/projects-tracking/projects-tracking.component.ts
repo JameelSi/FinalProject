@@ -204,7 +204,6 @@ export class ProjectsTrackingComponent implements OnInit, OnDestroy {
       this.currNeighborhoods = this.allNeighborhoods.filter(i => neighbs.includes(i.id))
     }
     this.currNeighborhoods.sort()
-    console.log(this.currNeighborhoods)
     this.setProjects(this.currNeighborhoods[0].id)
   }
 

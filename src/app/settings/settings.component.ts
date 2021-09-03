@@ -94,7 +94,6 @@ export class SettingsComponent implements OnInit, OnDestroy {
       direction: 'rtl',
       data: element,
     });
-
     dialogRef.afterClosed().subscribe(result => {
       if (result && result.event != 'Cancel') {
         if (result.data.action === "Add" && result.data.dialogType === "neighb") {
@@ -135,7 +134,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
               this.snackBar.open("קרתה שגיאה נא לנסות בזמן מאוחר יותר", '', { duration: 3000, direction: 'rtl', panelClass: ['snacks'] });
             });
         }
-        else if (result.data.action === "Add" && result.data.dialogType === "areaCoord" || result.data.dialogType === "manager") {
+        else if (result.data.action === "Add" && (result.data.dialogType === "areaCoord" || result.data.dialogType === "manager")) {
 
           Promise.all(
             [this.db.collection(collec).doc(result.newUser.uid).set({
@@ -165,24 +164,43 @@ export class SettingsComponent implements OnInit, OnDestroy {
                 this.snackBar.open("קרתה שגיאה נא לנסות בזמן מאוחר יותר", '', { duration: 3000, direction: 'rtl', panelClass: ['snacks'] });
               })
           }
-          else if(result.data.dialogType === "manager"){
-            Promise.all(
-              [this.afs.collection('Admin').doc(doc).delete(),
-              this.afs.collection(collec).doc(doc).delete()]
-            )
-            .then(() => {
-              this.snackBar.open("התהליך הסתיים בהצלחה", '', { duration: 3000, direction: 'rtl', panelClass: ['snacks'] });
-            }).catch((error) => {
-              this.snackBar.open("קרתה שגיאה נא לנסות בזמן מאוחר יותר", '', { duration: 3000, direction: 'rtl', panelClass: ['snacks'] });
+          else if (result.data.dialogType === "manager") {
+            let adminRef = firebase.firestore().collection('Admin').doc(doc);
+            let exists: boolean
+            // check if manager is in admins
+            adminRef.get().then((docSnapshot) => {
+              exists = docSnapshot.exists
+            }).then(() => {
+              if (exists) {
+                Promise.all(
+                  [this.afs.collection('Admin').doc(doc).delete(),
+                  this.afs.collection(collec).doc(doc).delete()]
+                )
+                  .then(() => {
+                    this.snackBar.open("התהליך הסתיים בהצלחה", '', { duration: 3000, direction: 'rtl', panelClass: ['snacks'] });
+                  }).catch((error) => {
+                    this.snackBar.open("קרתה שגיאה נא לנסות בזמן מאוחר יותר", '', { duration: 3000, direction: 'rtl', panelClass: ['snacks'] });
+                  })
+              }
+              else {
+                this.afs.collection(collec).doc(doc).delete()
+                  .then(() => {
+                    this.snackBar.open("התהליך הסתיים בהצלחה", '', { duration: 3000, direction: 'rtl', panelClass: ['snacks'] });
+                  }).catch((error) => {
+                    this.snackBar.open("קרתה שגיאה נא לנסות בזמן מאוחר יותר", '', { duration: 3000, direction: 'rtl', panelClass: ['snacks'] });
+                  })
+              }
+
             })
+
             // remove deleted manager's id from neighborhoods
             let citiesRef = firebase.firestore().collection("ירושלים");
             let query = citiesRef.where("managerId", "==", doc);
-            query.get().then(docs=>{
-              docs.forEach(docc=>{
-                docc.ref.update({managerId: ""})
+            query.get().then(docs => {
+              docs.forEach(docc => {
+                docc.ref.update({ managerId: "" })
               })
-            }).catch(err=> console.log(err))
+            }).catch(err => console.log(err))
           }
           else {
             this.afs.collection(collec).doc(doc).delete().then(() => {
