@@ -227,6 +227,12 @@ exports.removeAreaCoordAuth = functions.firestore
       return admin.auth().deleteUser(context.params.uid);
     });
 
+    exports.removeAreaCoordAuth = functions.firestore
+    .document("/Managers/{uid}")
+    .onDelete((snapshot, context) => {
+      return admin.auth().deleteUser(context.params.uid).catch();
+    });
+
 // exports.sendEventSms = functions.firestore
 // .document("/Events/{uid}")
 // .onCreate((snapshot, context) => {
